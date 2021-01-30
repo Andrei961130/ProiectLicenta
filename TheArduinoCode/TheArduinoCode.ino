@@ -59,6 +59,7 @@ static unsigned long lastRefreshTime = 0;
 const int LEDBTN_pin = 13;   // Digital output for LED (button)
 
 int messageCode = 1;        // Digital LED value
+String arduinoMessage;
 
 char input[INPUT_SIZE + 1];
 char *ch;
@@ -166,15 +167,16 @@ void loop()
 
       oxygen = irValue / irOffset;
 
-      Serial.println("true " + irValue + " " + "false " + bpm + " " + avgBpm + " " + oxygen + " " + temperature);
+      arduinoMessage = "true " + String(irValue) + " " + "false " + bpm + " " + avgBpm + " " + oxygen + " " + temperature;
+      Serial.println(arduinoMessage);
     }
   }
   else
   {
-    if(messageCode == 1)i
+    if(messageCode == 1)
       if (irValue < 50000)
         Serial.println("detectedFinger false");
       else if(!sensedBeat)
-        SendReadings("true " + irValue + "true");
+        Serial.println("true " + String(irValue) + " true");
   }
 }
