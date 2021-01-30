@@ -25,7 +25,6 @@
 
 #include "MAX30105.h"
 #include "heartRate.h"
-#include "ArduinoJson.h"
 
 MAX30105 particleSensor;
 
@@ -59,7 +58,7 @@ static unsigned long lastRefreshTime = 0;
 
 const int LEDBTN_pin = 13;   // Digital output for LED (button)
 
-int messageCode = 0;        // Digital LED value
+int messageCode = 1;        // Digital LED value
 
 char input[INPUT_SIZE + 1];
 char *ch;
@@ -100,32 +99,6 @@ void setup()
 //  SendSensorStatus("OFF");
 }
 
-void SendReadings(bool detectedFinger, long irValue = 0, bool onlyIR = true, float bpm = 0, int avgBpm = 0, int oxygen = 0, float temperature = 0)
-{
-  DynamicJsonDocument message(48);
-
-  message["detectedFinger"] = detectedFinger;
-  message["irValue"] = irValue;
-  message["onlyIR"] = onlyIR;
-  message["bpm"] = bpm;
-  message["avgBpm"] = avgBpm;
-  message["oxygen"] = oxygen;
-  message["temperature"] = temperature;
-  
-  serializeJson(message, Serial);
-  Serial.println();
-}
-
-void SendSensorStatus(String sensorStatus)
-{
-  DynamicJsonDocument message(24);
-
-  message["sensorStatus"] = sensorStatus;
-  
-  serializeJson(message, Serial);
-  Serial.println();
-}
-
 void loop()
 {
   delay(2);
@@ -148,15 +121,13 @@ void loop()
         if (messageCode == 1) 
           {
             particleSensor.wakeUp();
-            SendSensorStatus("ON");
+            Serial.println("sensorStatus ON");
           }
         else if(messageCode == 0)
           {
             particleSensor.shutDown();
-            SendSensorStatus("OFF");
+            Serial.println("sensorStatus ON");
           }
-        
-        Serial.write(DELIMITER);
     }
     if (endmsg) {
       endmsg = false;
@@ -195,15 +166,15 @@ void loop()
 
       oxygen = irValue / irOffset;
 
-      SendReadings(true, irValue, false, bpm, avgBpm, oxygen, temperature);
+      Serial.println("true " + irValue + " " + "false " + bpm + " " + avgBpm + " " + oxygen + " " + temperature);
     }
   }
   else
   {
-    if(messageCode == 1)
+    if(messageCode == 1)i
       if (irValue < 50000)
-        SendReadings(false);
+        Serial.println("detectedFinger false");
       else if(!sensedBeat)
-        SendReadings(true, irValue);
+        SendReadings("true " + irValue + "true");
   }
 }
