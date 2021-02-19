@@ -4,22 +4,22 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".MainActivity">
+    tools:context=".Authenticate.LoginFragment">
 
     <Button
-        android:id="@+id/btn_sign_in"
+        android:id="@+id/fragment_login_btn_sign_in"
         style="?android:attr/button"
         android:layout_width="237dp"
         android:layout_height="46dp"
-        android:layout_marginTop="86dp"
+        android:layout_marginTop="40dp"
         android:layout_weight="1"
         android:text="sign in"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/edt_password" />
+        app:layout_constraintTop_toBottomOf="@+id/fragment_login_et_password" />
 
     <EditText
-        android:id="@+id/edt_email"
+        android:id="@+id/fragment_login_et_email"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="64dp"
@@ -32,7 +32,7 @@
         app:layout_constraintTop_toTopOf="parent" />
 
     <com.google.android.material.textfield.TextInputEditText
-        android:id="@+id/edt_password"
+        android:id="@+id/fragment_login_et_password"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="48dp"
@@ -42,10 +42,10 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/edt_email" />
+        app:layout_constraintTop_toBottomOf="@+id/fragment_login_et_email" />
 
     <Button
-        android:id="@+id/btn_create_account"
+        android:id="@+id/fragment_login_btn_create_account"
         style="?android:attr/button"
         android:layout_width="242dp"
         android:layout_height="45dp"
@@ -55,5 +55,5 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.497"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/btn_sign_in" />
+        app:layout_constraintTop_toBottomOf="@+id/fragment_login_btn_sign_in" />
 </androidx.constraintlayout.widget.ConstraintLayout>
