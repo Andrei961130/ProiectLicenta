@@ -1,9 +1,7 @@
 package com.example.pulseoximeter2021.Authenticate;
 
-import android.app.Activity;
 import android.os.Bundle;
 
-import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 
 import android.view.LayoutInflater;
@@ -14,16 +12,17 @@ import android.widget.EditText;
 import android.widget.Toast;
 
 import com.example.pulseoximeter2021.R;
-import com.google.android.gms.tasks.OnCompleteListener;
-import com.google.android.gms.tasks.Task;
-import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseAuthInvalidCredentialsException;
+import com.google.firebase.auth.FirebaseAuthUserCollisionException;
+import com.google.firebase.auth.FirebaseAuthWeakPasswordException;
+import com.google.firebase.auth.FirebaseUser;
 
-import java.util.concurrent.Executor;
+import java.util.Objects;
 
 public class LoginFragment extends Fragment {
 
-    private FirebaseAuth mAuth = FirebaseAuth.getInstance();
+    private FirebaseAuth firebaseAuth = FirebaseAuth.getInstance();
     private FirebaseAuth.AuthStateListener mAuthListener;
 
     private EditText etEmail;
@@ -36,7 +35,6 @@ public class LoginFragment extends Fragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
     }
 
     @Override
@@ -54,14 +52,16 @@ public class LoginFragment extends Fragment {
 
         btnCreateAccount.setOnClickListener(this::createAccountClick);
 
-        Toast.makeText(getActivity().getApplicationContext(), "User logged in", Toast.LENGTH_LONG).show();
-
         return view;
     }
 
     private void createAccountClick(View view)
     {
-
+        getFragmentManager()
+                .beginTransaction()
+                .replace(R.id.activity_auth_fragment_container, new RegisterEmailAndPasswordFragment())
+                .addToBackStack("REGISTER_EMAIL_FRAGMENT")
+                .commit();
     }
 
     private void loginButtonClick(View view)
@@ -71,7 +71,7 @@ public class LoginFragment extends Fragment {
 
         if(emailStr.isEmpty())
         {
-            etEmail.setError("Please enter your username");
+            etEmail.setError("Please enter your email");
             etEmail.requestFocus();
         }
         else if(passwordStr.isEmpty())
@@ -79,11 +79,31 @@ public class LoginFragment extends Fragment {
             etPassword.setError("Please enter your password");
             etPassword.requestFocus();
         }
-        else if(!(emailStr.isEmpty() && passwordStr.isEmpty()))
+        else if(!android.util.Patterns.EMAIL_ADDRESS.matcher(emailStr).matches())
         {
-            mAuth.createUserWithEmailAndPassword(emailStr, passwordStr).addOnCompleteListener(getActivity(), task -> {
+            etEmail.setError("Please enter a valid email address");
+            etEmail.requestFocus();
+        }
+        else if(passwordStr.length() < 6)
+        {
+            etPassword.setError("The password must be at least 6 characters long");
+            etPassword.requestFocus();
+        }
+        else {
+            firebaseAuth.signInWithEmailAndPassword(emailStr, passwordStr).addOnCompleteListener(getActivity(), task -> {
                 if (!task.isSuccessful()) {
                     Toast.makeText(getActivity().getApplicationContext(), task.getException().getMessage(), Toast.LENGTH_LONG).show();
+
+                    try {
+                        throw task.getException();
+                    } catch(FirebaseAuthInvalidCredentialsException e) {
+                        etEmail.setError("Invalid credentials");
+                        etEmail.requestFocus();
+                        etPassword.setText("");
+                    } catch(Exception e) {
+                        Toast.makeText(getActivity().getApplicationContext(), Objects.requireNonNull(task.getException()).getMessage(), Toast.LENGTH_LONG).show();
+
+                    }
                 } else {
                     Toast.makeText(getActivity().getApplicationContext(), "User logged in", Toast.LENGTH_LONG).show();
                 }

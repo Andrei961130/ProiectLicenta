@@ -29,6 +29,7 @@ public class AuthenticationActivity extends AppCompatActivity
         getSupportFragmentManager()
                 .beginTransaction()
                 .add(R.id.activity_auth_fragment_container, new LoginFragment())
+                .addToBackStack("LOGIN_FRAGMENT")
                 .commit();
     }
 }
