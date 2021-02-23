@@ -47,6 +47,7 @@ public class MainActivity extends AppCompatActivity {
         setBluetoothIvColorRed();
         setMenuBarsListener();
         setupMenu();
+        displayMainFragment();
     }
 
     private void setMenuBarsListener() {
@@ -97,5 +98,14 @@ public class MainActivity extends AppCompatActivity {
 //                Log.i("MainActivity", "openRatio=" + openRatio + " ,offsetPixels=" + offsetPixels);
 //            }
 //        });
+    }
+
+    private void displayMainFragment() {
+
+        getSupportFragmentManager()
+        .beginTransaction()
+        .add(R.id.activity_main_fragment_container, new StartingFragment())
+        .addToBackStack("STARTING_FRAGMENT")
+        .commit();
     }
 }

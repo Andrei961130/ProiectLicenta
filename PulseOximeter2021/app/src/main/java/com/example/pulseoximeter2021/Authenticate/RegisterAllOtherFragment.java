@@ -7,7 +7,6 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
-import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.RadioGroup;
 import android.widget.Toast;
@@ -17,11 +16,9 @@ import androidx.fragment.app.Fragment;
 import com.example.pulseoximeter2021.DataLayer.Models.User;
 import com.example.pulseoximeter2021.R;
 import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 
-import java.text.SimpleDateFormat;
 import java.util.Calendar;
 
 public class RegisterAllOtherFragment extends Fragment {
@@ -37,7 +34,7 @@ public class RegisterAllOtherFragment extends Fragment {
     EditText etBirthDay;
     Button btnContinue;
 
-    String genderStr = "";
+    String genderStr = "Male";
     String dateStr = "";
 
     public RegisterAllOtherFragment(){};
@@ -48,45 +45,31 @@ public class RegisterAllOtherFragment extends Fragment {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_register_all_other, container, false);
 
-        etFirstName = view.findViewById(R.id.fragment_register_et_last_name);
-        etLastName = view.findViewById(R.id.fragment_register_et_first_name);
+        etFirstName = view.findViewById(R.id.fragment_register_et_first_name);
+        etLastName = view.findViewById(R.id.fragment_register_et_last_name);
         etPhoneNumber = view.findViewById(R.id.fragment_register_et_phone_number);
         rgGender = view.findViewById(R.id.fragment_register_radio_group);
         etBirthDay = view.findViewById(R.id.fragment_register_et_date);
         btnContinue = view.findViewById(R.id.fragment_register_all_btn_continue);
 
         btnContinue.setOnClickListener(this::finalizeRegistration);
+        rgGender.setOnCheckedChangeListener(this::rgGenderOnCheckedChange);
 
-        rgGender.setOnCheckedChangeListener((group, checkedId) -> {
-            switch (checkedId)
-            {
-                case R.id.fragment_register_rb_male:
-                    genderStr = "Male";
-                    break;
-                case R.id.fragment_register_rb_female:
-                    genderStr = "Female";
-                    break;
-            }
-        });
+        etBirthDay.setOnClickListener(v -> {
+            Calendar newCalendar = Calendar.getInstance();
 
-        etBirthDay.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Calendar newCalendar = Calendar.getInstance();
+            new DatePickerDialog(getContext(), (view1, year, monthOfYear, dayOfMonth) -> {
+                Calendar newDate = Calendar.getInstance();
+                newDate.set(year, monthOfYear, dayOfMonth);
 
-                new DatePickerDialog(getContext(), (view1, year, monthOfYear, dayOfMonth) -> {
-                    Calendar newDate = Calendar.getInstance();
-                    newDate.set(year, monthOfYear, dayOfMonth);
+                dateStr = new StringBuilder().append(dayOfMonth)
+                        .append("/").append(monthOfYear)
+                        .append("/").append(year).toString();
 
-                    dateStr = new StringBuilder().append(dayOfMonth)
-                            .append("/").append(monthOfYear)
-                            .append("/").append(year).toString();
+                etBirthDay.setText(String.format(" %s", dateStr));
+            }, newCalendar.get(Calendar.YEAR), newCalendar.get(Calendar.MONTH), newCalendar.get(Calendar.DAY_OF_MONTH))
+                    .show();
 
-                    etBirthDay.setText(String.format(" %s", dateStr));
-                }, newCalendar.get(Calendar.YEAR), newCalendar.get(Calendar.MONTH), newCalendar.get(Calendar.DAY_OF_MONTH))
-                        .show();
-
-            }
         });
 
         return view;
@@ -137,6 +120,17 @@ public class RegisterAllOtherFragment extends Fragment {
                     firstNameStr, lastNameStr, dateStr, genderStr, false);
 
             databaseReference.child("Users").child(uid).setValue(user);
+        }
+    }
+
+    private void rgGenderOnCheckedChange(RadioGroup group, int checkedId) {
+        switch (checkedId) {
+            case R.id.fragment_register_rb_male:
+                genderStr = "Male";
+                break;
+            case R.id.fragment_register_rb_female:
+                genderStr = "Female";
+                break;
         }
     }
 }

@@ -63,7 +63,8 @@
         <FrameLayout
             android:id="@+id/activity_main_fragment_container"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"></FrameLayout>
+            android:layout_height="match_parent" />
+
     </androidx.coordinatorlayout.widget.CoordinatorLayout>
     
     <com.mxn.soul.flowingdrawer_core.FlowingMenuLayout

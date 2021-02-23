@@ -51,7 +51,6 @@ public class LoginFragment extends Fragment {
         btnCreateAccount = view.findViewById(R.id.fragment_login_btn_create_account);
 
         btnSignIn.setOnClickListener(this::loginButtonClick);
-
         btnCreateAccount.setOnClickListener(this::createAccountClick);
 
         return view;
