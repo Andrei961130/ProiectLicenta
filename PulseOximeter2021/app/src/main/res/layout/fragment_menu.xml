@@ -10,7 +10,7 @@
         android:id="@+id/fragment_menu_navigation_view"
         android:layout_width="wrap_content"
         android:layout_height="match_parent"
-        android:background="@color/transparent"
+        android:background="@drawable/nav_checked_item_selector"
         app:headerLayout="@layout/fragment_menu_header"
         app:itemIconTint="#8b8b8b"
         app:itemTextColor="#666666"

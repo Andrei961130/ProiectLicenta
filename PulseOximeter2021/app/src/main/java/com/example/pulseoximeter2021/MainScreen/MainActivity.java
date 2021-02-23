@@ -66,7 +66,11 @@ public class MainActivity extends AppCompatActivity {
     }
 
     protected void setupToolbar() {
-        String userName = firebaseAuth.getCurrentUser().getDisplayName();
+        String userName = null;
+        FirebaseUser user = firebaseAuth.getCurrentUser();
+        if(user!=null)
+            userName = firebaseAuth.getCurrentUser().getDisplayName();
+
         toolbarTitle.setText(userName == null?
                 "HAALIII":userName.isEmpty()?
                 "HAALII": userName);

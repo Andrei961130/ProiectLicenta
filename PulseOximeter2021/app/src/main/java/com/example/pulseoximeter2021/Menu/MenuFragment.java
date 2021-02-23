@@ -41,6 +41,8 @@ public class MenuFragment extends Fragment {
 //        View headerLayout = vNavigation.inflateHeaderView(R.layout.fragment_menu_header);
         ivMenuHeader = (ImageView) headerLayout.findViewById(R.id.fragment_menu_header_image);
 
+//        View menu = vNavigation.findViewById(drawer_menu);
+//        headerLayout.setBackgroundColor(getResources().getColor(R.color.green));
 
         vNavigation.setNavigationItemSelectedListener(new NavigationView.OnNavigationItemSelectedListener() {
             @Override
