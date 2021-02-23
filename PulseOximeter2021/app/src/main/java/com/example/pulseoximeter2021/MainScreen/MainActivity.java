@@ -3,6 +3,7 @@ package com.example.pulseoximeter2021.MainScreen;
 import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
+import androidx.fragment.app.FragmentManager;
 
 import android.content.res.Resources;
 import android.graphics.Color;
@@ -15,6 +16,7 @@ import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.example.pulseoximeter2021.Menu.MenuFragment;
 import com.example.pulseoximeter2021.R;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
@@ -44,6 +46,7 @@ public class MainActivity extends AppCompatActivity {
         setupToolbar();
         setBluetoothIvColorRed();
         setMenuBarsListener();
+        setupMenu();
     }
 
     private void setMenuBarsListener() {
@@ -63,7 +66,32 @@ public class MainActivity extends AppCompatActivity {
     }
 
     protected void setupToolbar() {
-        String userName = firebaseAuth.getCurrentUser().getDisplayName().split(" ")[0];
-        toolbarTitle.setText(userName.isEmpty()?"HAALIII":userName);
+        String userName = firebaseAuth.getCurrentUser().getDisplayName();
+        toolbarTitle.setText(userName == null?
+                "HAALIII":userName.isEmpty()?
+                "HAALII": userName);
+    }
+
+    private void setupMenu() {
+        FragmentManager fm = getSupportFragmentManager();
+        MenuFragment menuFragment = (MenuFragment) fm.findFragmentById(R.id.activity_main_drawer_menu_container);
+        if (menuFragment == null) {
+            menuFragment = new MenuFragment();
+            fm.beginTransaction().add(R.id.activity_main_drawer_menu_container, menuFragment).commit();
+        }
+
+//        mDrawer.setOnDrawerStateChangeListener(new ElasticDrawer.OnDrawerStateChangeListener() {
+//            @Override
+//            public void onDrawerStateChange(int oldState, int newState) {
+//                if (newState == ElasticDrawer.STATE_CLOSED) {
+//                    Log.i("MainActivity", "Drawer STATE_CLOSED");
+//                }
+//            }
+//
+//            @Override
+//            public void onDrawerSlide(float openRatio, int offsetPixels) {
+//                Log.i("MainActivity", "openRatio=" + openRatio + " ,offsetPixels=" + offsetPixels);
+//            }
+//        });
     }
 }

@@ -13,4 +13,6 @@
     <color name="light_blue_A400">#FF00B0FF</color>
     <color name="black_overlay">#66000000</color>
     <color name="green">#0BE414</color>
+    <color name="transparent">#00000000</color>
+    <color name="bluetooth">#114DCC</color>
 </resources>

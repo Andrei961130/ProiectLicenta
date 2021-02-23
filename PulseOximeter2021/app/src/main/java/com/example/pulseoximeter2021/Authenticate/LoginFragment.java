@@ -1,5 +1,6 @@
 package com.example.pulseoximeter2021.Authenticate;
 
+import android.content.Intent;
 import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
@@ -11,6 +12,7 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
 
+import com.example.pulseoximeter2021.MainScreen.MainActivity;
 import com.example.pulseoximeter2021.R;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseAuthInvalidCredentialsException;
@@ -105,9 +107,18 @@ public class LoginFragment extends Fragment {
 
                     }
                 } else {
+                    Intent intent = new Intent(getActivity(), MainActivity.class);
+                    startActivity(intent);
                     Toast.makeText(getActivity().getApplicationContext(), "User logged in", Toast.LENGTH_LONG).show();
+
+                    //removeLoginFragment();
                 }
             });
         }
+    }
+
+    private void removeLoginFragment() {
+        LoginFragment fragment = (LoginFragment) getFragmentManager().findFragmentById(R.id.activity_auth_fragment_container);
+        getFragmentManager().beginTransaction().remove(fragment).commit();
     }
 }
