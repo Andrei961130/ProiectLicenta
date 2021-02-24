@@ -11,10 +11,13 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.RadioGroup;
 
+import com.example.pulseoximeter2021.Bluetooth.BluetoothHelper;
 import com.example.pulseoximeter2021.Measure.MeasureActivity;
 import com.example.pulseoximeter2021.R;
 
 public class StartingFragment extends Fragment {
+
+    BluetoothHelper bluetoothHelper;
 
     RadioGroup rgDuration;
     Button btnMeasure;
@@ -41,6 +44,8 @@ public class StartingFragment extends Fragment {
         rgDuration.setOnCheckedChangeListener(this::rgDurationOnCheckedChanged);
         btnMeasure.setOnClickListener(this::measureClick);
 
+        startBluetoothConnection();
+
         return view;
     }
 
@@ -62,5 +67,19 @@ public class StartingFragment extends Fragment {
                 duration = 20;
                 break;
         }
+    }
+
+    private void startBluetoothConnection() {
+
+        bluetoothHelper = BluetoothHelper.getInstance();
+
+        int index = 1;
+        do
+        {
+            bluetoothHelper.Connect("HC-05");
+            if(bluetoothHelper.isConnected())
+                break;
+            index++;
+        }while (index != 5);
     }
 }
