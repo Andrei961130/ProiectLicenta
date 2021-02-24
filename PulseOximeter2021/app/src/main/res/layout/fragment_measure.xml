@@ -1,0 +1,98 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".Measure.MeasureFragment">
+
+
+    <com.github.mikephil.charting.charts.LineChart
+        android:id="@+id/fragment_measure_chart"
+        android:layout_width="match_parent"
+        android:layout_height="150dp"
+        android:layout_marginTop="15dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/detected_finger"
+        android:layout_width="182dp"
+        android:layout_height="38dp"
+        android:layout_marginTop="36dp"
+        android:text="Detected finger: "
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.432"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/fragment_measure_chart" />
+
+    <TextView
+        android:id="@+id/only_ir"
+        android:layout_width="182dp"
+        android:layout_height="38dp"
+        android:layout_marginTop="20dp"
+        android:text="Only IR:"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.432"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/ir_value" />
+
+    <TextView
+        android:id="@+id/bpm"
+        android:layout_width="182dp"
+        android:layout_height="38dp"
+        android:layout_marginTop="16dp"
+        android:text="Bpm: "
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.432"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/only_ir" />
+
+    <TextView
+        android:id="@+id/avg_bpm"
+        android:layout_width="182dp"
+        android:layout_height="38dp"
+        android:layout_marginTop="16dp"
+        android:text="AvgBpm: "
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.432"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/bpm" />
+
+    <TextView
+        android:id="@+id/oxygen"
+        android:layout_width="182dp"
+        android:layout_height="38dp"
+        android:layout_marginTop="24dp"
+        android:text="Oxygen: "
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.432"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/avg_bpm" />
+
+    <TextView
+        android:id="@+id/temperature"
+        android:layout_width="182dp"
+        android:layout_height="38dp"
+        android:layout_marginTop="28dp"
+        android:text="Temperature: "
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.432"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/oxygen" />
+
+    <TextView
+        android:id="@+id/ir_value"
+        android:layout_width="182dp"
+        android:layout_height="38dp"
+        android:layout_marginTop="20dp"
+        android:text="IR value: "
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.432"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/detected_finger" />
+
+
+</androidx.constraintlayout.widget.ConstraintLayout>

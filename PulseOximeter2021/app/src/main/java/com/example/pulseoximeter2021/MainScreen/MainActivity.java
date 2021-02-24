@@ -108,4 +108,13 @@ public class MainActivity extends AppCompatActivity {
         .addToBackStack("STARTING_FRAGMENT")
         .commit();
     }
+
+    @Override
+    public void onBackPressed() {
+        if (flowingDrawer.isMenuVisible()) {
+            flowingDrawer.closeMenu();
+        } else {
+            super.onBackPressed();
+        }
+    }
 }

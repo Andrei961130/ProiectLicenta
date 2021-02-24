@@ -1,5 +1,6 @@
 package com.example.pulseoximeter2021.MainScreen;
 
+import android.content.Intent;
 import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
@@ -10,6 +11,7 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.RadioGroup;
 
+import com.example.pulseoximeter2021.Measure.MeasureActivity;
 import com.example.pulseoximeter2021.R;
 
 public class StartingFragment extends Fragment {
@@ -43,7 +45,9 @@ public class StartingFragment extends Fragment {
     }
 
     private void measureClick(View view) {
-
+        Intent intent = new Intent(getContext(), MeasureActivity.class);
+        intent.putExtra("DURATION", duration);
+        startActivity(intent);
     }
 
     private void rgDurationOnCheckedChanged(RadioGroup group, int checkedId) {
