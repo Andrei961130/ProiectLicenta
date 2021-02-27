@@ -19,10 +19,85 @@
         android:id="@+id/fragment_measure_result_bpm_chart"
         android:layout_width="match_parent"
         android:layout_height="150dp"
-        android:layout_marginTop="4dp"
+        android:layout_marginTop="2dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/fragment_measure_result_ir_chart" />
+
+    <TextView
+        android:id="@+id/fragment_measure_result_tv_oxygen"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="68dp"
+        android:layout_marginTop="4dp"
+        android:text="100%"
+        android:textSize="42dp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/fragment_measure_result_bpm_chart" />
+
+    <TextView
+        android:id="@+id/fragment_measure_result_tv_temperature"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="4dp"
+        android:text="22 C"
+        android:textSize="42dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/fragment_measure_result_tv_oxygen"
+        app:layout_constraintTop_toBottomOf="@+id/fragment_measure_result_bpm_chart" />
+
+    <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/fragment_measure_result_text_input_layout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="4dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/fragment_measure_result_tv_temperature">
+
+        <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/fragment_measure_result_text_input_edit_text"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="You can add a comment" />
+    </com.google.android.material.textfield.TextInputLayout>
+
+    <Button
+        android:id="@+id/fragment_measure_result_btn_replay"
+        style="?android:attr/button"
+        android:layout_width="165dp"
+        android:layout_height="50dp"
+        android:layout_marginStart="24dp"
+        android:layout_marginTop="4dp"
+        android:layout_weight="1"
+        android:text="replay"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/fragment_measure_result_text_input_layout" />
+
+    <Button
+        android:id="@+id/fragment_measure_result_btn_delete"
+        style="?android:attr/button"
+        android:layout_width="165dp"
+        android:layout_height="50dp"
+        android:layout_marginStart="24dp"
+        android:layout_marginTop="4dp"
+        android:layout_weight="1"
+        android:text="delete"
+        app:layout_constraintStart_toEndOf="@id/fragment_measure_result_btn_replay"
+        app:layout_constraintTop_toBottomOf="@+id/fragment_measure_result_text_input_layout" />
+
+    <Button
+        android:id="@+id/fragment_measure_result_btn_save"
+        style="?android:attr/button"
+        android:layout_width="165dp"
+        android:layout_height="50dp"
+        android:layout_marginTop="4dp"
+        android:layout_weight="1"
+        android:text="save"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/fragment_measure_result_btn_replay" />
+
 
 </androidx.constraintlayout.widget.ConstraintLayout>

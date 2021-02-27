@@ -10,6 +10,8 @@ import android.util.Pair;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
+import android.widget.TextView;
 
 import com.example.pulseoximeter2021.DataLayer.Models.Record;
 import com.example.pulseoximeter2021.R;
@@ -23,6 +25,7 @@ import com.github.mikephil.charting.data.LineDataSet;
 import com.github.mikephil.charting.highlight.Highlight;
 import com.github.mikephil.charting.listener.OnChartValueSelectedListener;
 import com.github.mikephil.charting.utils.ColorTemplate;
+import com.google.android.material.textfield.TextInputEditText;
 
 
 public class MeasureResultFragment extends Fragment {
@@ -35,6 +38,13 @@ public class MeasureResultFragment extends Fragment {
 
     private Thread irThread;
     private Thread bpmThread;
+
+    private TextView tvOxygen;
+    private TextView tvTemperature;
+    private TextInputEditText tiEtComment;
+    private Button btnReplay;
+    private Button btnDelete;
+    private Button btnSave;
 
 
     public MeasureResultFragment() {
@@ -59,31 +69,46 @@ public class MeasureResultFragment extends Fragment {
         bpmChart = view.findViewById(R.id.fragment_measure_result_bpm_chart);
         tfLight = Typeface.createFromAsset(getActivity().getAssets(), "OpenSans-Light.ttf");
 
+        tvOxygen = view.findViewById(R.id.fragment_measure_result_tv_oxygen);
+        tvTemperature = view.findViewById(R.id.fragment_measure_result_tv_temperature);
+        btnReplay = view.findViewById(R.id.fragment_measure_result_btn_replay);
+        btnDelete = view.findViewById(R.id.fragment_measure_result_btn_delete);
+        btnSave = view.findViewById(R.id.fragment_measure_result_btn_save);
 
         irChartSetup(irChart);
         bpmChartSetup(bpmChart);
+
+
+        replayButtonClick(view);
+
+        btnReplay.setOnClickListener(this::replayButtonClick);
+        btnDelete.setOnClickListener(this::deleteButtonClick);
+        btnSave.setOnClickListener(this::saveButtonClick);
 
 //        for (int i :
 //                record.getIrValues()) {
 //            addIrEntry(i);
 //        }
 
-        for (Pair<Integer, Integer> i :
-                record.getBpmValues()) {
-            addBpmEntry(i.second);
-        }
-
-
-//        irChart.setVisibleXRangeMaximum(50);
-//        irChart.moveViewToX(irChart.getData().getEntryCount());
-//        irChart.animateX(record.getLenghtAsMilis());
-        bpmChart.animateX(record.getLenghtAsMilis());
-//        bpmChart.moveViewToX(bpmChart.getData().getEntryCount());
-
-        feedIrGraph(irThread, record.getLenghtAsMilis());
-
+//        for (int i :
+//                record.getBpmValues()) {
+//            addBpmEntry(i);
+//        }
 
         return view;
+    }
+
+    private void saveButtonClick(View view) {
+
+    }
+
+    private void deleteButtonClick(View view) {
+
+    }
+
+    private void replayButtonClick(View v) {
+        feedIrGraph(irThread, record.getLenghtAsMilis());
+        feedBpmGraph(bpmThread, record.getLenghtAsMilis());
     }
 
     private void bpmChartSetup(LineChart bpmChart) {
@@ -334,26 +359,26 @@ public class MeasureResultFragment extends Fragment {
         if (thread != null)
             thread.interrupt();
 
-        int totalIrValues = record.getIrValues().size();
-        int sleepMilis = lenght / totalIrValues;
+        int totalValues = record.getIrValues().size();
+        int sleepMilis = lenght / totalValues;
 
-        Runnable runnable = new Runnable() {
-            int value;
-
-            public Runnable init(int value) {
-                this.value = value;
-                return this;
-            }
-
-            @Override
-            public void run() {
-                addIrEntry(value);
-            }
-        };
+//        Runnable runnable = new Runnable() {
+//            int value;
+//
+//            public Runnable init(int value) {
+//                this.value = value;
+//                return this;
+//            }
+//
+//            @Override
+//            public void run() {
+//                addIrEntry(value);
+//            }
+//        };
 
         thread = new Thread(() -> {
             Runnable run;
-            for (int index = 0; index < totalIrValues; index++) {
+            for (int index = 0; index < totalValues; index++) {
                 run = new Runnable() {
                         int value;
 
@@ -367,6 +392,59 @@ public class MeasureResultFragment extends Fragment {
                             addIrEntry(value);
                         }
                     }.init(record.getIrValues().get(index));
+
+                // Don't generate garbage runnables inside the loop.
+                getActivity().runOnUiThread(run);
+
+                try {
+                    Thread.sleep(sleepMilis);
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
+            }
+        });
+
+        thread.start();
+    }
+
+    private void feedBpmGraph(Thread thread, int lenght) {
+
+        if (thread != null)
+            thread.interrupt();
+
+        int totalValues = record.getBpmValues().size();
+        int sleepMilis = lenght / totalValues;
+
+//        Runnable runnable = new Runnable() {
+//            int value;
+//
+//            public Runnable init(int value) {
+//                this.value = value;
+//                return this;
+//            }
+//
+//            @Override
+//            public void run() {
+//                addBpmEntry(value);
+//            }
+//        };
+
+        thread = new Thread(() -> {
+            Runnable run;
+            for (int index = 0; index < totalValues; index++) {
+                run = new Runnable() {
+                    int value;
+
+                    public Runnable init(int value) {
+                        this.value = value;
+                        return this;
+                    }
+
+                    @Override
+                    public void run() {
+                        addBpmEntry(value);
+                    }
+                }.init(record.getIrValues().get(index));
 
                 // Don't generate garbage runnables inside the loop.
                 getActivity().runOnUiThread(run);

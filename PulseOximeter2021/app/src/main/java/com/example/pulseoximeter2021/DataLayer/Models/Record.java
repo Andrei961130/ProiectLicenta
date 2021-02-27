@@ -12,7 +12,7 @@ import java.util.List;
 public class Record implements Serializable {
     private int lenght;
     private List<Integer> irValues;
-    private List<Pair<Integer, Integer>> bpmValues;
+    private List<Integer> bpmValues;
     private int oxygen;
     private Double temperature;
     private String message;
@@ -21,7 +21,7 @@ public class Record implements Serializable {
     public Record() {}
 
     public Record(int lenght, List<Integer> irValues,
-                  List<Pair<Integer, Integer>> bpmValues, int oxygen,
+                  List<Integer> bpmValues, int oxygen,
                   Double temperature, String message,
                   Date dateAndTime) {
         this.lenght = lenght;
@@ -53,11 +53,11 @@ public class Record implements Serializable {
         this.irValues = irValues;
     }
 
-    public List<Pair<Integer, Integer>> getBpmValues() {
+    public List<Integer> getBpmValues() {
         return bpmValues;
     }
 
-    public void setBpmValues(List<Pair<Integer, Integer>> bpmValues) {
+    public void setBpmValues(List<Integer> bpmValues) {
         this.bpmValues = bpmValues;
     }
 

@@ -52,7 +52,7 @@ public class MeasureFragment extends Fragment {
     Double temperature;
     private List<Integer> irValues;
     private List<Integer> oxygenValues;
-    private List<Pair<Integer, Integer>> bpmValues;
+    private List<Integer> bpmValues;
 
     public MeasureFragment() {
         irValues = new ArrayList<>();
@@ -169,7 +169,7 @@ public class MeasureFragment extends Fragment {
                             String avgBpmStr = "Avg Bpm: " + avgBpmInt.toString();
                             avgBpm.setText(avgBpmStr);
 
-                            bpmValues.add(new Pair<>(index, avgBpmInt));
+                            bpmValues.add(avgBpmInt);
 
                             Integer oxygenInt = arduinoMessage.getOxygen();
                             String oxygenStr = "Oxygen: " + oxygenInt.toString() + " %";
