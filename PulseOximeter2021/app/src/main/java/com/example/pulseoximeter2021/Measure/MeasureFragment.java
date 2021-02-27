@@ -6,6 +6,7 @@ import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
 
+import android.util.Pair;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -14,6 +15,7 @@ import android.widget.Toast;
 
 import com.example.pulseoximeter2021.Bluetooth.ArduinoMessage;
 import com.example.pulseoximeter2021.Bluetooth.BluetoothHelper;
+import com.example.pulseoximeter2021.DataLayer.Models.Record;
 import com.example.pulseoximeter2021.R;
 import com.github.mikephil.charting.charts.LineChart;
 import com.github.mikephil.charting.components.XAxis;
@@ -25,6 +27,10 @@ import com.github.mikephil.charting.highlight.Highlight;
 import com.github.mikephil.charting.listener.OnChartValueSelectedListener;
 import com.github.mikephil.charting.utils.ColorTemplate;
 
+import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Collections;
+import java.util.List;
 import java.util.Random;
 
 public class MeasureFragment extends Fragment {
@@ -37,18 +43,30 @@ public class MeasureFragment extends Fragment {
     private TextView bpm;
     private TextView avgBpm;
     private TextView oxygen;
-    private TextView temperature;
+    private TextView tvTemperature;
 
     private LineChart chart;
     private Typeface tfLight;
 
+    private int duration, index;
+    Double temperature;
+    private List<Integer> irValues;
+    private List<Integer> oxygenValues;
+    private List<Pair<Integer, Integer>> bpmValues;
+
     public MeasureFragment() {
-        // Required empty public constructor
+        irValues = new ArrayList<>();
+        bpmValues = new ArrayList<>();
+        oxygenValues = new ArrayList<>();
+        index = 0;
+        temperature = 0.0;
     }
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        Bundle bundle = getArguments();
+        duration = bundle.getInt("DURATION");
     }
 
     @Override
@@ -63,101 +81,39 @@ public class MeasureFragment extends Fragment {
         bpm = (TextView) view.findViewById(R.id.bpm);
         avgBpm = (TextView) view.findViewById(R.id.avg_bpm);
         oxygen = (TextView) view.findViewById(R.id.oxygen);
-        temperature = (TextView) view.findViewById(R.id.temperature);
+        tvTemperature = (TextView) view.findViewById(R.id.temperature);
+        chart = view.findViewById(R.id.fragment_measure_chart);
 
         bluetoothHelper = BluetoothHelper.getInstance();
         tfLight = Typeface.createFromAsset(getActivity().getAssets(), "OpenSans-Light.ttf");
 
+        chartSetup(chart);
+        bluetoothSetup(bluetoothHelper);
 
-        chart = view.findViewById(R.id.fragment_measure_chart);
-        chart.setOnChartValueSelectedListener(new OnChartValueSelectedListener() {
-            @Override
-            public void onValueSelected(Entry e, Highlight h) {
+        //feedMultiple();
+        startTimer();
 
-            }
+        return view;
+    }
 
-            @Override
-            public void onNothingSelected() {
+    private void bluetoothSetup(BluetoothHelper bluetoothHelper) {
 
-            }
-        });
-
-        chart.setAutoScaleMinMaxEnabled(true);
-
-
-        // enable description text
-        chart.getDescription().setEnabled(true);
-
-        // enable touch gestures
-        chart.setTouchEnabled(true);
-
-        // enable scaling and dragging
-        chart.setDragEnabled(true);
-        chart.setScaleEnabled(true);
-        chart.setDrawGridBackground(false);
-
-        // if disabled, scaling can be done on x- and y-axis separately
-        chart.setPinchZoom(true);
-
-        // set an alternative background color
-        chart.setBackgroundColor(Color.LTGRAY);
-
-        LineData data = new LineData();
-        data.setValueTextColor(Color.WHITE);
-
-        // add empty data
-        chart.setData(data);
-
-//         get the legend (only possible after setting data)
-//        Legend l = chart.getLegend();
-
-        // modify the legend ...
-//        l.setForm(Legend.LegendForm.LINE);
-//        l.setTypeface(tfLight);
-//        l.setTextColor(Color.WHITE);
-
-        XAxis xl = chart.getXAxis();
-        xl.setTypeface(tfLight);
-        xl.setTextColor(Color.WHITE);
-        xl.setDrawGridLines(false);
-        xl.setAvoidFirstLastClipping(true);
-        xl.setEnabled(true);
-
-        YAxis leftAxis = chart.getAxisLeft();
-        leftAxis.setTypeface(tfLight);
-        leftAxis.setTextColor(Color.WHITE);
-//        leftAxis.setAxisMaximum(100f);
-//        leftAxis.setAxisMinimum(0f);
-        leftAxis.setDrawGridLines(true);
-
-        YAxis rightAxis = chart.getAxisRight();
-        rightAxis.setEnabled(false);
-//
-//        int index = 1;
-//        do
+//        if(bluetoothHelper.isConnected())
 //        {
-//            bluetoothHelper.Connect("HC-05");
-//            if(bluetoothHelper.isConnected())
-//                break;
-//
-//            index++;
-//        }while (index != 5);
-
-        if(bluetoothHelper.isConnected())
-        {
-            if(bluetoothHelper.SendMessage("1\n"))
-            {
-                Toast.makeText(view.getContext(), "Message sent", Toast.LENGTH_SHORT).show();
-            }
-            else
-            {
-                Toast.makeText(view.getContext(), "Message not sent", Toast.LENGTH_SHORT).show();
-            }
-        }
-        else
-        {
-            Toast.makeText(view.getContext(), "Not connected", Toast.LENGTH_SHORT).show();
-        }
+//            if(bluetoothHelper.SendMessage("1\n"))
+//            {
+//                Toast.makeText(view.getContext(), "Message sent", Toast.LENGTH_SHORT).show();
+//                //startTimer();
+//            }
+//            else
+//            {
+//                Toast.makeText(view.getContext(), "Message not sent", Toast.LENGTH_SHORT).show();
+//            }
+//        }
+//        else
+//        {
+//            Toast.makeText(view.getContext(), "Not connected", Toast.LENGTH_SHORT).show();
+//        }
 
         // Setup listener for Bluetooth helper;
         bluetoothHelper.setBluetoothHelperListener(new BluetoothHelper.BluetoothHelperListener() {
@@ -195,28 +151,38 @@ public class MeasureFragment extends Fragment {
                         String onlyIRStr = "Only IR: " + arduinoMessage.getOnlyIR().toString();
                         onlyIR.setText(onlyIRStr);
 
-                        String irValueStr = "IRValue: " + arduinoMessage.getIrValue().toString();
+                        Integer ir = arduinoMessage.getIrValue();
+                        String irValueStr = "IRValue: " + ir.toString();
                         irValue.setText(irValueStr);
 
-                        addEntry(arduinoMessage.getIrValue());
+                        irValues.add(ir);
+                        index++;
+
+                        addEntry(ir);
 
                         if(!arduinoMessage.getOnlyIR())
                         {
                             String bpmStr = "Bpm: " + arduinoMessage.getBpm().toString();
                             bpm.setText(bpmStr);
 
-                            String avgBpmStr = "Avg Bpm: " + arduinoMessage.getAvgBpm().toString();
+                            Integer avgBpmInt = arduinoMessage.getAvgBpm();
+                            String avgBpmStr = "Avg Bpm: " + avgBpmInt.toString();
                             avgBpm.setText(avgBpmStr);
 
-                            String oxygenStr = "Oxygen: " + arduinoMessage.getOxygen().toString() + " %";
+                            bpmValues.add(new Pair<>(index, avgBpmInt));
+
+                            Integer oxygenInt = arduinoMessage.getOxygen();
+                            String oxygenStr = "Oxygen: " + oxygenInt.toString() + " %";
                             oxygen.setText(oxygenStr);
 
-                            String temperatureStr = "Temperature: " + arduinoMessage.getTemperature().toString() + " C";
-                            temperature.setText(oxygenStr);
+                            oxygenValues.add(oxygenInt);
+
+                            Double temperatureDouble = arduinoMessage.getTemperature();
+                            String temperatureStr = "Temperature: " + temperatureDouble.toString() + " C";
+                            tvTemperature.setText(temperatureStr);
+
+                            temperature = temperatureDouble;
                         }
-
-
-
                     }
                 });
             }
@@ -224,7 +190,7 @@ public class MeasureFragment extends Fragment {
             @Override
             public void onBluetoothHelperConnectionStateChanged(BluetoothHelper bluetoothhelper, boolean isConnected) {
                 if (isConnected) {
-                    Toast.makeText(view.getContext(), "Connected", Toast.LENGTH_SHORT).show();
+                    //Toast.makeText(view.getContext(), "Connected", Toast.LENGTH_SHORT).show();
                 } else {
                     // Toast.makeText(view.getContext(), "Not Connected", Toast.LENGTH_SHORT).show();
                     // Auto reconnect!
@@ -232,10 +198,107 @@ public class MeasureFragment extends Fragment {
                 }
             }
         });
+    }
 
-        //feedMultiple();
+    private void chartSetup(LineChart chart) {
 
-        return view;
+        chart.setOnChartValueSelectedListener(new OnChartValueSelectedListener() {
+            @Override
+            public void onValueSelected(Entry e, Highlight h) {
+
+            }
+
+            @Override
+            public void onNothingSelected() {
+
+            }
+        });
+
+        chart.setAutoScaleMinMaxEnabled(true);
+
+
+        // enable description text
+        chart.getDescription().setEnabled(true);
+
+        // enable touch gestures
+        chart.setTouchEnabled(true);
+
+        // enable scaling and dragging
+        chart.setDragEnabled(true);
+        chart.setScaleEnabled(true);
+        chart.setDrawGridBackground(false);
+
+        // if disabled, scaling can be done on x- and y-axis separately
+        chart.setPinchZoom(true);
+
+        // set an alternative background color
+        chart.setBackgroundColor(Color.TRANSPARENT);
+
+        LineData data = new LineData();
+        data.setValueTextColor(Color.RED);
+
+        // add empty data
+        chart.setData(data);
+
+//         get the legend (only possible after setting data)
+//        Legend l = chart.getLegend();
+
+        // modify the legend ...
+//        l.setForm(Legend.LegendForm.LINE);
+//        l.setTypeface(tfLight);
+//        l.setTextColor(Color.WHITE);
+
+        XAxis xl = chart.getXAxis();
+        xl.setTypeface(tfLight);
+        xl.setTextColor(Color.WHITE);
+        xl.setDrawGridLines(false);
+        xl.setAvoidFirstLastClipping(true);
+        xl.setEnabled(true);
+
+        YAxis leftAxis = chart.getAxisLeft();
+        leftAxis.setTypeface(tfLight);
+        leftAxis.setTextColor(Color.WHITE);
+//        leftAxis.setAxisMaximum(100f);
+//        leftAxis.setAxisMinimum(0f);
+        leftAxis.setDrawGridLines(true);
+
+        YAxis rightAxis = chart.getAxisRight();
+        rightAxis.setEnabled(false);
+    }
+
+    private void startTimer() {
+        new java.util.Timer().schedule(
+                new java.util.TimerTask() {
+                    @Override
+                    public void run() {
+                        openMeasuringFragment();
+                    }
+                },
+                duration * 1000
+        );
+    }
+
+    private void openMeasuringFragment() {
+        Collections.sort(oxygenValues);
+        double mediumOxygen;
+
+        if (oxygenValues.size() % 2 == 0)
+            mediumOxygen = ((double) oxygenValues.get(oxygenValues.size() / 2) + (double) oxygenValues.get(oxygenValues.size() / 2 - 1))/2;
+        else
+            mediumOxygen = (double) oxygenValues.get(oxygenValues.size() / 2);
+
+        Bundle bundle = new Bundle();
+        Record record = new Record(duration, irValues, bpmValues, (int) mediumOxygen, temperature, "", Calendar.getInstance().getTime());
+        bundle.putSerializable("record", record);
+
+        MeasureResultFragment measureResultFragment = new MeasureResultFragment();
+        measureResultFragment.setArguments(bundle);
+
+        getFragmentManager()
+                .beginTransaction()
+                .replace(R.id.activity_measure_fragment_container, measureResultFragment)
+                .addToBackStack("MEASURE_RESULT_FRAGMENT")
+                .commit();
     }
 
 
@@ -346,7 +409,7 @@ public class MeasureFragment extends Fragment {
 
             @Override
             public void run() {
-                for (int i = 0; i < 1000; i++) {
+                for (int i = 0; i < 200; i++) {
 
                     // Don't generate garbage runnables inside the loop.
                     getActivity().runOnUiThread(runnable);

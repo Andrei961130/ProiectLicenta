@@ -1,8 +1,11 @@
 package com.example.pulseoximeter2021.MainScreen;
 
+import android.app.Activity;
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 
+import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 
 import android.view.LayoutInflater;
@@ -22,6 +25,12 @@ public class StartingFragment extends Fragment {
     RadioGroup rgDuration;
     Button btnMeasure;
     int duration = 10;
+
+    public interface OnBluetoothConnectionChangedListener {
+        public void changeBluetoothIcon(Boolean connected);
+    }
+
+    OnBluetoothConnectionChangedListener listener;
 
     public StartingFragment() {
         // Required empty public constructor
@@ -45,8 +54,21 @@ public class StartingFragment extends Fragment {
         btnMeasure.setOnClickListener(this::measureClick);
 
         startBluetoothConnection();
+        startBluetoothListener();
 
         return view;
+    }
+
+    @Override
+    public void onAttach(@NonNull Context context) {
+        super.onAttach(context);
+
+        Activity activity = (Activity) context;
+        if(activity instanceof OnBluetoothConnectionChangedListener) {
+            listener = (OnBluetoothConnectionChangedListener) activity;
+        } else {
+            throw new IllegalArgumentException("Containing activity must implement OnBluetoothConnectionChangedListener interface");
+        }
     }
 
     private void measureClick(View view) {
@@ -81,5 +103,23 @@ public class StartingFragment extends Fragment {
                 break;
             index++;
         }while (index != 5);
+    }
+
+    private void startBluetoothListener() {
+        bluetoothHelper.setBluetoothHelperListener(new BluetoothHelper.BluetoothHelperListener() {
+            @Override
+            public void onBluetoothHelperMessageReceived(BluetoothHelper bluetoothhelper, String message) {
+
+            }
+
+            @Override
+            public void onBluetoothHelperConnectionStateChanged(BluetoothHelper bluetoothhelper, boolean isConnected) {
+                if (isConnected) {
+                    listener.changeBluetoothIcon(true);
+                } else {
+                    listener.changeBluetoothIcon(false);
+                }
+            }
+        });
     }
 }

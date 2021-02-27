@@ -23,7 +23,7 @@ import com.google.firebase.auth.FirebaseUser;
 import com.mxn.soul.flowingdrawer_core.ElasticDrawer;
 import com.mxn.soul.flowingdrawer_core.FlowingDrawer;
 
-public class MainActivity extends AppCompatActivity {
+public class MainActivity extends AppCompatActivity implements StartingFragment.OnBluetoothConnectionChangedListener {
 
     private FirebaseAuth firebaseAuth = FirebaseAuth.getInstance();
     private FlowingDrawer flowingDrawer;
@@ -115,6 +115,15 @@ public class MainActivity extends AppCompatActivity {
             flowingDrawer.closeMenu();
         } else {
             super.onBackPressed();
+        }
+    }
+
+    @Override
+    public void changeBluetoothIcon(Boolean connected) {
+        if (connected) {
+            setBluetoothIvColorGreen();
+        } else {
+            setBluetoothIvColorRed();
         }
     }
 }

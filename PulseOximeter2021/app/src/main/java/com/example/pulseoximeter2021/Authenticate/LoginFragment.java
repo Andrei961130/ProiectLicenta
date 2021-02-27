@@ -110,7 +110,7 @@ public class LoginFragment extends Fragment {
                     startActivity(intent);
                     Toast.makeText(getActivity().getApplicationContext(), "User logged in", Toast.LENGTH_LONG).show();
 
-                    //removeLoginFragment();
+                    removeLoginFragment();
                 }
             });
         }
