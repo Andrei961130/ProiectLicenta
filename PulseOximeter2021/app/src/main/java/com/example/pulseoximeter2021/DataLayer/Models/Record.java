@@ -37,6 +37,10 @@ public class Record implements Serializable {
         return lenght;
     }
 
+    public int getLenghtAsMilis() {
+        return lenght * 1000;
+    }
+
     public void setLenght(int lenght) {
         this.lenght = lenght;
     }
