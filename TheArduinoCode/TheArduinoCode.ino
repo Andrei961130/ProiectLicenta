@@ -20,12 +20,18 @@
 
   The MAX30105 Breakout can handle 5V or 3.3V I2C logic. We recommend powering the board with 5V
   but it will also run at 3.3V.
+
+  Possibile messages sent:
+  sensorStatus ON
+  sensorStatus OFF
+  true irValue false bpm avgBpm oxygen temperature
+  detectedFinger false
+  true irValue true
 */
 
 
 #include "MAX30105.h"
 #include "heartRate.h"
-#include "ArduinoJson.h"
 
 MAX30105 particleSensor;
 
@@ -59,7 +65,8 @@ static unsigned long lastRefreshTime = 0;
 
 const int LEDBTN_pin = 13;   // Digital output for LED (button)
 
-int messageCode = 0;        // Digital LED value
+int messageCode = 1;        // Digital LED value
+String arduinoMessage;
 
 char input[INPUT_SIZE + 1];
 char *ch;
@@ -100,32 +107,6 @@ void setup()
 //  SendSensorStatus("OFF");
 }
 
-void SendReadings(bool detectedFinger, long irValue = 0, bool onlyIR = true, float bpm = 0, int avgBpm = 0, int oxygen = 0, float temperature = 0)
-{
-  DynamicJsonDocument message(48);
-
-  message["detectedFinger"] = detectedFinger;
-  message["irValue"] = irValue;
-  message["onlyIR"] = onlyIR;
-  message["bpm"] = bpm;
-  message["avgBpm"] = avgBpm;
-  message["oxygen"] = oxygen;
-  message["temperature"] = temperature;
-  
-  serializeJson(message, Serial);
-  Serial.println();
-}
-
-void SendSensorStatus(String sensorStatus)
-{
-  DynamicJsonDocument message(24);
-
-  message["sensorStatus"] = sensorStatus;
-  
-  serializeJson(message, Serial);
-  Serial.println();
-}
-
 void loop()
 {
   delay(2);
@@ -148,15 +129,13 @@ void loop()
         if (messageCode == 1) 
           {
             particleSensor.wakeUp();
-            SendSensorStatus("ON");
+            Serial.println("sensorStatus ON");
           }
         else if(messageCode == 0)
           {
             particleSensor.shutDown();
-            SendSensorStatus("OFF");
+            Serial.println("sensorStatus OFF");
           }
-        
-        Serial.write(DELIMITER);
     }
     if (endmsg) {
       endmsg = false;
@@ -195,15 +174,16 @@ void loop()
 
       oxygen = irValue / irOffset;
 
-      SendReadings(true, irValue, false, bpm, avgBpm, oxygen, temperature);
+      arduinoMessage = "true " + String(irValue) + " " + "false " + bpm + " " + avgBpm + " " + oxygen + " " + temperature;
+      Serial.println(arduinoMessage);
     }
   }
   else
   {
     if(messageCode == 1)
       if (irValue < 50000)
-        SendReadings(false);
+        Serial.println("detectedFinger false");
       else if(!sensedBeat)
-        SendReadings(true, irValue);
+        Serial.println("true " + String(irValue) + " true");
   }
 }
