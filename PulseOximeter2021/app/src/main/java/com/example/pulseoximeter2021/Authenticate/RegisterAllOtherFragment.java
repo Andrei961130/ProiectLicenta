@@ -113,7 +113,7 @@ public class RegisterAllOtherFragment extends Fragment {
         }
         else
         {
-            String uid = firebaseAuth.getCurrentUser().getUid();
+            String uid = firebaseAuth.getUid();
 
             Bundle bundle = getArguments();
             User user = new User(uid, bundle.getString("email"),

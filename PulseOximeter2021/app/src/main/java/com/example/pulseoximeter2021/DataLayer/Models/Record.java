@@ -2,12 +2,16 @@ package com.example.pulseoximeter2021.DataLayer.Models;
 
 import android.util.Pair;
 
+import com.google.firebase.database.Exclude;
+
 import java.io.Serializable;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
+import java.util.Random;
 
 public class Record implements Serializable {
     private int lenght;
@@ -37,6 +41,7 @@ public class Record implements Serializable {
         return lenght;
     }
 
+    @Exclude
     public int getLenghtAsMilis() {
         return lenght * 1000;
     }
@@ -89,6 +94,7 @@ public class Record implements Serializable {
         return dateAndTime;
     }
 
+    @Exclude
     public Date getDateAndTimeAsDate() {
         try {
             return new SimpleDateFormat("yyyy.MM.dd hh:mm:ss").parse(dateAndTime);
@@ -103,4 +109,25 @@ public class Record implements Serializable {
                 new SimpleDateFormat("yyyy.MM.dd hh:mm:ss");
         this.dateAndTime = dateFormat.format(dateAndTime);
     }
+
+    public static Record GenerateRandom()
+    {
+        List<Integer> irValues = new ArrayList<>();
+        List<Integer> bpmValues = new ArrayList<>();
+
+        Random random = new Random();
+
+        for (int index = 0; index < 300; index++) {
+
+            irValues.add(random.nextInt());
+        }
+
+        for (int index = 0; index < 5; index++) {
+
+            bpmValues.add(random.nextInt());
+        }
+
+        return new Record(10, irValues, bpmValues, 100, (double) 25, "", Calendar.getInstance().getTime());
+    }
+
 }

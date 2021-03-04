@@ -282,6 +282,11 @@ public class MeasureFragment extends Fragment {
         Collections.sort(oxygenValues);
         double mediumOxygen;
 
+        if(oxygenValues.isEmpty()) {
+            oxygenValues.add(0);
+            oxygenValues.add(0);
+        }
+
         if (oxygenValues.size() % 2 == 0)
             mediumOxygen = ((double) oxygenValues.get(oxygenValues.size() / 2) + (double) oxygenValues.get(oxygenValues.size() / 2 - 1))/2;
         else

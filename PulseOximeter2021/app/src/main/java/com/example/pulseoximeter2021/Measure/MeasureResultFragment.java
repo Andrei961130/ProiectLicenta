@@ -14,6 +14,7 @@ import android.widget.Button;
 import android.widget.TextView;
 
 import com.example.pulseoximeter2021.DataLayer.Models.Record;
+import com.example.pulseoximeter2021.DataLayer.Models.User;
 import com.example.pulseoximeter2021.R;
 import com.github.mikephil.charting.animation.Easing;
 import com.github.mikephil.charting.charts.LineChart;
@@ -26,9 +27,16 @@ import com.github.mikephil.charting.highlight.Highlight;
 import com.github.mikephil.charting.listener.OnChartValueSelectedListener;
 import com.github.mikephil.charting.utils.ColorTemplate;
 import com.google.android.material.textfield.TextInputEditText;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
 
 
 public class MeasureResultFragment extends Fragment {
+
+    private FirebaseAuth firebaseAuth = FirebaseAuth.getInstance();
+    private FirebaseDatabase firebaseDatabase = FirebaseDatabase.getInstance("https://pulse-oximeter-2021-default-rtdb.europe-west1.firebasedatabase.app/");
+    private DatabaseReference databaseReference = firebaseDatabase.getReference();
 
     private LineChart irChart;
     private LineChart bpmChart;
@@ -79,7 +87,7 @@ public class MeasureResultFragment extends Fragment {
         bpmChartSetup(bpmChart);
 
 
-        replayButtonClick(view);
+        //replayButtonClick(view);
 
         btnReplay.setOnClickListener(this::replayButtonClick);
         btnDelete.setOnClickListener(this::deleteButtonClick);
@@ -100,6 +108,15 @@ public class MeasureResultFragment extends Fragment {
 
     private void saveButtonClick(View view) {
 
+        String uid = firebaseAuth.getUid();
+//        databaseReference.child("Records").child(uid).push().setValue(record);
+        databaseReference.child("Records").child(uid).push().setValue(Record.GenerateRandom());
+
+        getFragmentManager()
+                .beginTransaction()
+                .replace(R.id.activity_measure_fragment_container, new MeasureFragment())
+                .addToBackStack("MEASURE_FRAGMENT")
+                .commit();
     }
 
     private void deleteButtonClick(View view) {

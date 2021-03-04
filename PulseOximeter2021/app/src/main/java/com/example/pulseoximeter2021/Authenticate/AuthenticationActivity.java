@@ -28,13 +28,13 @@ public class AuthenticationActivity extends AppCompatActivity
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_auth);
 
-//        getSupportFragmentManager()
-//                .beginTransaction()
-//                .add(R.id.activity_auth_fragment_container, new LoginFragment())
-//                .addToBackStack("LOGIN_FRAGMENT")
-//                .commit();
+        getSupportFragmentManager()
+                .beginTransaction()
+                .add(R.id.activity_auth_fragment_container, new LoginFragment())
+                .addToBackStack("LOGIN_FRAGMENT")
+                .commit();
 
-        Intent intent = new Intent(this, MainActivity.class);
-        startActivity(intent);
+//        Intent intent = new Intent(this, MainActivity.class);
+//        startActivity(intent);
     }
 }
