@@ -113,7 +113,6 @@ public class LoginFragment extends Fragment {
                         etPassword.setText("");
                     } catch(Exception e) {
                         Toast.makeText(getActivity().getApplicationContext(), Objects.requireNonNull(task.getException()).getMessage(), Toast.LENGTH_LONG).show();
-
                     }
                 } else {
                     requireActivity().finish();

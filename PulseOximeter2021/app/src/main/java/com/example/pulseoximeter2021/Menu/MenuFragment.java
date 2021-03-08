@@ -1,5 +1,6 @@
 package com.example.pulseoximeter2021.Menu;
 
+import android.content.Intent;
 import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
@@ -11,8 +12,11 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.Toast;
 
+import com.example.pulseoximeter2021.DataLayer.Models.Record;
+import com.example.pulseoximeter2021.Measure.MeasureActivity;
 import com.example.pulseoximeter2021.Measure.MeasureFragment;
 import com.example.pulseoximeter2021.R;
+import com.example.pulseoximeter2021.Records.RecordsActivity;
 import com.google.android.material.navigation.NavigationView;
 import com.squareup.picasso.Picasso;
 
@@ -58,14 +62,15 @@ public class MenuFragment extends Fragment {
                 }
                 else if(id == R.id.menu_records)
                 {
-//                    fragment = plm
+                    Intent intent = new Intent(getContext(), RecordsActivity.class);
+                    startActivity(intent);
                 }
 
-                getFragmentManager()
-                        .beginTransaction()
-                        .replace(R.id.activity_measure_fragment_container, new MeasureFragment())
-                        .addToBackStack("MEASURE_FRAGMENT")
-                        .commit();
+//                getFragmentManager()
+//                        .beginTransaction()
+//                        .replace(R.id.activity_measure_fragment_container, new MeasureFragment())
+//                        .addToBackStack("MEASURE_FRAGMENT")
+//                        .commit();
 
 //                Toast.makeText(getActivity(),menuItem.getTitle(),Toast.LENGTH_SHORT).show();
                 return false;
