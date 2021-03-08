@@ -37,6 +37,16 @@ public class LoginFragment extends Fragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+        FirebaseUser user = firebaseAuth.getCurrentUser();
+        if(user != null)
+        {
+            requireActivity().finish();
+
+            Intent intent = new Intent(getActivity(), MainActivity.class);
+            startActivity(intent);
+            Toast.makeText(getActivity().getApplicationContext(), "User logged in", Toast.LENGTH_LONG).show();
+        }
     }
 
     @Override
@@ -106,11 +116,11 @@ public class LoginFragment extends Fragment {
 
                     }
                 } else {
+                    requireActivity().finish();
+
                     Intent intent = new Intent(getActivity(), MainActivity.class);
                     startActivity(intent);
                     Toast.makeText(getActivity().getApplicationContext(), "User logged in", Toast.LENGTH_LONG).show();
-
-                    removeLoginFragment();
                 }
             });
         }

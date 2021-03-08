@@ -11,6 +11,7 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.Toast;
 
+import com.example.pulseoximeter2021.Measure.MeasureFragment;
 import com.example.pulseoximeter2021.R;
 import com.google.android.material.navigation.NavigationView;
 import com.squareup.picasso.Picasso;
@@ -47,7 +48,26 @@ public class MenuFragment extends Fragment {
         vNavigation.setNavigationItemSelectedListener(new NavigationView.OnNavigationItemSelectedListener() {
             @Override
             public boolean onNavigationItemSelected(MenuItem menuItem) {
-                Toast.makeText(getActivity(),menuItem.getTitle(),Toast.LENGTH_SHORT).show();
+
+                int id = menuItem.getItemId();
+                Fragment fragment = null;
+
+                if(id == R.id.menu_profile)
+                {
+
+                }
+                else if(id == R.id.menu_records)
+                {
+//                    fragment = plm
+                }
+
+                getFragmentManager()
+                        .beginTransaction()
+                        .replace(R.id.activity_measure_fragment_container, new MeasureFragment())
+                        .addToBackStack("MEASURE_FRAGMENT")
+                        .commit();
+
+//                Toast.makeText(getActivity(),menuItem.getTitle(),Toast.LENGTH_SHORT).show();
                 return false;
             }
         }) ;

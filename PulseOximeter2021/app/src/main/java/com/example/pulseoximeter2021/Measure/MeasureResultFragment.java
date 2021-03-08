@@ -15,6 +15,7 @@ import android.widget.TextView;
 
 import com.example.pulseoximeter2021.DataLayer.Models.Record;
 import com.example.pulseoximeter2021.DataLayer.Models.User;
+import com.example.pulseoximeter2021.MainScreen.StartingFragment;
 import com.example.pulseoximeter2021.R;
 import com.github.mikephil.charting.animation.Easing;
 import com.github.mikephil.charting.charts.LineChart;
@@ -87,7 +88,7 @@ public class MeasureResultFragment extends Fragment {
         bpmChartSetup(bpmChart);
 
 
-        //replayButtonClick(view);
+        replayButtonClick(view);
 
         btnReplay.setOnClickListener(this::replayButtonClick);
         btnDelete.setOnClickListener(this::deleteButtonClick);
@@ -109,24 +110,20 @@ public class MeasureResultFragment extends Fragment {
     private void saveButtonClick(View view) {
 
         String uid = firebaseAuth.getUid();
-//        databaseReference.child("Records").child(uid).push().setValue(record);
-        databaseReference.child("Records").child(uid).push().setValue(Record.GenerateRandom());
+        databaseReference.child("Records").child(uid).push().setValue(record);
 
-        getFragmentManager()
-                .beginTransaction()
-                .replace(R.id.activity_measure_fragment_container, new MeasureFragment())
-                .addToBackStack("MEASURE_FRAGMENT")
-                .commit();
+        requireActivity().finish();
     }
 
     private void deleteButtonClick(View view) {
 
+        requireActivity().finish();
     }
 
     private void replayButtonClick(View v) {
         feedIrGraph(irThread, record.getLenghtAsMilis());
         feedBpmGraph(bpmThread, record.getLenghtAsMilis());
-    }
+    } 
 
     private void bpmChartSetup(LineChart bpmChart) {
 
