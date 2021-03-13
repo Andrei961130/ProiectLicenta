@@ -6,16 +6,14 @@ import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
 
-import android.util.Pair;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.example.pulseoximeter2021.Bluetooth.ArduinoMessage;
 import com.example.pulseoximeter2021.Bluetooth.BluetoothHelper;
-import com.example.pulseoximeter2021.DataLayer.Models.Record;
+import com.example.pulseoximeter2021.DataLayer.Models.Firebase.Record;
 import com.example.pulseoximeter2021.R;
 import com.github.mikephil.charting.charts.LineChart;
 import com.github.mikephil.charting.components.XAxis;

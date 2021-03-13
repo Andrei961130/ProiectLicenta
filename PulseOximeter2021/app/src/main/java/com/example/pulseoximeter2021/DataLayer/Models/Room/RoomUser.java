@@ -1,7 +1,14 @@
-package com.example.pulseoximeter2021.DataLayer.Models;
+package com.example.pulseoximeter2021.DataLayer.Models.Room;
 
-public class User
+import androidx.annotation.NonNull;
+import androidx.room.Entity;
+import androidx.room.PrimaryKey;
+
+@Entity
+public class RoomUser
 {
+    @PrimaryKey
+    @NonNull
     private String uid;
     private String email;
     private String firstName;
@@ -11,12 +18,12 @@ public class User
     private Boolean isDoctor;
     private String photoUrl;
 
-    public User(){}
+    public RoomUser(){}
 
-    public User(String uid, String email,
-                String firstName, String lastName,
-                String birthday, String gender,
-                Boolean isDoctor)
+    public RoomUser(String uid, String email,
+                    String firstName, String lastName,
+                    String birthday, String gender,
+                    Boolean isDoctor)
     {
         this.uid = uid;
         this.email = email;
@@ -81,5 +88,13 @@ public class User
 
     public void setPhotoUrl(String photoUrl) {
         this.photoUrl = photoUrl;
+    }
+
+    public String getEmail() {
+        return email;
+    }
+
+    public void setEmail(String email) {
+        this.email = email;
     }
 }

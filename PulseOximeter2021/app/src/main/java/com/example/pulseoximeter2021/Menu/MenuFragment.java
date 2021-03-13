@@ -10,14 +10,12 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
-import android.widget.Toast;
 
-import com.example.pulseoximeter2021.DataLayer.Models.Record;
-import com.example.pulseoximeter2021.Measure.MeasureActivity;
-import com.example.pulseoximeter2021.Measure.MeasureFragment;
+import com.example.pulseoximeter2021.Authenticate.AuthenticationActivity;
 import com.example.pulseoximeter2021.R;
 import com.example.pulseoximeter2021.Records.RecordsActivity;
 import com.google.android.material.navigation.NavigationView;
+import com.google.firebase.auth.FirebaseAuth;
 import com.squareup.picasso.Picasso;
 
 public class MenuFragment extends Fragment {
@@ -63,6 +61,14 @@ public class MenuFragment extends Fragment {
                 else if(id == R.id.menu_records)
                 {
                     Intent intent = new Intent(getContext(), RecordsActivity.class);
+                    startActivity(intent);
+                }
+                else if(id == R.id.menu_logout)
+                {
+                    FirebaseAuth.getInstance().signOut();
+//                    requireActivity().finish();
+                    Intent intent = new Intent(getContext(), AuthenticationActivity.class);
+                    intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                     startActivity(intent);
                 }
 

@@ -1,6 +1,4 @@
-package com.example.pulseoximeter2021.DataLayer.Models;
-
-import android.util.Pair;
+package com.example.pulseoximeter2021.DataLayer.Models.Firebase;
 
 import com.google.firebase.database.Exclude;
 

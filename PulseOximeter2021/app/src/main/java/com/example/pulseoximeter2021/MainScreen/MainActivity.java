@@ -70,7 +70,7 @@ public class MainActivity extends AppCompatActivity implements StartingFragment.
         String userName = null;
         FirebaseUser user = firebaseAuth.getCurrentUser();
         if(user!=null)
-            userName = firebaseAuth.getCurrentUser().getDisplayName();
+            userName = user.getDisplayName();
 
         toolbarTitle.setText(userName == null?
                 "HAALIII":userName.isEmpty()?

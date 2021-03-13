@@ -1,6 +1,8 @@
 package com.example.pulseoximeter2021.Authenticate;
 
 import android.app.DatePickerDialog;
+import android.content.Intent;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.telephony.PhoneNumberUtils;
 import android.view.LayoutInflater;
@@ -11,15 +13,23 @@ import android.widget.EditText;
 import android.widget.RadioGroup;
 import android.widget.Toast;
 
+import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 
-import com.example.pulseoximeter2021.DataLayer.Models.User;
+import com.example.pulseoximeter2021.DataLayer.Models.Firebase.Record;
+import com.example.pulseoximeter2021.DataLayer.Models.Firebase.User;
+import com.example.pulseoximeter2021.DataLayer.Room.MyFirebaseDatabase;
+import com.example.pulseoximeter2021.MainScreen.MainActivity;
 import com.example.pulseoximeter2021.R;
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 
+import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.concurrent.ExecutionException;
 
 public class RegisterAllOtherFragment extends Fragment {
 
@@ -119,7 +129,29 @@ public class RegisterAllOtherFragment extends Fragment {
             User user = new User(uid, bundle.getString("email"),
                     firstNameStr, lastNameStr, dateStr, genderStr, false);
 
-            databaseReference.child("Users").child(uid).setValue(user);
+            databaseReference.child("Users").child(uid).setValue(user)
+                    .addOnSuccessListener(new OnSuccessListener<Void>() {
+                        @Override
+                        public void onSuccess(Void aVoid) {
+                            Toast.makeText(getActivity(),"Saved",Toast.LENGTH_LONG).show();
+                            requireActivity().finish();
+
+                            Intent intent = new Intent(getActivity(), MainActivity.class);
+                            startActivity(intent);
+                        }
+                    })
+                    .addOnFailureListener(new OnFailureListener() {
+                        @Override
+                        public void onFailure(@NonNull Exception e) {
+                            Toast.makeText(getActivity(),"Try again",Toast.LENGTH_SHORT).show();
+                        }
+                    });
+
+//            AddUserInFireBase addUserInFireBase = new AddUserInFireBase();
+//            addUserInFireBase.execute(user);
+
+
+//            requireActivity().finish();
         }
     }
 
@@ -131,6 +163,55 @@ public class RegisterAllOtherFragment extends Fragment {
             case R.id.fragment_register_rb_female:
                 genderStr = "Female";
                 break;
+        }
+    }
+
+    private class AddUserInFireBase extends AsyncTask<User,Void,Void>
+    {
+        @Override
+        protected Void doInBackground(User... users) {
+            new MyFirebaseDatabase().addUser(users[0].getUid(), users[0], new MyFirebaseDatabase.DataStatus() {
+                @Override
+                public void userDataIsLoaded(ArrayList<User> users, ArrayList<String> keys) throws ExecutionException, InterruptedException {
+
+                }
+
+                @Override
+                public void userDataIsInserted() {
+
+                }
+
+                @Override
+                public void userDataIsUpdated() {
+
+                }
+
+                @Override
+                public void userDataIsDeleted() {
+
+                }
+
+                @Override
+                public void recordDataIsLoaded(ArrayList<Record> records, ArrayList<String> keys) throws ExecutionException, InterruptedException {
+
+                }
+
+                @Override
+                public void recordDataIsInserted() {
+
+                }
+
+                @Override
+                public void recordDataIsUpdated() {
+
+                }
+
+                @Override
+                public void recordDataIsDeleted() {
+
+                }
+            });
+            return null;
         }
     }
 }

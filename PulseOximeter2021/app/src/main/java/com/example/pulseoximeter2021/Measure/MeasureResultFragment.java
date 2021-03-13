@@ -2,22 +2,21 @@ package com.example.pulseoximeter2021.Measure;
 
 import android.graphics.Color;
 import android.graphics.Typeface;
+import android.os.AsyncTask;
 import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
 
-import android.util.Pair;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.TextView;
 
-import com.example.pulseoximeter2021.DataLayer.Models.Record;
-import com.example.pulseoximeter2021.DataLayer.Models.User;
-import com.example.pulseoximeter2021.MainScreen.StartingFragment;
+import com.example.pulseoximeter2021.DataLayer.Models.Firebase.Record;
+import com.example.pulseoximeter2021.DataLayer.Models.Firebase.User;
+import com.example.pulseoximeter2021.DataLayer.Room.MyFirebaseDatabase;
 import com.example.pulseoximeter2021.R;
-import com.github.mikephil.charting.animation.Easing;
 import com.github.mikephil.charting.charts.LineChart;
 import com.github.mikephil.charting.components.XAxis;
 import com.github.mikephil.charting.components.YAxis;
@@ -31,6 +30,9 @@ import com.google.android.material.textfield.TextInputEditText;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+
+import java.util.ArrayList;
+import java.util.concurrent.ExecutionException;
 
 
 public class MeasureResultFragment extends Fragment {
@@ -110,7 +112,11 @@ public class MeasureResultFragment extends Fragment {
     private void saveButtonClick(View view) {
 
         String uid = firebaseAuth.getUid();
-        databaseReference.child("Records").child(uid).push().setValue(record);
+        String key = databaseReference.child("Records").child(uid).push().getKey();
+        databaseReference.child("Records").child(uid).child(key).setValue(record);
+
+//        AddRecordInFireBase addRecordInFireBase = new AddRecordInFireBase();
+//        addRecordInFireBase.execute(record);
 
         requireActivity().finish();
     }
@@ -472,5 +478,54 @@ public class MeasureResultFragment extends Fragment {
         });
 
         thread.start();
+    }
+
+    private class AddRecordInFireBase extends AsyncTask<Record,Void,Void>
+    {
+        @Override
+        protected Void doInBackground(Record... records) {
+            new MyFirebaseDatabase().addRecord(firebaseAuth.getUid(), records[0], new MyFirebaseDatabase.DataStatus() {
+                @Override
+                public void userDataIsLoaded(ArrayList<User> users, ArrayList<String> keys) throws ExecutionException, InterruptedException {
+                    
+                }
+
+                @Override
+                public void userDataIsInserted() {
+
+                }
+
+                @Override
+                public void userDataIsUpdated() {
+
+                }
+
+                @Override
+                public void userDataIsDeleted() {
+
+                }
+
+                @Override
+                public void recordDataIsLoaded(ArrayList<Record> records, ArrayList<String> keys) throws ExecutionException, InterruptedException {
+
+                }
+
+                @Override
+                public void recordDataIsInserted() {
+
+                }
+
+                @Override
+                public void recordDataIsUpdated() {
+
+                }
+
+                @Override
+                public void recordDataIsDeleted() {
+
+                }
+            });
+            return null;
+        }
     }
 }
