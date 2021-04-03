@@ -126,4 +126,13 @@ public class MainActivity extends AppCompatActivity implements StartingFragment.
             setBluetoothIvColorRed();
         }
     }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+
+        if (flowingDrawer.isMenuVisible()) {
+            flowingDrawer.closeMenu();
+        }
+    }
 }

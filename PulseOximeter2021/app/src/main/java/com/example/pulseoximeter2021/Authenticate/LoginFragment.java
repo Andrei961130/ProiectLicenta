@@ -19,6 +19,8 @@ import com.google.firebase.auth.FirebaseAuthInvalidCredentialsException;
 import com.google.firebase.auth.FirebaseAuthUserCollisionException;
 import com.google.firebase.auth.FirebaseAuthWeakPasswordException;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.Logger;
 
 import java.util.Objects;
 
@@ -41,6 +43,7 @@ public class LoginFragment extends Fragment {
         FirebaseUser user = firebaseAuth.getCurrentUser();
         if(user != null)
         {
+            FirebaseDatabase.getInstance().setLogLevel(Logger.Level.DEBUG);
             requireActivity().finish();
 
             Intent intent = new Intent(getActivity(), MainActivity.class);

@@ -1,33 +1,33 @@
 {
   "project_info": {
-    "project_number": "685757768755",
-    "project_id": "pulse-oximeter-2021",
-    "storage_bucket": "pulse-oximeter-2021.appspot.com"
+    "project_number": "688877136191",
+    "project_id": "pulse-oximeter-v2",
+    "storage_bucket": "pulse-oximeter-v2.appspot.com"
   },
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:685757768755:android:75e2ae511028bd32fb6f46",
+        "mobilesdk_app_id": "1:688877136191:android:bcd839c4d04839bcea0b8a",
         "android_client_info": {
           "package_name": "com.example.pulseoximeter2021"
         }
       },
       "oauth_client": [
         {
-          "client_id": "685757768755-n65h3acqun8fl5difb87q5etqn85h69a.apps.googleusercontent.com",
+          "client_id": "688877136191-richv4emagftet3fj26qbu51kkfk6s8n.apps.googleusercontent.com",
           "client_type": 3
         }
       ],
       "api_key": [
         {
-          "current_key": "AIzaSyBsu0MRRI_-i7moALQxtWydCnK_ivgDf_M"
+          "current_key": "AIzaSyCH4LR5eaJtp6CcGHPf4w_aOIfNiiayuX0"
         }
       ],
       "services": {
         "appinvite_service": {
           "other_platform_oauth_client": [
             {
-              "client_id": "685757768755-n65h3acqun8fl5difb87q5etqn85h69a.apps.googleusercontent.com",
+              "client_id": "688877136191-richv4emagftet3fj26qbu51kkfk6s8n.apps.googleusercontent.com",
               "client_type": 3
             }
           ]

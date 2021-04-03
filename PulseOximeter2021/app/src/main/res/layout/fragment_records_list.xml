@@ -10,4 +10,4 @@
     android:layout_marginRight="16dp"
     app:layoutManager="LinearLayoutManager"
     tools:context=".Records.RecordsFragment"
-    tools:listitem="@layout/fragment_records" />
+    tools:listitem="@layout/fragment_records_regular_user" />

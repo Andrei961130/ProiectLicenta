@@ -34,7 +34,7 @@ import java.util.concurrent.ExecutionException;
 public class RegisterAllOtherFragment extends Fragment {
 
     private FirebaseAuth firebaseAuth = FirebaseAuth.getInstance();
-    private FirebaseDatabase firebaseDatabase = FirebaseDatabase.getInstance("https://pulse-oximeter-2021-default-rtdb.europe-west1.firebasedatabase.app/");
+    private FirebaseDatabase firebaseDatabase = FirebaseDatabase.getInstance();
     private DatabaseReference databaseReference = firebaseDatabase.getReference();
 
     EditText etFirstName;

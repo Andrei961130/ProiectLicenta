@@ -38,7 +38,7 @@ import java.util.concurrent.ExecutionException;
 public class MeasureResultFragment extends Fragment {
 
     private FirebaseAuth firebaseAuth = FirebaseAuth.getInstance();
-    private FirebaseDatabase firebaseDatabase = FirebaseDatabase.getInstance("https://pulse-oximeter-2021-default-rtdb.europe-west1.firebasedatabase.app/");
+    private FirebaseDatabase firebaseDatabase = FirebaseDatabase.getInstance();
     private DatabaseReference databaseReference = firebaseDatabase.getReference();
 
     private LineChart irChart;
@@ -414,7 +414,7 @@ public class MeasureResultFragment extends Fragment {
                     }.init(record.getIrValues().get(index));
 
                 // Don't generate garbage runnables inside the loop.
-                getActivity().runOnUiThread(run);
+                requireActivity().runOnUiThread(run);
 
                 try {
                     Thread.sleep(sleepMilis);
@@ -467,7 +467,7 @@ public class MeasureResultFragment extends Fragment {
                 }.init(record.getIrValues().get(index));
 
                 // Don't generate garbage runnables inside the loop.
-                getActivity().runOnUiThread(run);
+                requireActivity().runOnUiThread(run);
 
                 try {
                     Thread.sleep(sleepMilis);

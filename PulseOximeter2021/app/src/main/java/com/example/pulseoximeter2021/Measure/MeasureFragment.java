@@ -290,8 +290,10 @@ public class MeasureFragment extends Fragment {
         else
             mediumOxygen = (double) oxygenValues.get(oxygenValues.size() / 2);
 
+//        String fullName =
+        Record record = new Record(duration, irValues, bpmValues, (int) mediumOxygen, temperature, "", Calendar.getInstance().getTime().toString(), "fullName");
+
         Bundle bundle = new Bundle();
-        Record record = new Record(duration, irValues, bpmValues, (int) mediumOxygen, temperature, "", Calendar.getInstance().getTime());
         bundle.putSerializable("record", record);
 
         MeasureResultFragment measureResultFragment = new MeasureResultFragment();

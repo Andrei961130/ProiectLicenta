@@ -27,14 +27,14 @@ public class MyRecordsRecyclerViewAdapter extends RecyclerView.Adapter<MyRecords
     @Override
     public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         View view = LayoutInflater.from(parent.getContext())
-                .inflate(R.layout.fragment_records, parent, false);
+                .inflate(R.layout.fragment_records_regular_user, parent, false);
         return new ViewHolder(view);
     }
 
     @Override
     public void onBindViewHolder(final ViewHolder holder, int position) {
         holder.mItem = mValues.get(position);
-        holder.mIdView.setText(mValues.get(position).id);
+//        holder.mIdView.setText(mValues.get(position).id);
         holder.mContentView.setText(mValues.get(position).content);
     }
 
@@ -45,14 +45,14 @@ public class MyRecordsRecyclerViewAdapter extends RecyclerView.Adapter<MyRecords
 
     public class ViewHolder extends RecyclerView.ViewHolder {
         public final View mView;
-        public final TextView mIdView;
+//        public final TextView mIdView;
         public final TextView mContentView;
         public DummyItem mItem;
 
         public ViewHolder(View view) {
             super(view);
             mView = view;
-            mIdView = (TextView) view.findViewById(R.id.item_number);
+//            mIdView = (TextView) view.findViewById(R.id.item_number);
             mContentView = (TextView) view.findViewById(R.id.content);
         }
 
