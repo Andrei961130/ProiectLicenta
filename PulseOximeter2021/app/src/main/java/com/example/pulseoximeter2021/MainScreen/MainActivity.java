@@ -1,25 +1,21 @@
 package com.example.pulseoximeter2021.MainScreen;
 
-import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.appcompat.widget.Toolbar;
 import androidx.fragment.app.FragmentManager;
 
 import android.content.res.Resources;
-import android.graphics.Color;
-import android.graphics.Paint;
 import android.graphics.PorterDuff;
-import android.graphics.PorterDuffColorFilter;
 import android.os.Bundle;
-import android.view.Gravity;
-import android.view.View;
+import android.os.Handler;
+import android.os.Looper;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.example.pulseoximeter2021.Bluetooth.BluetoothHelper;
 import com.example.pulseoximeter2021.Menu.MenuFragment;
 import com.example.pulseoximeter2021.R;
+import com.example.pulseoximeter2021.Services.FirebaseService;
 import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.auth.FirebaseUser;
 import com.mxn.soul.flowingdrawer_core.ElasticDrawer;
 import com.mxn.soul.flowingdrawer_core.FlowingDrawer;
 
@@ -48,6 +44,12 @@ public class MainActivity extends AppCompatActivity implements StartingFragment.
         setMenuBarsListener();
         setupMenu();
         displayMainFragment();
+
+        ivBluetooth.setOnClickListener(v -> {
+
+            BluetoothHelper bluetoothHelper = BluetoothHelper.getInstance();
+            bluetoothHelper.Connect("HC-05");
+        });
     }
 
     private void setMenuBarsListener() {
@@ -67,14 +69,29 @@ public class MainActivity extends AppCompatActivity implements StartingFragment.
     }
 
     protected void setupToolbar() {
-        String userName = null;
-        FirebaseUser user = firebaseAuth.getCurrentUser();
-        if(user!=null)
-            userName = user.getDisplayName();
 
-        toolbarTitle.setText(userName == null?
-                "HAALIII":userName.isEmpty()?
-                "HAALII": userName);
+        Handler handler = new Handler(Looper.getMainLooper());
+        handler.postDelayed(() -> {
+            try {
+                toolbarTitle.setText(FirebaseService.getInstance().getUserDetails().getFirstName());
+            }
+            catch (Exception e)
+            {
+                Handler handler1 = new Handler(Looper.getMainLooper());
+                handler1.postDelayed(() -> {
+                    try {
+                        toolbarTitle.setText(FirebaseService.getInstance().getUserDetails().getFirstName());
+                    }
+                    catch (Exception e1)
+                    {
+
+                    }
+
+                }, 2000);
+            }
+
+        }, 1000);
+
     }
 
     private void setupMenu() {
