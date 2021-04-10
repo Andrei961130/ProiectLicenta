@@ -8,6 +8,8 @@ import android.os.Bundle;
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 
+import android.os.Handler;
+import android.os.Looper;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -17,6 +19,7 @@ import android.widget.RadioGroup;
 import com.example.pulseoximeter2021.Bluetooth.BluetoothHelper;
 import com.example.pulseoximeter2021.Measure.MeasureActivity;
 import com.example.pulseoximeter2021.R;
+import com.example.pulseoximeter2021.Services.FirebaseService;
 
 public class StartingFragment extends Fragment {
 
@@ -94,16 +97,30 @@ public class StartingFragment extends Fragment {
     private void startBluetoothConnection() {
 
         bluetoothHelper = BluetoothHelper.getInstance();
-
-        int index = 1;
-        do
+        bluetoothHelper.Connect("HC-05");
+        if(!bluetoothHelper.isConnected())
         {
-            bluetoothHelper.Connect("HC-05");
-            if(bluetoothHelper.isConnected())
-                break;
-            index++;
-        }while (index != 5);
+            Handler handler1 = new Handler(Looper.getMainLooper());
+            handler1.postDelayed(() -> {
+                bluetoothHelper.Connect("HC-05");
+
+            }, 2000);
+        }
+
+
+
+
+//        int index = 1;
+//        do
+//        {
+//            bluetoothHelper.Connect("HC-05");
+//            if(bluetoothHelper.isConnected())
+//                break;
+//            index++;
+//        }while (index != 5);
     }
+
+
 
     private void startBluetoothListener() {
         bluetoothHelper.setBluetoothHelperListener(new BluetoothHelper.BluetoothHelperListener() {

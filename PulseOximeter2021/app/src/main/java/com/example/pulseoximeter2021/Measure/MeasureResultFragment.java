@@ -12,11 +12,13 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.example.pulseoximeter2021.DataLayer.Models.Firebase.Record;
 import com.example.pulseoximeter2021.DataLayer.Models.Firebase.User;
 import com.example.pulseoximeter2021.DataLayer.Room.MyFirebaseDatabase;
 import com.example.pulseoximeter2021.R;
+import com.example.pulseoximeter2021.Services.FirebaseService;
 import com.github.mikephil.charting.charts.LineChart;
 import com.github.mikephil.charting.components.XAxis;
 import com.github.mikephil.charting.components.YAxis;
@@ -111,14 +113,53 @@ public class MeasureResultFragment extends Fragment {
 
     private void saveButtonClick(View view) {
 
-        String uid = firebaseAuth.getUid();
-        String key = databaseReference.child("Records").child(uid).push().getKey();
-        databaseReference.child("Records").child(uid).child(key).setValue(record);
+        FirebaseService.getInstance().addRecord(record, new MyFirebaseDatabase.DataStatus() {
+            @Override
+            public void userDataIsLoaded(ArrayList<User> users, ArrayList<String> keys) throws ExecutionException, InterruptedException {
+
+            }
+
+            @Override
+            public void userDataIsInserted() {
+
+            }
+
+            @Override
+            public void userDataIsUpdated() {
+
+            }
+
+            @Override
+            public void userDataIsDeleted() {
+
+            }
+
+            @Override
+            public void recordDataIsLoaded(ArrayList<Record> records, ArrayList<String> keys) throws ExecutionException, InterruptedException {
+
+            }
+
+            @Override
+            public void recordDataIsInserted() {
+                Toast.makeText(requireActivity().getApplicationContext(), "Bine Dumitru", Toast.LENGTH_LONG).show();
+                requireActivity().finish();
+            }
+
+            @Override
+            public void recordDataIsUpdated() {
+
+            }
+
+            @Override
+            public void recordDataIsDeleted() {
+
+            }
+        });
 
 //        AddRecordInFireBase addRecordInFireBase = new AddRecordInFireBase();
 //        addRecordInFireBase.execute(record);
 
-        requireActivity().finish();
+//        requireActivity().finish();
     }
 
     private void deleteButtonClick(View view) {
@@ -409,7 +450,10 @@ public class MeasureResultFragment extends Fragment {
 
                         @Override
                         public void run() {
-                            addIrEntry(value);
+                            if(isAdded())
+                                addIrEntry(value);
+                            else
+                                return;
                         }
                     }.init(record.getIrValues().get(index));
 
@@ -462,7 +506,10 @@ public class MeasureResultFragment extends Fragment {
 
                     @Override
                     public void run() {
-                        addBpmEntry(value);
+                        if(isAdded())
+                            addBpmEntry(value);
+                        else
+                            return;
                     }
                 }.init(record.getIrValues().get(index));
 

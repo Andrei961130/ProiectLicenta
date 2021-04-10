@@ -95,7 +95,7 @@ public class LoginFragment extends Fragment {
         else {
             firebaseAuth.signInWithEmailAndPassword(emailStr, passwordStr).addOnCompleteListener(getActivity(), task -> {
                 if (!task.isSuccessful()) {
-                    Toast.makeText(getActivity().getApplicationContext(), task.getException().getMessage(), Toast.LENGTH_LONG).show();
+                    Toast.makeText(requireActivity().getApplicationContext(), task.getException().getMessage(), Toast.LENGTH_LONG).show();
 
                     try {
                         throw task.getException();
@@ -104,14 +104,14 @@ public class LoginFragment extends Fragment {
                         etEmail.requestFocus();
                         etPassword.setText("");
                     } catch(Exception e) {
-                        Toast.makeText(getActivity().getApplicationContext(), Objects.requireNonNull(task.getException()).getMessage(), Toast.LENGTH_LONG).show();
+                        Toast.makeText(requireActivity().getApplicationContext(), Objects.requireNonNull(task.getException()).getMessage(), Toast.LENGTH_LONG).show();
                     }
                 } else {
                     requireActivity().finish();
 
                     Intent intent = new Intent(getActivity(), MainActivity.class);
                     startActivity(intent);
-                    Toast.makeText(getActivity().getApplicationContext(), "User logged in", Toast.LENGTH_LONG).show();
+                    Toast.makeText(requireActivity().getApplicationContext(), "User logged in", Toast.LENGTH_LONG).show();
                 }
             });
         }

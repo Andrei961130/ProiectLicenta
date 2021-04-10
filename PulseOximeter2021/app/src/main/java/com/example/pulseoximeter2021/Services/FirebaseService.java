@@ -4,6 +4,8 @@ import androidx.annotation.NonNull;
 
 import com.example.pulseoximeter2021.DataLayer.Models.Firebase.Record;
 import com.example.pulseoximeter2021.DataLayer.Models.Firebase.User;
+import com.example.pulseoximeter2021.DataLayer.Room.MyFirebaseDatabase;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
@@ -82,6 +84,17 @@ public class FirebaseService {
         });
     }
 
+    public void addRecord(Record record, final MyFirebaseDatabase.DataStatus dataStatus)
+    {
+        databaseReference.child(RECORDS).child(firebaseUser.getUid()).push().setValue(record)
+                .addOnSuccessListener(new OnSuccessListener<Void>() {
+                    @Override
+                    public void onSuccess(Void aVoid) {
+                        dataStatus.recordDataIsInserted();
+                    }
+                });
+    }
+
     public static FirebaseService getInstance()
     {
         return instance;
@@ -118,5 +131,10 @@ public class FirebaseService {
     public FirebaseUser getCurrentUser()
     {
         return firebaseUser;
+    }
+
+    public String getFullName()
+    {
+        return userDetails.getFirstName().concat(" ").concat(userDetails.getLastName());
     }
 }

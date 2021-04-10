@@ -15,6 +15,7 @@ import com.example.pulseoximeter2021.Bluetooth.ArduinoMessage;
 import com.example.pulseoximeter2021.Bluetooth.BluetoothHelper;
 import com.example.pulseoximeter2021.DataLayer.Models.Firebase.Record;
 import com.example.pulseoximeter2021.R;
+import com.example.pulseoximeter2021.Services.FirebaseService;
 import com.github.mikephil.charting.charts.LineChart;
 import com.github.mikephil.charting.components.XAxis;
 import com.github.mikephil.charting.components.YAxis;
@@ -290,8 +291,8 @@ public class MeasureFragment extends Fragment {
         else
             mediumOxygen = (double) oxygenValues.get(oxygenValues.size() / 2);
 
-//        String fullName =
-        Record record = new Record(duration, irValues, bpmValues, (int) mediumOxygen, temperature, "", Calendar.getInstance().getTime().toString(), "fullName");
+        String fullName = FirebaseService.getInstance().getFullName();
+        Record record = new Record(duration, irValues, bpmValues, (int) mediumOxygen, temperature, "", Calendar.getInstance().getTime().toString(), fullName);
 
         Bundle bundle = new Bundle();
         bundle.putSerializable("record", record);
