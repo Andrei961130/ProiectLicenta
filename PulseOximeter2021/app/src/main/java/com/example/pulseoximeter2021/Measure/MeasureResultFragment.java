@@ -34,6 +34,7 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 
 import java.util.ArrayList;
+import java.util.Locale;
 import java.util.concurrent.ExecutionException;
 
 
@@ -81,6 +82,7 @@ public class MeasureResultFragment extends Fragment {
         irChart = view.findViewById(R.id.fragment_measure_result_ir_chart);
         bpmChart = view.findViewById(R.id.fragment_measure_result_bpm_chart);
         tfLight = Typeface.createFromAsset(getActivity().getAssets(), "OpenSans-Light.ttf");
+        tiEtComment = view.findViewById(R.id.fragment_measure_result_text_input_edit_text);
 
         tvOxygen = view.findViewById(R.id.fragment_measure_result_tv_oxygen);
         tvTemperature = view.findViewById(R.id.fragment_measure_result_tv_temperature);
@@ -98,20 +100,15 @@ public class MeasureResultFragment extends Fragment {
         btnDelete.setOnClickListener(this::deleteButtonClick);
         btnSave.setOnClickListener(this::saveButtonClick);
 
-//        for (int i :
-//                record.getIrValues()) {
-//            addIrEntry(i);
-//        }
-
-//        for (int i :
-//                record.getBpmValues()) {
-//            addBpmEntry(i);
-//        }
+        tvOxygen.setText(String.format(Locale.ENGLISH, "%d %%", record.getOxygen()));
+        tvTemperature.setText(String.format(Locale.ENGLISH, "%.1f C", record.getTemperature()));
 
         return view;
     }
 
     private void saveButtonClick(View view) {
+
+        record.setMessage(tiEtComment.getText().toString());
 
         FirebaseService.getInstance().addRecord(record, new MyFirebaseDatabase.DataStatus() {
             @Override
