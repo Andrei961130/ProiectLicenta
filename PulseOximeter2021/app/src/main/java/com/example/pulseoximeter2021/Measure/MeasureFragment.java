@@ -26,6 +26,8 @@ import com.github.mikephil.charting.highlight.Highlight;
 import com.github.mikephil.charting.listener.OnChartValueSelectedListener;
 import com.github.mikephil.charting.utils.ColorTemplate;
 
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Collections;
@@ -292,7 +294,12 @@ public class MeasureFragment extends Fragment {
             mediumOxygen = (double) oxygenValues.get(oxygenValues.size() / 2);
 
         String fullName = FirebaseService.getInstance().getFullName();
-        Record record = new Record(duration, irValues, bpmValues, (int) mediumOxygen, temperature, "", Calendar.getInstance().getTime().toString(), fullName);
+
+        Calendar cal = Calendar.getInstance();
+        DateFormat sdf = new SimpleDateFormat("dd/MM/yyyy HH:MM");
+
+        String date = sdf.format(cal.getTime());
+        Record record = new Record(duration, irValues, bpmValues, (int) mediumOxygen, temperature, "", date, fullName);
 
         Bundle bundle = new Bundle();
         bundle.putSerializable("record", record);

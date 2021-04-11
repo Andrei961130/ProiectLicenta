@@ -77,7 +77,8 @@
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="280dp">
+        android:layout_below="@+id/linlay1"
+        android:layout_marginTop="40dp">
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -101,9 +102,9 @@
                     android:textSize="13sp" />
 
                 <TextView
+                    android:id="@+id/activity_profile_tv_email"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:id="@+id/activity_profile_tv_email"
                     android:fontFamily="sans-serif-light"
                     android:text="joey@sharenofood.com"
                     android:textColor="#000000"
@@ -120,7 +121,7 @@
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="15dp"
+                android:layout_marginTop="25dp"
                 android:orientation="vertical">
 
                 <TextView
@@ -131,9 +132,9 @@
                     android:textSize="13sp" />
 
                 <TextView
+                    android:id="@+id/activity_profile_tv_phone_number"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:id="@+id/activity_profile_tv_phone_number"
                     android:fontFamily="sans-serif-light"
                     android:text="+1-202-555-0157"
                     android:textColor="#000000"
@@ -150,7 +151,7 @@
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="15dp"
+                android:layout_marginTop="25dp"
                 android:orientation="vertical">
 
                 <TextView
@@ -161,9 +162,9 @@
                     android:textSize="13sp" />
 
                 <TextView
+                    android:id="@+id/activity_profile_tv_birthday"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:id="@+id/activity_profile_tv_birthday"
                     android:fontFamily="sans-serif-light"
                     android:text="30 11 1996"
                     android:textColor="#000000"

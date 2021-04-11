@@ -13,6 +13,7 @@ import com.example.pulseoximeter2021.DataLayer.Models.Firebase.Record;
 import com.example.pulseoximeter2021.R;
 
 import java.util.ArrayList;
+import java.util.Locale;
 
 
 public class RegularUserAdapter2 extends RecyclerView.Adapter<RegularUserAdapter2.ViewHolder> {
@@ -37,7 +38,8 @@ public class RegularUserAdapter2 extends RecyclerView.Adapter<RegularUserAdapter
     @Override
     public void onBindViewHolder(@NonNull RegularUserAdapter2.ViewHolder holder, int position) {
 
-        holder.tvName.setText(records.get(position).getFullName());
+        String duration = String.format(Locale.ENGLISH, "%d seconds", records.get(position).getLength());
+        holder.tvDuration.setText(duration);
         holder.tvDate.setText(records.get(position).getDateAndTimeAsString());
         holder.tvBpm.setText(records.get(position).getAverageBpmValue().toString());
     }
@@ -49,12 +51,12 @@ public class RegularUserAdapter2 extends RecyclerView.Adapter<RegularUserAdapter
 
     public class ViewHolder extends RecyclerView.ViewHolder{
 
-        TextView tvName, tvDate, tvBpm;
+        TextView tvDuration, tvDate, tvBpm;
 
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
 
-            tvName = itemView.findViewById(R.id.fragment_records_regular_user_tv_name);
+            tvDuration = itemView.findViewById(R.id.fragment_records_regular_user_tv_duration);
             tvDate = itemView.findViewById(R.id.fragment_records_regular_user_tv_date);
             tvBpm = itemView.findViewById(R.id.fragment_records_regular_user_tv_bpm);
         }

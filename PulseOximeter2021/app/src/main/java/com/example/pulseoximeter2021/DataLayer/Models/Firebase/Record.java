@@ -117,6 +117,16 @@ public class Record implements Serializable {
         }
     }
 
+    @Exclude
+    public Date getShortDateAndTime() {
+        try {
+            return new SimpleDateFormat("yyyy.MM.dd hh:mm:ss").parse(dateAndTime);
+        } catch (ParseException e) {
+            e.printStackTrace();
+            return null;
+        }
+    }
+
     public void setDateAndTime(String dateAndTime) {
         this.dateAndTime = dateAndTime;
     }

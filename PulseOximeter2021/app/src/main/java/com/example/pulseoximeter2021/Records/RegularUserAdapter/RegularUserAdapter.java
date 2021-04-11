@@ -52,7 +52,7 @@ public class RegularUserAdapter  extends FirebaseRecyclerAdapter<
         public RegularUserViewHolder(@NonNull View itemView) {
             super(itemView);
 
-            tvName = itemView.findViewById(R.id.fragment_records_regular_user_tv_name);
+            tvName = itemView.findViewById(R.id.fragment_records_regular_user_tv_duration);
             tvDate = itemView.findViewById(R.id.fragment_records_regular_user_tv_date);
             tvBpm = itemView.findViewById(R.id.fragment_records_regular_user_tv_bpm);
         }
