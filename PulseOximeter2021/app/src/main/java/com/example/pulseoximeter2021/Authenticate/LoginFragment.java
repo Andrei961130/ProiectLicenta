@@ -14,6 +14,7 @@ import android.widget.Toast;
 
 import com.example.pulseoximeter2021.MainScreen.MainActivity;
 import com.example.pulseoximeter2021.R;
+import com.example.pulseoximeter2021.Services.FirebaseService;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseAuthInvalidCredentialsException;
 import com.google.firebase.auth.FirebaseAuthUserCollisionException;
@@ -107,6 +108,7 @@ public class LoginFragment extends Fragment {
                         Toast.makeText(requireActivity().getApplicationContext(), Objects.requireNonNull(task.getException()).getMessage(), Toast.LENGTH_LONG).show();
                     }
                 } else {
+                    FirebaseService.getInstance().downloadUserDetails();
                     requireActivity().finish();
 
                     Intent intent = new Intent(getActivity(), MainActivity.class);

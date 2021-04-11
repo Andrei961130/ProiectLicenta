@@ -15,4 +15,12 @@
     <color name="green">#0BE414</color>
     <color name="transparent">#00000000</color>
     <color name="bluetooth">#114DCC</color>
+    <color name="gradEnd">#FFC107</color>
+    <color name="gradStart">#FFC107</color>
+    <color name="solidCircle">#AAFFFFFF</color>
+    <color name="circleBorder">#50FFFFFF</color>
+    <color name="address">#FF9800</color>
+    <color name="followers">#0D5D98</color>
+    <color name="headings">#FF9800</color>
+    <color name="grey">#E5E5E5</color>
 </resources>

@@ -10,6 +10,7 @@ public class User
     private String gender;
     private Boolean isDoctor;
     private String photoUrl;
+    private String phoneNumber = "";
 
     public User(){}
 
@@ -89,5 +90,13 @@ public class User
 
     public void setEmail(String email) {
         this.email = email;
+    }
+
+    public String getPhoneNumber() {
+        return phoneNumber;
+    }
+
+    public void setPhoneNumber(String phoneNumber) {
+        this.phoneNumber = phoneNumber;
     }
 }

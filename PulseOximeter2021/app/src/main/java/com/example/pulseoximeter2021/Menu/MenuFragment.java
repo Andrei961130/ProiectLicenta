@@ -12,6 +12,7 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 
 import com.example.pulseoximeter2021.Authenticate.AuthenticationActivity;
+import com.example.pulseoximeter2021.Profile.ProfileActivity;
 import com.example.pulseoximeter2021.R;
 import com.example.pulseoximeter2021.Records.RecordsActivity;
 import com.google.android.material.navigation.NavigationView;
@@ -56,7 +57,8 @@ public class MenuFragment extends Fragment {
 
                 if(id == R.id.menu_profile)
                 {
-
+                    Intent intent = new Intent(getContext(), ProfileActivity.class);
+                    startActivity(intent);
                 }
                 else if(id == R.id.menu_records)
                 {

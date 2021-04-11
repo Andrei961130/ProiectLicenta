@@ -36,7 +36,9 @@ public class FirebaseService {
         firebaseDatabase = FirebaseDatabase.getInstance();
         databaseReference = firebaseDatabase.getReference();
         firebaseUser = FirebaseAuth.getInstance().getCurrentUser();
-        downloadUserDetails();
+
+        if(firebaseUser != null)
+            downloadUserDetails();
     }
 
     public interface RecordDataStatus
@@ -49,6 +51,8 @@ public class FirebaseService {
 
     public void readUserRecords(final RecordDataStatus dataStatus)
     {
+        firebaseUser = FirebaseAuth.getInstance().getCurrentUser();
+
         databaseReference.child(RECORDS).child(firebaseUser.getUid()).addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
@@ -105,7 +109,7 @@ public class FirebaseService {
         return firebaseUser;
     }
 
-    private void downloadUserDetails()
+    public void downloadUserDetails()
     {
         databaseReference.child(USERS).addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
