@@ -88,7 +88,7 @@ public class RecordsFragment extends Fragment {
             public void DataIsLoaded(ArrayList<Record> records, ArrayList<String> keys) throws ExecutionException, InterruptedException {
                 recyclerView = (RecyclerView) view;
                 recyclerView.setLayoutManager(new LinearLayoutManager(view.getContext()));
-                userAdapter2 = new RegularUserAdapter2(records);
+                userAdapter2 = new RegularUserAdapter2(records, view.getContext());
                 recyclerView.setAdapter(userAdapter2);
             }
 

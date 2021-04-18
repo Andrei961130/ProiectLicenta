@@ -167,4 +167,30 @@ public class Record implements Serializable {
         return sum / bpmValues.size();
     }
 
+    @Exclude
+    public Integer getMaxBpmValue()
+    {
+        Integer max = Integer.MIN_VALUE;
+
+        for (Integer bpmValue :
+                bpmValues) {
+            if(bpmValue > max)
+                max = bpmValue;
+        }
+        return max;
+    }
+
+    @Exclude
+    public Integer getMinBpmValue()
+    {
+        Integer min = Integer.MAX_VALUE;
+
+        for (Integer bpmValue :
+                bpmValues) {
+            if(bpmValue < min)
+                min = bpmValue;
+        }
+        return min;
+    }
+
 }
