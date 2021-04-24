@@ -108,7 +108,7 @@ public class LoginFragment extends Fragment {
                         Toast.makeText(requireActivity().getApplicationContext(), Objects.requireNonNull(task.getException()).getMessage(), Toast.LENGTH_LONG).show();
                     }
                 } else {
-                    FirebaseService.getInstance().downloadUserDetails();
+                    FirebaseService.getNewInstance();
                     requireActivity().finish();
 
                     Intent intent = new Intent(getActivity(), MainActivity.class);

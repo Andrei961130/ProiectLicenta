@@ -70,7 +70,10 @@ public class MainActivity extends AppCompatActivity implements StartingFragment.
 
     protected void setupToolbar() {
 
-        toolbarTitle.setText(FirebaseService.getInstance().getCurrentUser().getDisplayName().split(" ")[0]);
+        if(FirebaseService.getInstance().getCurrentUser() != null)
+            toolbarTitle.setText(FirebaseService.getInstance().getCurrentUser().getDisplayName().split(" ")[0]);
+        else
+            toolbarTitle.setText("");
 
 //        Handler handler = new Handler(Looper.getMainLooper());
 //        handler.postDelayed(() -> {

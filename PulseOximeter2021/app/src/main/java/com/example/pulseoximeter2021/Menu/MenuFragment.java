@@ -47,8 +47,8 @@ public class MenuFragment extends Fragment {
 
         if(FirebaseService.getInstance().isDoctor())
         {
-            view = inflater.inflate(R.layout.fragment_menu, container, false);
-            vNavigation = (NavigationView) view.findViewById(R.id.fragment_menu_navigation_view);
+            view = inflater.inflate(R.layout.fragment_menu_doctor, container, false);
+            vNavigation = (NavigationView) view.findViewById(R.id.fragment_menu_navigation_view_doctor);
         }
         else
         {
@@ -88,6 +88,7 @@ public class MenuFragment extends Fragment {
 //                    requireActivity().finish();
                     Intent intent = new Intent(getContext(), AuthenticationActivity.class);
                     intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                    intent.putExtra("SIGN_OUT", true);
                     startActivity(intent);
                 }
 

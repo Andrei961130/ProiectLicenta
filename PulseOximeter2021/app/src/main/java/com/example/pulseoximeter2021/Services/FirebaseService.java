@@ -107,6 +107,12 @@ public class FirebaseService {
         return instance;
     }
 
+    public static FirebaseService getNewInstance()
+    {
+        instance = new FirebaseService();
+        return instance;
+    }
+
     public FirebaseUser getUser()
     {
         return firebaseUser;

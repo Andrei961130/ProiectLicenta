@@ -138,7 +138,7 @@ public class RegisterAllOtherFragment extends Fragment {
                             Toast.makeText(getActivity(),"Saved",Toast.LENGTH_LONG).show();
                             firebaseAuth.getCurrentUser().updateProfile( new UserProfileChangeRequest.Builder()
                             .setDisplayName(firstNameStr.concat(" ").concat(lastNameStr))
-                                    .setPhotoUri(Uri.parse("Doctor"))
+                                    //.setPhotoUri(Uri.parse("Doctor"))
                                     .build()
                             );
                             requireActivity().finish();

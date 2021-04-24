@@ -3,35 +3,33 @@ package com.example.pulseoximeter2021.Authenticate;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
-import android.net.Uri;
 import android.os.Bundle;
-import android.os.Handler;
-import android.os.Looper;
 import android.widget.Toast;
 
 import com.example.pulseoximeter2021.MainScreen.MainActivity;
 import com.example.pulseoximeter2021.R;
 import com.example.pulseoximeter2021.Services.FirebaseService;
-import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.Logger;
 
-import java.util.Timer;
-import java.util.TimerTask;
-import java.util.concurrent.atomic.AtomicInteger;
-
 public class AuthenticationActivity extends AppCompatActivity
 {
+
+    Boolean signedOut = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_auth);
 
-        FirebaseDatabase.getInstance().setLogLevel(Logger.Level.DEBUG);
-        FirebaseUser user = FirebaseService.getInstance().getUser();
+        signedOut = getIntent().getBooleanExtra("SIGN_OUT", signedOut);
 
-        if(user != null)
+        if(!signedOut)
+        {
+            FirebaseDatabase.getInstance().setLogLevel(Logger.Level.DEBUG);
+        }
+
+        if(FirebaseService.getInstance().getUser() != null && signedOut == false)
         {
             Intent intent = new Intent(this, MainActivity.class);
             startActivity(intent);
