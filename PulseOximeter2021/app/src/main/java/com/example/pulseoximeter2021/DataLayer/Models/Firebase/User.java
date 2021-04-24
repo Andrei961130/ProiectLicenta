@@ -1,6 +1,8 @@
 package com.example.pulseoximeter2021.DataLayer.Models.Firebase;
 
-public class User
+import java.io.Serializable;
+
+public class User implements Serializable
 {
     private String uid;
     private String email;

@@ -2,12 +2,11 @@ package com.example.pulseoximeter2021.Services;
 
 import androidx.annotation.NonNull;
 
+import com.example.pulseoximeter2021.DataLayer.Models.Firebase.Link;
 import com.example.pulseoximeter2021.DataLayer.Models.Firebase.Record;
 import com.example.pulseoximeter2021.DataLayer.Models.Firebase.User;
 import com.example.pulseoximeter2021.DataLayer.Room.MyFirebaseDatabase;
-import com.example.pulseoximeter2021.R;
 import com.google.android.gms.tasks.OnSuccessListener;
-import com.google.android.material.navigation.NavigationView;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
@@ -30,8 +29,10 @@ public class FirebaseService {
 
     private final String RECORDS = "Records";
     private final String USERS = "Users";
+    private final String LINKS = "Links";
 
     private ArrayList<Record> records = new ArrayList<>();
+    private ArrayList<User> linkedUsers = new ArrayList<>();
 
     private FirebaseService()
     {
@@ -50,6 +51,84 @@ public class FirebaseService {
         void DataIsInserted();
         void DataIsUpdated();
         void DataIsDeleted();
+    }
+
+    public interface UserDataStatus
+    {
+        void DataIsLoaded(ArrayList<User> users, ArrayList<String> keys) throws ExecutionException, InterruptedException;
+    }
+
+    public void readUsersByDoctor(final UserDataStatus dataStatus)
+    {
+        firebaseUser = FirebaseAuth.getInstance().getCurrentUser();
+
+        databaseReference.child(LINKS).addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                linkedUsers.clear();
+
+                ArrayList<String> keys = new ArrayList<String>();
+
+                for(DataSnapshot keyNode : dataSnapshot.getChildren())
+                {
+                    Link link = keyNode.getValue(Link.class);
+
+                    if(link.getDoctorUid().equals(firebaseUser.getUid())) {
+
+                        firebaseDatabase.getReference().child(USERS).child(link.getPacientUid())
+                                .addValueEventListener(new ValueEventListener() {
+                                    @Override
+                                    public void onDataChange(@NonNull DataSnapshot snapshot) {
+
+                                        User user = snapshot.getValue(User.class);
+
+                                        if (!linkedUsers.contains(user))
+                                            linkedUsers.add(user);
+
+                                        try {
+                                            dataStatus.DataIsLoaded(linkedUsers,keys);
+                                        } catch (ExecutionException e) {
+                                            e.printStackTrace();
+                                        } catch (InterruptedException e) {
+                                            e.printStackTrace();
+                                        }
+
+                                    }
+
+                                    @Override
+                                    public void onCancelled(@NonNull DatabaseError error) {
+
+                                    }
+                                }) ;
+
+
+
+
+//                        keys.add(keyNode.getKey());
+//
+//                        User user = keyNode.getValue(User.class);
+//
+//                        if (!users.contains(user))
+//                            users.add(user);
+                    }
+                }
+
+//                try {
+//                    dataStatus.DataIsLoaded(users,keys);
+//                } catch (ExecutionException e) {
+//                    e.printStackTrace();
+//                } catch (InterruptedException e) {
+//                    e.printStackTrace();
+//                }
+            }
+
+
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+
+            }
+        });
     }
 
     public void readUserRecords(final RecordDataStatus dataStatus)

@@ -1,7 +1,6 @@
 package com.example.pulseoximeter2021.Menu;
 
 import android.content.Intent;
-import android.net.Uri;
 import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
@@ -12,15 +11,14 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 
+import com.example.pulseoximeter2021.LinkedPacients.LinkedPacientsActivity;
 import com.example.pulseoximeter2021.Authenticate.AuthenticationActivity;
-import com.example.pulseoximeter2021.DataLayer.Models.Firebase.User;
 import com.example.pulseoximeter2021.Profile.ProfileActivity;
 import com.example.pulseoximeter2021.R;
 import com.example.pulseoximeter2021.Records.RecordsActivity;
 import com.example.pulseoximeter2021.Services.FirebaseService;
 import com.google.android.material.navigation.NavigationView;
 import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.auth.FirebaseUser;
 import com.squareup.picasso.Picasso;
 
 public class MenuFragment extends Fragment {
@@ -89,6 +87,11 @@ public class MenuFragment extends Fragment {
                     Intent intent = new Intent(getContext(), AuthenticationActivity.class);
                     intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                     intent.putExtra("SIGN_OUT", true);
+                    startActivity(intent);
+                }
+                else if(id == R.id.menu_patients)
+                {
+                    Intent intent = new Intent(getContext(), LinkedPacientsActivity.class);
                     startActivity(intent);
                 }
 

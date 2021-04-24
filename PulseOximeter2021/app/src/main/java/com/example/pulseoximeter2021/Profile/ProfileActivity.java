@@ -13,6 +13,8 @@ import com.example.pulseoximeter2021.Services.FirebaseService;
 
 public class ProfileActivity extends AppCompatActivity {
 
+    User user = null;
+
     TextView tvFullName;
     TextView tvEmail;
     TextView tvPhoneNumber;
@@ -32,7 +34,9 @@ public class ProfileActivity extends AppCompatActivity {
         tvBirthday = findViewById(R.id.activity_profile_tv_birthday);
         ivArrowBack = findViewById(R.id.activity_profile_iv_arrow_back);
 
-        setUserDetails();
+        user = (User) getIntent().getSerializableExtra("user");
+
+        setUserDetails(user);
 
         ivArrowBack.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -42,9 +46,15 @@ public class ProfileActivity extends AppCompatActivity {
         });
     }
 
-    private void setUserDetails() {
-        User user = FirebaseService.getInstance().getUserDetails();
-        tvFullName.setText(FirebaseService.getInstance().getFullName());
+    private void setUserDetails(User user) {
+
+        if(user == null)
+        {
+            user = FirebaseService.getInstance().getUserDetails();
+            tvFullName.setText(FirebaseService.getInstance().getFullName());
+        }
+
+        tvFullName.setText(user.getFirstName().concat(" ").concat(user.getLastName()));
         tvEmail.setText(user.getEmail());
         tvPhoneNumber.setText(user.getPhoneNumber());
         tvBirthday.setText(user.getBirthday());

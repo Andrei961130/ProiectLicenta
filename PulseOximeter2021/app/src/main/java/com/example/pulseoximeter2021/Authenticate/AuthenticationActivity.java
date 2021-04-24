@@ -6,6 +6,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.widget.Toast;
 
+import com.example.pulseoximeter2021.LinkedPacients.LinkedPacientsActivity;
 import com.example.pulseoximeter2021.MainScreen.MainActivity;
 import com.example.pulseoximeter2021.R;
 import com.example.pulseoximeter2021.Services.FirebaseService;
@@ -31,9 +32,22 @@ public class AuthenticationActivity extends AppCompatActivity
 
         if(FirebaseService.getInstance().getUser() != null && signedOut == false)
         {
+//            if(!FirebaseService.getInstance().isDoctor()) {
+//
+//                Intent intent = new Intent(this, MainActivity.class);
+//                startActivity(intent);
+//                Toast.makeText(this.getApplicationContext(), "User logged in", Toast.LENGTH_LONG).show();
+//            }
+//            else {
+//                Intent intent = new Intent(this, LinkedPacientsActivity.class);
+//                startActivity(intent);
+//                Toast.makeText(this.getApplicationContext(), "Doctor logged in", Toast.LENGTH_LONG).show();
+//            }
+
             Intent intent = new Intent(this, MainActivity.class);
             startActivity(intent);
             Toast.makeText(this.getApplicationContext(), "User logged in", Toast.LENGTH_LONG).show();
+
         }
         else
         {
