@@ -7,13 +7,17 @@
             android:title="Profile"
             />
         <item
-            android:id="@+id/menu_records"
+            android:id="@+id/menu_patients"
             android:icon="@drawable/ic_bluetooth"
-            android:title="My Records" />
+            android:title="Patients" />
         <item
-            android:id="@+id/menu_my_doctor"
+            android:id="@+id/menu_appointment"
             android:icon="@drawable/ic_date_foreground"
-            android:title="My Doctor" />
+            android:title="Appointments" />
+        <item
+            android:id="@+id/menu_add_patient"
+            android:icon="@drawable/ic_gender_female_foreground"
+            android:title="Add patient" />
 
     </group>
     <group android:id="@+id/menu_group_2">

@@ -15,6 +15,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.RadioGroup;
+import android.widget.Toast;
 
 import com.example.pulseoximeter2021.Bluetooth.BluetoothHelper;
 import com.example.pulseoximeter2021.Measure.MeasureActivity;
@@ -75,9 +76,16 @@ public class StartingFragment extends Fragment {
     }
 
     private void measureClick(View view) {
-        Intent intent = new Intent(getContext(), MeasureActivity.class);
-        intent.putExtra("DURATION", duration);
-        startActivity(intent);
+        if(bluetoothHelper.isConnected())
+        {
+            Intent intent = new Intent(getContext(), MeasureActivity.class);
+            intent.putExtra("DURATION", duration);
+            startActivity(intent);
+        }
+        else
+        {
+            Toast.makeText(requireActivity().getApplicationContext(), "Connect with the device first", Toast.LENGTH_LONG).show();
+        }
     }
 
     private void rgDurationOnCheckedChanged(RadioGroup group, int checkedId) {

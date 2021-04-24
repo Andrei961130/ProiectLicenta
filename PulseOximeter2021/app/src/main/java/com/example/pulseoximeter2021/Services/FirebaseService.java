@@ -5,7 +5,9 @@ import androidx.annotation.NonNull;
 import com.example.pulseoximeter2021.DataLayer.Models.Firebase.Record;
 import com.example.pulseoximeter2021.DataLayer.Models.Firebase.User;
 import com.example.pulseoximeter2021.DataLayer.Room.MyFirebaseDatabase;
+import com.example.pulseoximeter2021.R;
 import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.android.material.navigation.NavigationView;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
@@ -40,6 +42,7 @@ public class FirebaseService {
         if(firebaseUser != null)
             downloadUserDetails();
     }
+
 
     public interface RecordDataStatus
     {
@@ -116,7 +119,9 @@ public class FirebaseService {
             public void onDataChange(@NonNull DataSnapshot snapshot) {
                 for(DataSnapshot keyNode : snapshot.getChildren()) {
                     if(keyNode.getKey().equals(firebaseUser.getUid()))
+                    {
                         userDetails = keyNode.getValue(User.class);
+                    }
                 }
             }
 
@@ -129,7 +134,7 @@ public class FirebaseService {
 
     public User getUserDetails()
     {
-        return userDetails;
+        return userDetails != null ? userDetails : null;
     }
 
     public FirebaseUser getCurrentUser()
@@ -139,6 +144,21 @@ public class FirebaseService {
 
     public String getFullName()
     {
+        return firebaseUser.getDisplayName();
+    }
+
+    public String getFullNameFromDetails()
+    {
         return userDetails.getFirstName().concat(" ").concat(userDetails.getLastName());
+    }
+
+    public Boolean isDoctor()
+    {
+        if(firebaseUser != null && firebaseUser.getPhotoUrl() != null) {
+            String isDoctor = firebaseUser.getPhotoUrl().toString();
+            return isDoctor.equals("Doctor");
+        }
+        else
+            return false;
     }
 }

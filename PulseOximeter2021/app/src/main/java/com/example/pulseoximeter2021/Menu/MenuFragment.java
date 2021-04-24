@@ -1,6 +1,7 @@
 package com.example.pulseoximeter2021.Menu;
 
 import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
@@ -12,16 +13,20 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 
 import com.example.pulseoximeter2021.Authenticate.AuthenticationActivity;
+import com.example.pulseoximeter2021.DataLayer.Models.Firebase.User;
 import com.example.pulseoximeter2021.Profile.ProfileActivity;
 import com.example.pulseoximeter2021.R;
 import com.example.pulseoximeter2021.Records.RecordsActivity;
+import com.example.pulseoximeter2021.Services.FirebaseService;
 import com.google.android.material.navigation.NavigationView;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 import com.squareup.picasso.Picasso;
 
 public class MenuFragment extends Fragment {
 
     ImageView ivMenuHeader;
+
     public MenuFragment() {
         // Required empty public constructor
     }
@@ -34,12 +39,24 @@ public class MenuFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        // Inflate the layout for this fragment
-        View view = inflater.inflate(R.layout.fragment_menu, container, false);
+        View view = null;
 
 //        ivMenuHeader = (ImageView) view.findViewById(R.id.fragment_menu_header_image);
 
-        NavigationView vNavigation = (NavigationView) view.findViewById(R.id.fragment_menu_navigation_view);
+        NavigationView vNavigation;
+
+        if(FirebaseService.getInstance().isDoctor())
+        {
+            view = inflater.inflate(R.layout.fragment_menu, container, false);
+            vNavigation = (NavigationView) view.findViewById(R.id.fragment_menu_navigation_view);
+        }
+        else
+        {
+            view = inflater.inflate(R.layout.fragment_menu, container, false);
+            vNavigation = (NavigationView) view.findViewById(R.id.fragment_menu_navigation_view);
+        }
+
+
 
         View headerLayout = vNavigation.getHeaderView(0);
 //        View headerLayout = vNavigation.inflateHeaderView(R.layout.fragment_menu_header);

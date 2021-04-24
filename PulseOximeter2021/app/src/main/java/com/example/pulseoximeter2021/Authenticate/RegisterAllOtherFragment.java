@@ -2,6 +2,7 @@ package com.example.pulseoximeter2021.Authenticate;
 
 import android.app.DatePickerDialog;
 import android.content.Intent;
+import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.telephony.PhoneNumberUtils;
@@ -24,6 +25,7 @@ import com.example.pulseoximeter2021.R;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.UserProfileChangeRequest;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 
@@ -134,6 +136,11 @@ public class RegisterAllOtherFragment extends Fragment {
                         @Override
                         public void onSuccess(Void aVoid) {
                             Toast.makeText(getActivity(),"Saved",Toast.LENGTH_LONG).show();
+                            firebaseAuth.getCurrentUser().updateProfile( new UserProfileChangeRequest.Builder()
+                            .setDisplayName(firstNameStr.concat(" ").concat(lastNameStr))
+                                    .setPhotoUri(Uri.parse("Doctor"))
+                                    .build()
+                            );
                             requireActivity().finish();
 
                             Intent intent = new Intent(getActivity(), MainActivity.class);

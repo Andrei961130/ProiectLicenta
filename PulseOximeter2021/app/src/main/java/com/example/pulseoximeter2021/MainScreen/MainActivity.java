@@ -70,27 +70,29 @@ public class MainActivity extends AppCompatActivity implements StartingFragment.
 
     protected void setupToolbar() {
 
-        Handler handler = new Handler(Looper.getMainLooper());
-        handler.postDelayed(() -> {
-            try {
-                toolbarTitle.setText(FirebaseService.getInstance().getUserDetails().getFirstName());
-            }
-            catch (Exception e)
-            {
-                Handler handler1 = new Handler(Looper.getMainLooper());
-                handler1.postDelayed(() -> {
-                    try {
-                        toolbarTitle.setText(FirebaseService.getInstance().getUserDetails().getFirstName());
-                    }
-                    catch (Exception e1)
-                    {
+        toolbarTitle.setText(FirebaseService.getInstance().getCurrentUser().getDisplayName().split(" ")[0]);
 
-                    }
-
-                }, 2000);
-            }
-
-        }, 1000);
+//        Handler handler = new Handler(Looper.getMainLooper());
+//        handler.postDelayed(() -> {
+//            try {
+//                toolbarTitle.setText(FirebaseService.getInstance().getUserDetails().getFirstName());
+//            }
+//            catch (Exception e)
+//            {
+//                Handler handler1 = new Handler(Looper.getMainLooper());
+//                handler1.postDelayed(() -> {
+//                    try {
+//                        toolbarTitle.setText(FirebaseService.getInstance().getUserDetails().getFirstName());
+//                    }
+//                    catch (Exception e1)
+//                    {
+//
+//                    }
+//
+//                }, 2000);
+//            }
+//
+//        }, 1000);
 
     }
 

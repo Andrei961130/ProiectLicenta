@@ -1,27 +1,24 @@
 package com.example.pulseoximeter2021.Authenticate;
 
-import androidx.annotation.NonNull;
-import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 
-import android.content.DialogInterface;
 import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
-import android.view.View;
-import android.widget.Button;
-import android.widget.EditText;
+import android.os.Handler;
+import android.os.Looper;
 import android.widget.Toast;
 
 import com.example.pulseoximeter2021.MainScreen.MainActivity;
 import com.example.pulseoximeter2021.R;
 import com.example.pulseoximeter2021.Services.FirebaseService;
-import com.google.android.gms.tasks.OnCompleteListener;
-import com.google.android.gms.tasks.Task;
-import com.google.firebase.auth.AuthResult;
-import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.Logger;
+
+import java.util.Timer;
+import java.util.TimerTask;
+import java.util.concurrent.atomic.AtomicInteger;
 
 public class AuthenticationActivity extends AppCompatActivity
 {
@@ -32,7 +29,7 @@ public class AuthenticationActivity extends AppCompatActivity
         setContentView(R.layout.activity_auth);
 
         FirebaseDatabase.getInstance().setLogLevel(Logger.Level.DEBUG);
-        FirebaseUser user = FirebaseService.getInstance().getCurrentUser();
+        FirebaseUser user = FirebaseService.getInstance().getUser();
 
         if(user != null)
         {
