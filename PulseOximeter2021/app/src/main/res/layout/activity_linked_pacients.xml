@@ -1,31 +1,28 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".LinkedPacients.LinkedPacientsActivity">
+    tools:context=".LinkedPacients.LinkedPacientsActivity"
+    android:orientation="vertical">
 
     <androidx.appcompat.widget.SearchView
-        android:id="@+id/activity_linked_pacients_search_view"
+        android:id="@+id/activity_add_pacient_search_view"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:hint="Search..."
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        android:paddingBottom="16dp"/>
+        android:layout_height="?attr/actionBarSize"
+        android:queryHint="Search..."
+        android:padding="10dp"
+        android:layout_margin="5dp"/>
 
     <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/activity_linked_pacients_recyclerview"
+        android:id="@+id/activity_add_pacient_recyclerview"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginLeft="16dp"
-        android:layout_marginRight="16dp"
+        android:layout_height="match_parent"
         app:layoutManager="LinearLayoutManager"
-        tools:listitem="@layout/users_card_view"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/activity_linked_pacients_search_view" />
+        android:layout_margin="5dp"
+        tools:listitem="@layout/users_card_view" />
 
 
-
-</androidx.constraintlayout.widget.ConstraintLayout>
+</LinearLayout>

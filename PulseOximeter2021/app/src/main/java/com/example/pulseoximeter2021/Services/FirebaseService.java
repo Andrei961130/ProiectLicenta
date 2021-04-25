@@ -33,6 +33,7 @@ public class FirebaseService {
 
     private ArrayList<Record> records = new ArrayList<>();
     private ArrayList<User> linkedUsers = new ArrayList<>();
+    private ArrayList<User> searchedUsers = new ArrayList<>();
 
     private FirebaseService()
     {
@@ -166,6 +167,42 @@ public class FirebaseService {
 
             }
         });
+    }
+
+
+    public void readUserBySearchBox(final UserDataStatus dataStatus, String searchedText) {
+        databaseReference.child(USERS).orderByChild("email").startAt(searchedText).endAt(searchedText + "\uf8ff").limitToFirst(10)
+                .addValueEventListener(new ValueEventListener() {
+                    @Override
+                    public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                        searchedUsers.clear();
+
+                        ArrayList<String> keys = new ArrayList<String>();
+
+                        for (DataSnapshot keyNode : dataSnapshot.getChildren()) {
+                            keys.add(keyNode.getKey());
+
+                            User user = keyNode.getValue(User.class);
+
+                            if (!searchedUsers.contains(user))
+                                searchedUsers.add(user);
+                        }
+
+                        try {
+                            dataStatus.DataIsLoaded(searchedUsers, keys);
+                        } catch (ExecutionException e) {
+                            e.printStackTrace();
+                        } catch (InterruptedException e) {
+                            e.printStackTrace();
+                        }
+                    }
+
+
+                    @Override
+                    public void onCancelled(@NonNull DatabaseError databaseError) {
+
+                    }
+                });
     }
 
     public void addRecord(Record record, final MyFirebaseDatabase.DataStatus dataStatus)

@@ -14,6 +14,7 @@ import com.example.pulseoximeter2021.Services.FirebaseService;
 public class ProfileActivity extends AppCompatActivity {
 
     User user = null;
+    Boolean doctorView = false;
 
     TextView tvFullName;
     TextView tvEmail;
@@ -35,6 +36,7 @@ public class ProfileActivity extends AppCompatActivity {
         ivArrowBack = findViewById(R.id.activity_profile_iv_arrow_back);
 
         user = (User) getIntent().getSerializableExtra("user");
+        doctorView = (Boolean) getIntent().getSerializableExtra("doctor_view");
 
         setUserDetails(user);
 
@@ -51,7 +53,7 @@ public class ProfileActivity extends AppCompatActivity {
         if(user == null)
         {
             user = FirebaseService.getInstance().getUserDetails();
-            tvFullName.setText(FirebaseService.getInstance().getFullName());
+//            tvFullName.setText(FirebaseService.getInstance().getFullName());
         }
 
         tvFullName.setText(user.getFirstName().concat(" ").concat(user.getLastName()));

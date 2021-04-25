@@ -26,7 +26,7 @@ public class LinkedPacientsActivity extends AppCompatActivity {
         FirebaseService.getInstance().readUsersByDoctor(new FirebaseService.UserDataStatus() {
             @Override
             public void DataIsLoaded(ArrayList<User> users, ArrayList<String> keys) throws ExecutionException, InterruptedException {
-                recyclerView = (RecyclerView) findViewById(R.id.activity_linked_pacients_recyclerview);
+                recyclerView = (RecyclerView) findViewById(R.id.activity_add_pacient_recyclerview);
                 recyclerView.setLayoutManager(new LinearLayoutManager(getApplicationContext()));
                 userAdapter = new LinkedPacientsAdapter(getBaseContext(), users);
                 recyclerView.setAdapter(userAdapter);

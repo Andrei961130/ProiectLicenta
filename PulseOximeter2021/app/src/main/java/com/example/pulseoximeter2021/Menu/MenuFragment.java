@@ -11,6 +11,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 
+import com.example.pulseoximeter2021.AddPatient.AddPatientActivity;
 import com.example.pulseoximeter2021.LinkedPacients.LinkedPacientsActivity;
 import com.example.pulseoximeter2021.Authenticate.AuthenticationActivity;
 import com.example.pulseoximeter2021.Profile.ProfileActivity;
@@ -92,6 +93,11 @@ public class MenuFragment extends Fragment {
                 else if(id == R.id.menu_patients)
                 {
                     Intent intent = new Intent(getContext(), LinkedPacientsActivity.class);
+                    startActivity(intent);
+                }
+                else if(id == R.id.menu_add_patient)
+                {
+                    Intent intent = new Intent(getContext(), AddPatientActivity.class);
                     startActivity(intent);
                 }
 

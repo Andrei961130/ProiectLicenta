@@ -176,6 +176,13 @@
                     android:layout_marginTop="15dp"
                     android:background="@color/grey" />
 
+                <Button
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/activity_profile_btn_link"
+                    android:text="Link"
+                    android:layout_gravity="center"/>
+
             </LinearLayout>
 
 
