@@ -15,6 +15,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.example.pulseoximeter2021.DataLayer.Models.Firebase.User;
 import com.example.pulseoximeter2021.Profile.ProfileActivity;
 import com.example.pulseoximeter2021.R;
+import com.example.pulseoximeter2021.Records.RecordsActivity;
 
 import java.util.ArrayList;
 
@@ -49,7 +50,11 @@ public class LinkedPacientsAdapter extends RecyclerView.Adapter<LinkedPacientsAd
             public void onClick(View v) {
                 Toast.makeText(v.getContext(), users.get(position).getFirstName(), Toast.LENGTH_SHORT).show();
 
-                Intent intent = new Intent(context, ProfileActivity.class);
+//                Intent intent = new Intent(context, ProfileActivity.class);
+//                intent.putExtra("user", users.get(position));
+//                v.getContext().startActivity(intent);
+
+                Intent intent = new Intent(context, RecordsActivity.class);
                 intent.putExtra("user", users.get(position));
                 v.getContext().startActivity(intent);
             }

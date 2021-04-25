@@ -131,11 +131,9 @@ public class FirebaseService {
         });
     }
 
-    public void readUserRecords(final RecordDataStatus dataStatus)
+    public void readUserRecords(final RecordDataStatus dataStatus, String uid)
     {
-        firebaseUser = FirebaseAuth.getInstance().getCurrentUser();
-
-        databaseReference.child(RECORDS).child(firebaseUser.getUid()).addValueEventListener(new ValueEventListener() {
+        databaseReference.child(RECORDS).child(uid).addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                 records.clear();

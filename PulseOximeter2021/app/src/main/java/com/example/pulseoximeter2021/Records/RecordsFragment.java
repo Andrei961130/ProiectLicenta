@@ -43,12 +43,10 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.ExecutionException;
 
-/**
- * A fragment representing a list of Items.
- */
 public class RecordsFragment extends Fragment {
 
-    private static final String ARG_COLUMN_COUNT = "column-count";
+    private User user = null;
+    private String uid = null;
 
     private RecyclerView recyclerView;
     ArrayList<Record> records;
@@ -57,14 +55,7 @@ public class RecordsFragment extends Fragment {
     public RecordsFragment() {
     }
 
-    @SuppressWarnings("unused")
-    public static RecordsFragment newInstance(int columnCount) {
-        RecordsFragment fragment = new RecordsFragment();
-        Bundle args = new Bundle();
-        args.putInt(ARG_COLUMN_COUNT, columnCount);
-        fragment.setArguments(args);
-        return fragment;
-    }
+
 
     @Override
     public void onAttach(@NonNull Context context) {
@@ -75,6 +66,15 @@ public class RecordsFragment extends Fragment {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
+        Bundle bundle = getArguments();
+
+        if(bundle != null)
+            user = (User) bundle.getSerializable("user");
+
+        if(user != null)
+            uid = user.getUid();
+        else
+            uid = FirebaseService.getInstance().getCurrentUser().getUid();
     }
 
     @Override
@@ -106,7 +106,7 @@ public class RecordsFragment extends Fragment {
             public void DataIsDeleted() {
 
             }
-        });
+        }, uid);
 
 
         view.setFocusableInTouchMode(true);
