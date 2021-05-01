@@ -51,6 +51,9 @@ public class AuthenticationActivity extends AppCompatActivity
         }
         else
         {
+            if(signedOut)
+                FirebaseService.getNewInstance();
+
             getSupportFragmentManager()
                     .beginTransaction()
                     .add(R.id.activity_auth_fragment_container, new LoginFragment())

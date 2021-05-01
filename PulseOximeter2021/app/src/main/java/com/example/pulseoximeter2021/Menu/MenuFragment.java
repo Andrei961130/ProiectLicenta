@@ -3,6 +3,7 @@ package com.example.pulseoximeter2021.Menu;
 import android.content.Intent;
 import android.os.Bundle;
 
+import androidx.core.app.ActivityCompat;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -112,14 +113,27 @@ public class MenuFragment extends Fragment {
                     FirebaseService.getInstance().readDoctorByUser("", new FirebaseService.UserDataStatus() {
                         @Override
                         public void DataIsLoaded(ArrayList<User> users, ArrayList<String> keys) throws ExecutionException, InterruptedException {
+//                            requireFragmentManager().popBackStack(new ProfileActivity());
+
+
                             Intent intent = new Intent(getContext(), ProfileActivity.class);
                             intent.putExtra("user", users.get(0));
+//                            intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
                             startActivity(intent);
+
+                            //ActivityCompat.finishAffinity(profileActivity);
                         }
 
                         @Override
                         public void DataIsInserted() {
 
+                        }
+                    }, new FirebaseService.NoDoctorStatus() {
+                        @Override
+                        public void NoDoctor() {
+                            Intent intent = new Intent(getContext(), ProfileActivity.class);
+                            intent.putExtra("my_doctor_initial", true);
+                            startActivity(intent);
                         }
                     });
                 }

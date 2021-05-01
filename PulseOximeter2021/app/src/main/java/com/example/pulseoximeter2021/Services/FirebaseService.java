@@ -62,6 +62,11 @@ public class FirebaseService {
         void DataIsInserted();
     }
 
+    public interface NoDoctorStatus
+    {
+        void NoDoctor();
+    }
+
     public void readUsersByDoctor(final UserDataStatus dataStatus)
     {
         firebaseUser = FirebaseAuth.getInstance().getCurrentUser();
@@ -135,7 +140,7 @@ public class FirebaseService {
         });
     }
 
-    public void readDoctorByUser(final String uid, final UserDataStatus dataStatus)
+    public void readDoctorByUser(final String uid, final UserDataStatus dataStatus, final NoDoctorStatus noDoctorStatus)
     {
         firebaseUser = FirebaseAuth.getInstance().getCurrentUser();
 
@@ -145,11 +150,12 @@ public class FirebaseService {
         else
             usedUid = uid;
 
-
         databaseReference.child(LINKS).addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                 linkedUsers.clear();
+
+                Boolean doctorFound = false;
 
                 ArrayList<String> keys = new ArrayList<String>();
 
@@ -158,6 +164,8 @@ public class FirebaseService {
                     Link link = keyNode.getValue(Link.class);
 
                     if(link.getPacientUid().equals(usedUid)) {
+
+                        doctorFound = true;
 
                         firebaseDatabase.getReference().child(USERS).child(link.getDoctorUid())
                                 .addValueEventListener(new ValueEventListener() {
@@ -197,13 +205,10 @@ public class FirebaseService {
                     }
                 }
 
-//                try {
-//                    dataStatus.DataIsLoaded(users,keys);
-//                } catch (ExecutionException e) {
-//                    e.printStackTrace();
-//                } catch (InterruptedException e) {
-//                    e.printStackTrace();
-//                }
+
+                if(!doctorFound) {
+                    noDoctorStatus.NoDoctor();
+                }
             }
 
 

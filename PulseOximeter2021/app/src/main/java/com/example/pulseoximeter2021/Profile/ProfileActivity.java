@@ -11,6 +11,7 @@ import android.widget.TextView;
 
 import com.example.pulseoximeter2021.DataLayer.Models.Firebase.Link;
 import com.example.pulseoximeter2021.DataLayer.Models.Firebase.User;
+import com.example.pulseoximeter2021.MainScreen.StartingFragment;
 import com.example.pulseoximeter2021.R;
 import com.example.pulseoximeter2021.Services.FirebaseService;
 
@@ -24,6 +25,8 @@ public class ProfileActivity extends AppCompatActivity {
     User doctorForUser = null;
     Boolean hasDoctor = false;
 
+    Boolean myDoctorInitial;
+
     TextView tvFullName;
     TextView tvEmail;
     TextView tvPhoneNumber;
@@ -31,6 +34,8 @@ public class ProfileActivity extends AppCompatActivity {
     ImageView ivPhoto;
     ImageView ivArrowBack;
     Button btnLink;
+
+    NoDoctorFragment noDoctorFragment = null;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -47,8 +52,14 @@ public class ProfileActivity extends AppCompatActivity {
 
         user = (User) getIntent().getSerializableExtra("user");
         doctorView = (Boolean) getIntent().getSerializableExtra("doctor_view");
+
         if(doctorView == null)
             doctorView = false;
+
+        myDoctorInitial = (Boolean) getIntent().getSerializableExtra("my_doctor_initial");
+
+        if(myDoctorInitial == null)
+            myDoctorInitial = false;
 
         setLinkButton();
 
@@ -72,10 +83,20 @@ public class ProfileActivity extends AppCompatActivity {
                     doctorForUser = users.get(0);
                     btnLink.setText("Already linked");
                     hasDoctor = true;
+
+                    if (noDoctorFragment != null) {
+                        getSupportFragmentManager().popBackStack();
+                        noDoctorFragment = null;
+                    }
                 }
 
                 @Override
                 public void DataIsInserted() {
+
+                }
+            }, new FirebaseService.NoDoctorStatus() {
+                @Override
+                public void NoDoctor() {
 
                 }
             });
@@ -98,6 +119,11 @@ public class ProfileActivity extends AppCompatActivity {
                             public void DataIsInserted() {
                                 btnLink.setText("Already linked");
                                 hasDoctor = true;
+
+                                if(noDoctorFragment != null) {
+                                    getSupportFragmentManager().popBackStack();
+                                    noDoctorFragment = null;
+                                }
                             }
                         });
                     }
@@ -107,6 +133,18 @@ public class ProfileActivity extends AppCompatActivity {
     }
 
     private void setUserDetails(User user) {
+
+        if(user==null && myDoctorInitial)
+        {
+            noDoctorFragment = new NoDoctorFragment();
+
+            getSupportFragmentManager()
+                    .beginTransaction()
+                    .add(R.id.activity_profile_fragment_container, noDoctorFragment)
+                    .commit();
+
+            return;
+        }
 
         if(user == null)
         {
