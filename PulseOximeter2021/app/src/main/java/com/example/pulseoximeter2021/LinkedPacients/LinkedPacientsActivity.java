@@ -31,6 +31,11 @@ public class LinkedPacientsActivity extends AppCompatActivity {
                 userAdapter = new LinkedPacientsAdapter(getBaseContext(), users);
                 recyclerView.setAdapter(userAdapter);
             }
+
+            @Override
+            public void DataIsInserted() {
+
+            }
         });
     }
 }

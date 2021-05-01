@@ -129,7 +129,7 @@ public class RegisterAllOtherFragment extends Fragment {
 
             Bundle bundle = getArguments();
             User user = new User(uid, bundle.getString("email"),
-                    firstNameStr, lastNameStr, dateStr, genderStr, false);
+                    firstNameStr, lastNameStr, dateStr, genderStr,phoneStr, false);
 
             databaseReference.child("Users").child(uid).setValue(user)
                     .addOnSuccessListener(new OnSuccessListener<Void>() {

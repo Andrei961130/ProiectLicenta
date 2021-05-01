@@ -4,6 +4,8 @@ import android.content.Intent;
 import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import android.view.LayoutInflater;
 import android.view.MenuItem;
@@ -12,8 +14,10 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 
 import com.example.pulseoximeter2021.AddPatient.AddPatientActivity;
+import com.example.pulseoximeter2021.DataLayer.Models.Firebase.User;
 import com.example.pulseoximeter2021.LinkedPacients.LinkedPacientsActivity;
 import com.example.pulseoximeter2021.Authenticate.AuthenticationActivity;
+import com.example.pulseoximeter2021.LinkedPacients.LinkedPacientsAdapter;
 import com.example.pulseoximeter2021.Profile.ProfileActivity;
 import com.example.pulseoximeter2021.R;
 import com.example.pulseoximeter2021.Records.RecordsActivity;
@@ -21,6 +25,9 @@ import com.example.pulseoximeter2021.Services.FirebaseService;
 import com.google.android.material.navigation.NavigationView;
 import com.google.firebase.auth.FirebaseAuth;
 import com.squareup.picasso.Picasso;
+
+import java.util.ArrayList;
+import java.util.concurrent.ExecutionException;
 
 public class MenuFragment extends Fragment {
 
@@ -99,6 +106,22 @@ public class MenuFragment extends Fragment {
                 {
                     Intent intent = new Intent(getContext(), AddPatientActivity.class);
                     startActivity(intent);
+                }
+                else if(id == R.id.menu_my_doctor)
+                {
+                    FirebaseService.getInstance().readDoctorByUser("", new FirebaseService.UserDataStatus() {
+                        @Override
+                        public void DataIsLoaded(ArrayList<User> users, ArrayList<String> keys) throws ExecutionException, InterruptedException {
+                            Intent intent = new Intent(getContext(), ProfileActivity.class);
+                            intent.putExtra("user", users.get(0));
+                            startActivity(intent);
+                        }
+
+                        @Override
+                        public void DataIsInserted() {
+
+                        }
+                    });
                 }
 
 //                getFragmentManager()

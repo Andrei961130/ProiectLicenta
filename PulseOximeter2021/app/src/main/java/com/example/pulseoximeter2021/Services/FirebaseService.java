@@ -34,6 +34,8 @@ public class FirebaseService {
     private ArrayList<Record> records = new ArrayList<>();
     private ArrayList<User> linkedUsers = new ArrayList<>();
     private ArrayList<User> searchedUsers = new ArrayList<>();
+    private ArrayList<User> linkedDoctorForUser = new ArrayList<>();
+
 
     private FirebaseService()
     {
@@ -57,6 +59,7 @@ public class FirebaseService {
     public interface UserDataStatus
     {
         void DataIsLoaded(ArrayList<User> users, ArrayList<String> keys) throws ExecutionException, InterruptedException;
+        void DataIsInserted();
     }
 
     public void readUsersByDoctor(final UserDataStatus dataStatus)
@@ -88,6 +91,86 @@ public class FirebaseService {
 
                                         try {
                                             dataStatus.DataIsLoaded(linkedUsers,keys);
+                                        } catch (ExecutionException e) {
+                                            e.printStackTrace();
+                                        } catch (InterruptedException e) {
+                                            e.printStackTrace();
+                                        }
+
+                                    }
+
+                                    @Override
+                                    public void onCancelled(@NonNull DatabaseError error) {
+
+                                    }
+                                }) ;
+
+
+
+
+//                        keys.add(keyNode.getKey());
+//
+//                        User user = keyNode.getValue(User.class);
+//
+//                        if (!users.contains(user))
+//                            users.add(user);
+                    }
+                }
+
+//                try {
+//                    dataStatus.DataIsLoaded(users,keys);
+//                } catch (ExecutionException e) {
+//                    e.printStackTrace();
+//                } catch (InterruptedException e) {
+//                    e.printStackTrace();
+//                }
+            }
+
+
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+
+            }
+        });
+    }
+
+    public void readDoctorByUser(final String uid, final UserDataStatus dataStatus)
+    {
+        firebaseUser = FirebaseAuth.getInstance().getCurrentUser();
+
+        String usedUid;
+        if(uid.equals(""))
+            usedUid = firebaseUser.getUid();
+        else
+            usedUid = uid;
+
+
+        databaseReference.child(LINKS).addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                linkedUsers.clear();
+
+                ArrayList<String> keys = new ArrayList<String>();
+
+                for(DataSnapshot keyNode : dataSnapshot.getChildren())
+                {
+                    Link link = keyNode.getValue(Link.class);
+
+                    if(link.getPacientUid().equals(usedUid)) {
+
+                        firebaseDatabase.getReference().child(USERS).child(link.getDoctorUid())
+                                .addValueEventListener(new ValueEventListener() {
+                                    @Override
+                                    public void onDataChange(@NonNull DataSnapshot snapshot) {
+
+                                        User user = snapshot.getValue(User.class);
+
+                                        if (!linkedDoctorForUser.contains(user))
+                                            linkedDoctorForUser.add(user);
+
+                                        try {
+                                            dataStatus.DataIsLoaded(linkedDoctorForUser,keys);
                                         } catch (ExecutionException e) {
                                             e.printStackTrace();
                                         } catch (InterruptedException e) {
@@ -180,12 +263,14 @@ public class FirebaseService {
                         ArrayList<String> keys = new ArrayList<String>();
 
                         for (DataSnapshot keyNode : dataSnapshot.getChildren()) {
-                            keys.add(keyNode.getKey());
-
                             User user = keyNode.getValue(User.class);
 
-                            if (!searchedUsers.contains(user))
-                                searchedUsers.add(user);
+                            if(!user.getDoctor()) {
+
+                                keys.add(keyNode.getKey());
+                                if (!searchedUsers.contains(user))
+                                    searchedUsers.add(user);
+                            }
                         }
 
                         try {
@@ -212,6 +297,17 @@ public class FirebaseService {
                     @Override
                     public void onSuccess(Void aVoid) {
                         dataStatus.recordDataIsInserted();
+                    }
+                });
+    }
+
+    public void addUserAndDoctorLink(Link link, final UserDataStatus dataStatus)
+    {
+        databaseReference.child(LINKS).push().setValue(link)
+                .addOnSuccessListener(new OnSuccessListener<Void>() {
+                    @Override
+                    public void onSuccess(Void aVoid) {
+                        dataStatus.DataIsInserted();
                     }
                 });
     }

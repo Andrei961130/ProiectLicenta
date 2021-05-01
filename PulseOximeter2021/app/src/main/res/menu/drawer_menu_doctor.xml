@@ -7,13 +7,14 @@
             android:title="Profile"
             />
         <item
+            android:id="@+id/menu_records"
+            android:icon="@drawable/ic_date_foreground"
+            android:title="My records" />
+        <item
             android:id="@+id/menu_patients"
             android:icon="@drawable/ic_bluetooth"
             android:title="Patients" />
-        <item
-            android:id="@+id/menu_appointment"
-            android:icon="@drawable/ic_date_foreground"
-            android:title="Appointments" />
+
         <item
             android:id="@+id/menu_add_patient"
             android:icon="@drawable/ic_gender_female_foreground"

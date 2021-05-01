@@ -19,6 +19,7 @@ public class User implements Serializable
     public User(String uid, String email,
                 String firstName, String lastName,
                 String birthday, String gender,
+                String phoneNumber,
                 Boolean isDoctor)
     {
         this.uid = uid;
@@ -28,6 +29,7 @@ public class User implements Serializable
         this.birthday = birthday;
         this.gender = gender;
         this.isDoctor = isDoctor;
+        this.phoneNumber = phoneNumber;
     }
 
     public String getUid() {

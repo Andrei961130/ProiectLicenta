@@ -52,6 +52,11 @@ public class AddPatientActivity extends AppCompatActivity {
                 userAdapter = new AddPacientAdapter(getApplicationContext(), users);
                 recyclerView.setAdapter(userAdapter);
             }
+
+            @Override
+            public void DataIsInserted() {
+
+            }
         }, searchedText);
     }
 
@@ -62,6 +67,11 @@ public class AddPatientActivity extends AppCompatActivity {
                 recyclerView.setLayoutManager(new LinearLayoutManager(getApplicationContext()));
                 userAdapter = new AddPacientAdapter(getApplicationContext(), users);
                 recyclerView.setAdapter(userAdapter);
+            }
+
+            @Override
+            public void DataIsInserted() {
+
             }
         }, newText);
     }

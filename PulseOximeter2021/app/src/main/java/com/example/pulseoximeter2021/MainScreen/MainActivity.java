@@ -48,7 +48,11 @@ public class MainActivity extends AppCompatActivity implements StartingFragment.
         ivBluetooth.setOnClickListener(v -> {
 
             BluetoothHelper bluetoothHelper = BluetoothHelper.getInstance();
-            bluetoothHelper.Connect("HC-05");
+
+            if(bluetoothHelper.isConnected())
+                setBluetoothIvColorGreen();
+            else
+                bluetoothHelper.Connect("HC-05");
         });
     }
 
