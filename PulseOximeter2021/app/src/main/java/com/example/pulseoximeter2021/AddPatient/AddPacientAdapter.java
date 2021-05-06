@@ -42,7 +42,7 @@ public class AddPacientAdapter extends RecyclerView.Adapter<AddPacientAdapter.Vi
     @Override
     public void onBindViewHolder(@NonNull AddPacientAdapter.ViewHolder holder, int position) {
 
-        holder.tvDisplayName.setText(users.get(position).getFirstName().concat(users.get(position).getLastName()));
+        holder.tvDisplayName.setText(users.get(position).getFirstName().concat(" ").concat(users.get(position).getLastName()));
         holder.tvEmail.setText(users.get(position).getEmail());
 
 
