@@ -61,9 +61,5 @@ public class AuthenticationActivity extends AppCompatActivity
                     .commit();
         }
 
-
-
-//        Intent intent = new Intent(this, MainActivity.class);
-//        startActivity(intent);
     }
 }
