@@ -1,20 +1,30 @@
 package com.example.pulseoximeter2021.MainScreen;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.coordinatorlayout.widget.CoordinatorLayout;
 import androidx.fragment.app.FragmentManager;
+import androidx.viewpager2.widget.ViewPager2;
 
 import android.content.res.Resources;
 import android.graphics.PorterDuff;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;
+import android.view.View;
 import android.widget.ImageView;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.example.pulseoximeter2021.Bluetooth.BluetoothHelper;
+import com.example.pulseoximeter2021.MainScreen.ViewPager.ViewPagerAdapter;
 import com.example.pulseoximeter2021.Menu.MenuFragment;
 import com.example.pulseoximeter2021.R;
 import com.example.pulseoximeter2021.Services.FirebaseService;
+import com.google.android.material.snackbar.Snackbar;
+import com.google.android.material.tabs.TabLayout;
+import com.google.android.material.tabs.TabLayoutMediator;
 import com.google.firebase.auth.FirebaseAuth;
 import com.mxn.soul.flowingdrawer_core.ElasticDrawer;
 import com.mxn.soul.flowingdrawer_core.FlowingDrawer;
@@ -23,9 +33,14 @@ public class MainActivity extends AppCompatActivity implements StartingFragment.
 
     private FirebaseAuth firebaseAuth = FirebaseAuth.getInstance();
     private FlowingDrawer flowingDrawer;
+
     private TextView toolbarTitle;
     private ImageView ivBluetooth;
     private ImageView ivMenuBars;
+
+    private CoordinatorLayout parentView;
+    private ViewPager2 viewPager2;
+    private TabLayout tabLayout;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -39,11 +54,16 @@ public class MainActivity extends AppCompatActivity implements StartingFragment.
         ivBluetooth = findViewById(R.id.activity_main_drawer_toolbar_bluetooth_icon);
         ivMenuBars = findViewById(R.id.activity_main_drawer_toolbar_menu_icon);
 
+        viewPager2 = findViewById(R.id.activity_main_view_pager);
+        tabLayout = findViewById(R.id.activity_main_tab_layout);
+        parentView = findViewById(R.id.activity_main_coordinator_layout);
+
         setupToolbar();
         setBluetoothIvColorRed();
         setMenuBarsListener();
         setupMenu();
         displayMainFragment();
+        setupViewPager();
 
         ivBluetooth.setOnClickListener(v -> {
 
@@ -53,6 +73,27 @@ public class MainActivity extends AppCompatActivity implements StartingFragment.
                 setBluetoothIvColorGreen();
             else
                 bluetoothHelper.Connect("HC-05");
+        });
+    }
+
+    private void setupViewPager() {
+        viewPager2.setAdapter(new ViewPagerAdapter(this));
+        new TabLayoutMediator(tabLayout, viewPager2, new TabLayoutMediator.TabConfigurationStrategy() {
+            @Override
+            public void onConfigureTab(@NonNull TabLayout.Tab tab, int position) {
+                //set something for tab
+//                tab.setText("OBJECT " + (position + 1));
+//                tab.setTabLabelVisibility(TabLayout.TAB_LABEL_VISIBILITY_LABELED);
+                tab.setIcon(R.drawable.ic_tab_indicator_selected);
+            }
+        }).attach();
+
+        viewPager2.registerOnPageChangeCallback(new ViewPager2.OnPageChangeCallback() {
+            @Override
+            public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
+                super.onPageScrolled(position, positionOffset, positionOffsetPixels);
+                Snackbar.make(parentView, "Pagina: " + (position + 1), Snackbar.LENGTH_SHORT).show();
+            }
         });
     }
 
