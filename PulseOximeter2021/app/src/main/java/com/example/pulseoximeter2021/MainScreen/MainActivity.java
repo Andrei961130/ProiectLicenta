@@ -92,7 +92,22 @@ public class MainActivity extends AppCompatActivity implements StartingFragment.
             @Override
             public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
                 super.onPageScrolled(position, positionOffset, positionOffsetPixels);
-                Snackbar.make(parentView, "Pagina: " + (position + 1), Snackbar.LENGTH_SHORT).show();
+
+                switch (position)
+                {
+                    case 0:
+                        FirebaseService.getInstance().setDuration(10);
+                        break;
+                    case 1:
+                        FirebaseService.getInstance().setDuration(15);
+                        break;
+                    case 2:
+                        FirebaseService.getInstance().setDuration(20);
+                        break;
+                    default:
+                        FirebaseService.getInstance().setDuration(10);
+                        break;
+                }
             }
         });
     }

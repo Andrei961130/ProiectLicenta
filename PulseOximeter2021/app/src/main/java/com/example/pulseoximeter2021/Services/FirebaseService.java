@@ -27,6 +27,8 @@ public class FirebaseService {
 
     private User userDetails = null;
 
+    private int duration = 10;
+
     private final String RECORDS = "Records";
     private final String USERS = "Users";
     private final String LINKS = "Links";
@@ -47,6 +49,13 @@ public class FirebaseService {
             downloadUserDetails();
     }
 
+    public int getDuration() {
+        return duration;
+    }
+
+    public void setDuration(int duration) {
+        this.duration = duration;
+    }
 
     public interface RecordDataStatus
     {

@@ -19,13 +19,14 @@ import android.widget.Toast;
 import com.example.pulseoximeter2021.Bluetooth.BluetoothHelper;
 import com.example.pulseoximeter2021.Measure.MeasureActivity;
 import com.example.pulseoximeter2021.R;
+import com.example.pulseoximeter2021.Services.FirebaseService;
+import com.google.android.material.snackbar.Snackbar;
 
 public class StartingFragment extends Fragment {
 
     BluetoothHelper bluetoothHelper;
 
     Button btnMeasure;
-    int duration = 10;
 
     public interface OnBluetoothConnectionChangedListener {
         public void changeBluetoothIcon(Boolean connected);
@@ -72,9 +73,13 @@ public class StartingFragment extends Fragment {
     private void measureClick(View view) {
         if(bluetoothHelper.isConnected())
         {
+//            Snackbar.make(view.getContext(), "Pagina: " + FirebaseService.getInstance().getDuration(), Snackbar.LENGTH_SHORT).show();
+            Toast.makeText(requireActivity().getApplicationContext(), "Pagina: " + FirebaseService.getInstance().getDuration(), Toast.LENGTH_LONG).show();
+
+
             Intent intent = new Intent(getContext(), MeasureActivity.class);
 //            intent.putExtra("DURATION", duration);
-            intent.putExtra("DURATION", 15);
+            intent.putExtra("DURATION", FirebaseService.getInstance().getDuration());
             startActivity(intent);
         }
         else
