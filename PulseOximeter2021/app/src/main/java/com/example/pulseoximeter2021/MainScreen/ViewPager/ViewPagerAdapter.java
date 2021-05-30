@@ -17,9 +17,9 @@ public class ViewPagerAdapter extends RecyclerView.Adapter<ViewPagerAdapter.View
     Context context;
 
     int[][] color_icon = new int[][]{
-            {android.R.color.transparent, R.drawable.ic_heart},
-            {android.R.color.transparent, R.drawable.ic_heartbeat},
-            {android.R.color.transparent, R.drawable.ic_heart}
+            {android.R.color.transparent, R.drawable.ic_10},
+            {android.R.color.transparent, R.drawable.ic_15},
+            {android.R.color.transparent, R.drawable.ic_20}
     };
 
     public ViewPagerAdapter(Context context) {
