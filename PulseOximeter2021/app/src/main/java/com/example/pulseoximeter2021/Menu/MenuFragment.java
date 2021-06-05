@@ -15,6 +15,7 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.example.pulseoximeter2021.About.AboutActivity;
 import com.example.pulseoximeter2021.AddPatient.AddPatientActivity;
 import com.example.pulseoximeter2021.DataLayer.Models.Firebase.User;
 import com.example.pulseoximeter2021.LinkedPacients.LinkedPacientsActivity;
@@ -140,6 +141,11 @@ public class MenuFragment extends Fragment {
                             startActivity(intent);
                         }
                     });
+                }
+                if(id == R.id.menu_about)
+                {
+                    Intent intent = new Intent(getContext(), AboutActivity.class);
+                    startActivity(intent);
                 }
 
 //                getFragmentManager()
