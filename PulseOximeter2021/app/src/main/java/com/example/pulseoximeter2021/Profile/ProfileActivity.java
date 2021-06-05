@@ -134,6 +134,8 @@ public class ProfileActivity extends AppCompatActivity {
 
     private void setUserDetails(User user) {
 
+
+
         if(user==null && myDoctorInitial)
         {
             noDoctorFragment = new NoDoctorFragment();
@@ -151,6 +153,9 @@ public class ProfileActivity extends AppCompatActivity {
             user = FirebaseService.getInstance().getUserDetails();
 //            tvFullName.setText(FirebaseService.getInstance().getFullName());
         }
+
+        if(user != null && !user.getDoctor())
+            ivPhoto.setImageResource(R.drawable.ic_detailed_information);
 
         tvFullName.setText(user.getFirstName().concat(" ").concat(user.getLastName()));
         tvEmail.setText(user.getEmail());

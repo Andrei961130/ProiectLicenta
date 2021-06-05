@@ -13,6 +13,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.TextView;
 
 import com.example.pulseoximeter2021.AddPatient.AddPatientActivity;
 import com.example.pulseoximeter2021.DataLayer.Models.Firebase.User;
@@ -33,6 +34,7 @@ import java.util.concurrent.ExecutionException;
 public class MenuFragment extends Fragment {
 
     ImageView ivMenuHeader;
+    TextView tvMenuTitle;
 
     public MenuFragment() {
         // Required empty public constructor
@@ -68,6 +70,8 @@ public class MenuFragment extends Fragment {
         View headerLayout = vNavigation.getHeaderView(0);
 //        View headerLayout = vNavigation.inflateHeaderView(R.layout.fragment_menu_header);
         ivMenuHeader = (ImageView) headerLayout.findViewById(R.id.fragment_menu_header_image);
+
+        tvMenuTitle = headerLayout.findViewById(R.id.fragment_menu_header_tv_name);
 
 //        View menu = vNavigation.findViewById(drawer_menu);
 //        headerLayout.setBackgroundColor(getResources().getColor(R.color.green));
@@ -154,14 +158,23 @@ public class MenuFragment extends Fragment {
     }
 
     private void setupHeader() {
-        int avatarSize = getResources().getDimensionPixelSize(R.dimen.mtrl_calendar_action_confirm_button_min_width);
-        String profilePhoto = getResources().getString(R.string.user_profile_photo);
-        Picasso.get()
-                .load(profilePhoto)
-                .placeholder(R.drawable.img_circle_placeholder)
-                .resize(avatarSize, avatarSize)
-                .centerCrop()
-                .transform(new CircleTranformation())
-                .into(ivMenuHeader);
+
+        if(FirebaseService.getInstance().getCurrentUser() != null)
+            tvMenuTitle.setText(FirebaseService.getInstance().getCurrentUser().getDisplayName().split(" ")[0]);
+        else
+            tvMenuTitle.setText("");
+
+//        int avatarSize = getResources().getDimensionPixelSize(R.dimen.mtrl_calendar_action_confirm_button_min_width);
+//        String profilePhoto = getResources().getString(R.string.user_profile_photo);
+//        Picasso.get()
+//                .load(R.drawable.ic_choice)
+//                .placeholder(R.drawable.img_circle_placeholder)
+//                .resize(avatarSize, avatarSize)
+//                .centerCrop()
+//                .transform(new CircleTranformation())
+//                .into(ivMenuHeader);
+
+        if(!FirebaseService.getInstance().isDoctor())
+            ivMenuHeader.setImageResource(R.drawable.ic_detailed_information);
     }
 }
