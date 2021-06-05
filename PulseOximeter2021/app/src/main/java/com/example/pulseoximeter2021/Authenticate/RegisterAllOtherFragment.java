@@ -16,6 +16,7 @@ import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentManager;
 
 import com.example.pulseoximeter2021.DataLayer.Models.Firebase.Record;
 import com.example.pulseoximeter2021.DataLayer.Models.Firebase.User;
@@ -135,16 +136,33 @@ public class RegisterAllOtherFragment extends Fragment {
                     .addOnSuccessListener(new OnSuccessListener<Void>() {
                         @Override
                         public void onSuccess(Void aVoid) {
-                            Toast.makeText(getActivity(),"Saved",Toast.LENGTH_LONG).show();
+
                             firebaseAuth.getCurrentUser().updateProfile( new UserProfileChangeRequest.Builder()
                             .setDisplayName(firstNameStr.concat(" ").concat(lastNameStr))
                                     //.setPhotoUri(Uri.parse("Doctor"))
                                     .build()
                             );
-                            requireActivity().finish();
+//                            requireActivity().finish();
 
-                            Intent intent = new Intent(getActivity(), MainActivity.class);
-                            startActivity(intent);
+                            Toast.makeText(getActivity(),"User created",Toast.LENGTH_LONG).show();
+
+                            new java.util.Timer().schedule(
+                                    new java.util.TimerTask() {
+                                        @Override
+                                        public void run() {
+                                            FragmentManager fragmentManager = requireActivity().getSupportFragmentManager();
+                                            if (fragmentManager.getBackStackEntryCount() > 0) {
+                                                FragmentManager.BackStackEntry entry = fragmentManager.getBackStackEntryAt(1);
+                                                fragmentManager.popBackStack(entry.getId(), FragmentManager.POP_BACK_STACK_INCLUSIVE);
+                                            }
+                                        }
+                                    },
+                                    1000
+                            );
+
+
+//                            Intent intent = new Intent(getActivity(), MainActivity.class);
+//                            startActivity(intent);
                         }
                     })
                     .addOnFailureListener(new OnFailureListener() {
