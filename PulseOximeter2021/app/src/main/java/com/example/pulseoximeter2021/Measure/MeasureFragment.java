@@ -14,6 +14,7 @@ import android.widget.TextView;
 import com.example.pulseoximeter2021.Bluetooth.ArduinoMessage;
 import com.example.pulseoximeter2021.Bluetooth.BluetoothHelper;
 import com.example.pulseoximeter2021.DataLayer.Models.Firebase.Record;
+import com.example.pulseoximeter2021.NoValidReadFragment;
 import com.example.pulseoximeter2021.R;
 import com.example.pulseoximeter2021.Services.FirebaseService;
 import com.github.mikephil.charting.charts.LineChart;
@@ -280,6 +281,19 @@ public class MeasureFragment extends Fragment {
     }
 
     private void openMeasuringFragment() {
+
+        if(bpmValues.isEmpty())
+        {
+            getFragmentManager()
+                    .beginTransaction()
+                    .replace(R.id.activity_measure_fragment_container, new NoValidReadFragment())
+                    .addToBackStack("NO_VALID_READ_FRAGMENT")
+                    .commit();
+
+            return;
+        }
+
+
         Collections.sort(oxygenValues);
         double mediumOxygen;
 
@@ -292,6 +306,8 @@ public class MeasureFragment extends Fragment {
             mediumOxygen = ((double) oxygenValues.get(oxygenValues.size() / 2) + (double) oxygenValues.get(oxygenValues.size() / 2 - 1))/2;
         else
             mediumOxygen = (double) oxygenValues.get(oxygenValues.size() / 2);
+
+
 
         String fullName = FirebaseService.getInstance().getFullName();
 

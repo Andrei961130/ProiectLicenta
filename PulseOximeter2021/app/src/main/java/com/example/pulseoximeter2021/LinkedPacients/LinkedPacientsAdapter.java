@@ -44,6 +44,9 @@ public class LinkedPacientsAdapter extends RecyclerView.Adapter<LinkedPacientsAd
         holder.tvDisplayName.setText(users.get(position).getFirstName().concat(" ").concat(users.get(position).getLastName()));
         holder.tvEmail.setText(users.get(position).getEmail());
 
+        if(users.get(position).getGender().equals("Female"))
+            holder.ivGender.setImageResource(R.drawable.ic_gender_female_foreground);
+
 
         holder.itemView.setOnClickListener(new View.OnClickListener() {
             @Override
