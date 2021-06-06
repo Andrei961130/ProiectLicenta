@@ -211,7 +211,8 @@ public class MeasureFragment extends Fragment {
 
 
         // enable description text
-        chart.getDescription().setEnabled(true);
+        chart.getDescription().setEnabled(false);
+        chart.getLegend().setEnabled(false);
 
         // enable touch gestures
         chart.setTouchEnabled(true);
@@ -243,17 +244,18 @@ public class MeasureFragment extends Fragment {
 
         XAxis xl = chart.getXAxis();
         xl.setTypeface(tfLight);
-        xl.setTextColor(Color.WHITE);
+        xl.setTextColor(Color.BLUE);
         xl.setDrawGridLines(false);
         xl.setAvoidFirstLastClipping(true);
-        xl.setEnabled(true);
+        xl.setEnabled(false);
 
         YAxis leftAxis = chart.getAxisLeft();
         leftAxis.setTypeface(tfLight);
-        leftAxis.setTextColor(Color.WHITE);
+        leftAxis.setTextColor(Color.BLUE);
 //        leftAxis.setAxisMaximum(100f);
 //        leftAxis.setAxisMinimum(0f);
-        leftAxis.setDrawGridLines(true);
+        leftAxis.setDrawGridLines(false);
+        leftAxis.setEnabled(false);
 
         YAxis rightAxis = chart.getAxisRight();
         rightAxis.setEnabled(false);
