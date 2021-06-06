@@ -42,6 +42,8 @@ public class MainActivity extends AppCompatActivity implements StartingFragment.
     private ViewPager2 viewPager2;
     private TabLayout tabLayout;
 
+    BluetoothHelper bluetoothHelper;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -58,6 +60,8 @@ public class MainActivity extends AppCompatActivity implements StartingFragment.
         tabLayout = findViewById(R.id.activity_main_tab_layout);
         parentView = findViewById(R.id.activity_main_coordinator_layout);
 
+        bluetoothHelper = BluetoothHelper.getInstance();
+
         setupToolbar();
         setBluetoothIvColorRed();
         setMenuBarsListener();
@@ -67,13 +71,36 @@ public class MainActivity extends AppCompatActivity implements StartingFragment.
 
         ivBluetooth.setOnClickListener(v -> {
 
-            BluetoothHelper bluetoothHelper = BluetoothHelper.getInstance();
-
             if(bluetoothHelper.isConnected())
                 setBluetoothIvColorGreen();
             else
                 bluetoothHelper.Connect("HC-05");
         });
+
+        bluetoothHelper.setBluetoothHelperListener(new BluetoothHelper.BluetoothHelperListener() {
+            @Override
+            public void onBluetoothHelperMessageReceived(BluetoothHelper bluetoothhelper, String message) {
+
+            }
+
+            @Override
+            public void onBluetoothHelperConnectionStateChanged(BluetoothHelper bluetoothhelper, boolean isConnected) {
+                if(isConnected)
+                    setBluetoothIvColorGreen();
+                else
+                    setBluetoothIvColorRed();
+            }
+        });
+    }
+
+    @Override
+    protected void onStart() {
+        super.onStart();
+
+        if(bluetoothHelper.isConnected())
+            setBluetoothIvColorGreen();
+        else
+            setBluetoothIvColorRed();
     }
 
     private void setupViewPager() {

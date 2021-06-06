@@ -7,6 +7,7 @@ import android.os.Bundle;
 
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentManager;
 
 import android.os.Handler;
 import android.os.Looper;
@@ -95,11 +96,22 @@ public class StartingFragment extends Fragment {
         bluetoothHelper.Connect("HC-05");
         if(!bluetoothHelper.isConnected())
         {
-            Handler handler1 = new Handler(Looper.getMainLooper());
-            handler1.postDelayed(() -> {
-                bluetoothHelper.Connect("HC-05");
+            new java.util.Timer().schedule(
+                    new java.util.TimerTask() {
+                        @Override
+                        public void run() {
+                            bluetoothHelper.Connect("HC-05");
+                        }
+                    },
+                    2000
+            );
 
-            }, 2000);
+
+//            Handler handler1 = new Handler(Looper.getMainLooper());
+//            handler1.postDelayed(() -> {
+//                bluetoothHelper.Connect("HC-05");
+//
+//            }, 2000);
         }
 
 
