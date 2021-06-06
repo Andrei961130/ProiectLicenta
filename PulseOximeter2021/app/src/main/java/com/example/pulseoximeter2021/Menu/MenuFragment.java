@@ -25,6 +25,7 @@ import com.example.pulseoximeter2021.Profile.ProfileActivity;
 import com.example.pulseoximeter2021.R;
 import com.example.pulseoximeter2021.Records.RecordsActivity;
 import com.example.pulseoximeter2021.Services.FirebaseService;
+import com.example.pulseoximeter2021.Settings.SettingsActivity;
 import com.google.android.material.navigation.NavigationView;
 import com.google.firebase.auth.FirebaseAuth;
 import com.squareup.picasso.Picasso;
@@ -92,6 +93,11 @@ public class MenuFragment extends Fragment {
                 else if(id == R.id.menu_records)
                 {
                     Intent intent = new Intent(getContext(), RecordsActivity.class);
+                    startActivity(intent);
+                }
+                else if(id == R.id.menu_settings)
+                {
+                    Intent intent = new Intent(getContext(), SettingsActivity.class);
                     startActivity(intent);
                 }
                 else if(id == R.id.menu_logout)

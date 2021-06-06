@@ -25,10 +25,10 @@ public class AuthenticationActivity extends AppCompatActivity
 
         signedOut = getIntent().getBooleanExtra("SIGN_OUT", signedOut);
 
-        if(!signedOut)
-        {
-            FirebaseDatabase.getInstance().setLogLevel(Logger.Level.DEBUG);
-        }
+//        if(!signedOut)
+//        {
+//            FirebaseDatabase.getInstance().setLogLevel(Logger.Level.DEBUG);
+//        }
 
         if(FirebaseService.getInstance().getUser() != null && signedOut == false)
         {

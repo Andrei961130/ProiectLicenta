@@ -223,7 +223,8 @@ public class MainActivity extends AppCompatActivity implements StartingFragment.
         if (flowingDrawer.isMenuVisible()) {
             flowingDrawer.closeMenu();
         } else {
-            super.onBackPressed();
+            //super.onBackPressed();
+            finishAffinity();
         }
     }
 
