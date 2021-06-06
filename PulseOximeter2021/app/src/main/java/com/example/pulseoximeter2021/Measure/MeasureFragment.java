@@ -40,8 +40,6 @@ public class MeasureFragment extends Fragment {
     BluetoothHelper bluetoothHelper;
 
     private TextView detectedFinger;
-    private TextView irValue;
-    private TextView onlyIR;
     private TextView bpm;
     private TextView avgBpm;
     private TextView oxygen;
@@ -78,8 +76,6 @@ public class MeasureFragment extends Fragment {
         View view = inflater.inflate(R.layout.fragment_measure, container, false);
 
         detectedFinger = (TextView) view.findViewById(R.id.detected_finger);
-        irValue = (TextView) view.findViewById(R.id.ir_value);
-        onlyIR = (TextView) view.findViewById(R.id.only_ir);
         bpm = (TextView) view.findViewById(R.id.bpm);
         avgBpm = (TextView) view.findViewById(R.id.avg_bpm);
         oxygen = (TextView) view.findViewById(R.id.oxygen);
@@ -150,12 +146,7 @@ public class MeasureFragment extends Fragment {
                             return;
                         }
 
-                        String onlyIRStr = "Only IR: " + arduinoMessage.getOnlyIR().toString();
-                        onlyIR.setText(onlyIRStr);
-
                         Integer ir = arduinoMessage.getIrValue();
-                        String irValueStr = "IRValue: " + ir.toString();
-                        irValue.setText(irValueStr);
 
                         irValues.add(ir);
                         index++;
@@ -164,23 +155,23 @@ public class MeasureFragment extends Fragment {
 
                         if(!arduinoMessage.getOnlyIR())
                         {
-                            String bpmStr = "Bpm: " + arduinoMessage.getBpm().toString();
+                            String bpmStr = arduinoMessage.getBpm().toString();
                             bpm.setText(bpmStr);
 
                             Integer avgBpmInt = arduinoMessage.getAvgBpm();
                             String avgBpmStr = "Avg Bpm: " + avgBpmInt.toString();
-                            avgBpm.setText(avgBpmStr);
+                            avgBpm.setText(avgBpmInt.toString());
 
                             bpmValues.add(avgBpmInt);
 
                             Integer oxygenInt = arduinoMessage.getOxygen();
-                            String oxygenStr = "Oxygen: " + oxygenInt.toString() + " %";
+                            String oxygenStr = oxygenInt.toString() + " %";
                             oxygen.setText(oxygenStr);
 
                             oxygenValues.add(oxygenInt);
 
                             Double temperatureDouble = arduinoMessage.getTemperature();
-                            String temperatureStr = "Temperature: " + temperatureDouble.toString() + " C";
+                            String temperatureStr = temperatureDouble.toString();
                             tvTemperature.setText(temperatureStr);
 
                             temperature = temperatureDouble;
