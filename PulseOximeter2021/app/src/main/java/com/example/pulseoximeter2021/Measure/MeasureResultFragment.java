@@ -187,18 +187,18 @@ public class MeasureResultFragment extends Fragment {
 
 
         // enable description text
-        bpmChart.getDescription().setEnabled(true);
+        bpmChart.getDescription().setEnabled(false);
 
         // enable touch gestures
-        bpmChart.setTouchEnabled(true);
+        bpmChart.setTouchEnabled(false);
 
         // enable scaling and dragging
-        bpmChart.setDragEnabled(true);
-        bpmChart.setScaleEnabled(true);
+        bpmChart.setDragEnabled(false);
+        bpmChart.setScaleEnabled(false);
         bpmChart.setDrawGridBackground(false);
 
         // if disabled, scaling can be done on x- and y-axis separately
-        bpmChart.setPinchZoom(true);
+        bpmChart.setPinchZoom(false);
 
         // set an alternative background color
         bpmChart.setBackgroundColor(Color.TRANSPARENT);
@@ -219,17 +219,17 @@ public class MeasureResultFragment extends Fragment {
 
         XAxis xl = bpmChart.getXAxis();
         xl.setTypeface(tfLight);
-        xl.setTextColor(Color.WHITE);
+        xl.setTextColor(Color.BLUE);
         xl.setDrawGridLines(false);
         xl.setAvoidFirstLastClipping(true);
-        xl.setEnabled(true);
+        xl.setEnabled(false);
 
         YAxis leftAxis = bpmChart.getAxisLeft();
         leftAxis.setTypeface(tfLight);
-        leftAxis.setTextColor(Color.WHITE);
+        leftAxis.setTextColor(getResources().getColor(R.color.blue_main));
 //        leftAxis.setAxisMaximum(100f);
 //        leftAxis.setAxisMinimum(0f);
-        leftAxis.setDrawGridLines(true);
+        leftAxis.setDrawGridLines(false);
 
         YAxis rightAxis = bpmChart.getAxisRight();
         rightAxis.setEnabled(false);
@@ -292,18 +292,19 @@ public class MeasureResultFragment extends Fragment {
 
 
         // enable description text
-        irChart.getDescription().setEnabled(true);
+        irChart.getDescription().setEnabled(false);
+        irChart.getLegend().setEnabled(true);
 
         // enable touch gestures
-        irChart.setTouchEnabled(true);
+        irChart.setTouchEnabled(false);
 
         // enable scaling and dragging
-        irChart.setDragEnabled(true);
-        irChart.setScaleEnabled(true);
+        irChart.setDragEnabled(false);
+        irChart.setScaleEnabled(false);
         irChart.setDrawGridBackground(false);
 
         // if disabled, scaling can be done on x- and y-axis separately
-        irChart.setPinchZoom(true);
+        irChart.setPinchZoom(false);
 
         // set an alternative background color
         irChart.setBackgroundColor(Color.TRANSPARENT);
@@ -324,17 +325,18 @@ public class MeasureResultFragment extends Fragment {
 
         XAxis xl = irChart.getXAxis();
         xl.setTypeface(tfLight);
-        xl.setTextColor(Color.WHITE);
+        xl.setTextColor(Color.BLUE);
         xl.setDrawGridLines(false);
         xl.setAvoidFirstLastClipping(true);
-        xl.setEnabled(true);
+        xl.setEnabled(false);
 
         YAxis leftAxis = irChart.getAxisLeft();
         leftAxis.setTypeface(tfLight);
-        leftAxis.setTextColor(Color.WHITE);
+        leftAxis.setTextColor(Color.BLUE);
 //        leftAxis.setAxisMaximum(100f);
 //        leftAxis.setAxisMinimum(0f);
-        leftAxis.setDrawGridLines(true);
+        leftAxis.setDrawGridLines(false);
+        leftAxis.setEnabled(false);
 
         YAxis rightAxis = irChart.getAxisRight();
         rightAxis.setEnabled(false);
@@ -383,15 +385,16 @@ public class MeasureResultFragment extends Fragment {
 
         LineDataSet set = new LineDataSet(null, "Heart rate per minute");
         set.setAxisDependency(YAxis.AxisDependency.LEFT);
-        set.setColor(ColorTemplate.getHoloBlue());
+        set.setColor(ColorTemplate.rgb("FF5252"));
         set.setLineWidth(2f);
         set.setDrawCircles(false);
         set.setFillAlpha(65);
         set.setFillColor(ColorTemplate.getHoloBlue());
-        set.setHighLightColor(Color.rgb(244, 117, 117));
-        set.setValueTextColor(Color.WHITE);
+        set.setHighLightColor(getResources().getColor(R.color.blue_main));
+        set.setValueTextColor(getResources().getColor(R.color.blue_main));
         set.setValueTextSize(9f);
         set.setDrawValues(false);
+        set.setMode(LineDataSet.Mode.CUBIC_BEZIER);
         return set;
     }
 
@@ -399,7 +402,7 @@ public class MeasureResultFragment extends Fragment {
 
         LineDataSet set = new LineDataSet(null, "Heartbeat");
         set.setAxisDependency(YAxis.AxisDependency.LEFT);
-        set.setColor(ColorTemplate.getHoloBlue());
+        set.setColor(getResources().getColor(R.color.blue_main));
         set.setLineWidth(2f);
         set.setDrawCircles(false);
         set.setFillAlpha(65);
@@ -508,7 +511,7 @@ public class MeasureResultFragment extends Fragment {
                         else
                             return;
                     }
-                }.init(record.getIrValues().get(index));
+                }.init(record.getBpmValues().get(index));
 
                 // Don't generate garbage runnables inside the loop.
                 requireActivity().runOnUiThread(run);

@@ -400,7 +400,7 @@ public class MeasureFragment extends Fragment {
 
         LineDataSet set = new LineDataSet(null, "Dynamic Data");
         set.setAxisDependency(YAxis.AxisDependency.LEFT);
-        set.setColor(ColorTemplate.getHoloBlue());
+        set.setColor(getResources().getColor(R.color.blue_main));
         set.setLineWidth(2f);
         set.setDrawCircles(false);
         set.setFillAlpha(65);
