@@ -33,6 +33,7 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Collections;
 import java.util.List;
+import java.util.Locale;
 import java.util.Random;
 
 public class MeasureFragment extends Fragment {
@@ -50,6 +51,7 @@ public class MeasureFragment extends Fragment {
 
     private int duration, index;
     Double temperature;
+    Double temperatureOffset = 12.0;
     private List<Integer> irValues;
     private List<Integer> oxygenValues;
     private List<Integer> bpmValues;
@@ -165,13 +167,16 @@ public class MeasureFragment extends Fragment {
                             bpmValues.add(avgBpmInt);
 
                             Integer oxygenInt = arduinoMessage.getOxygen();
+                            if(oxygenInt > 100)
+                                oxygenInt = 100;
                             String oxygenStr = oxygenInt.toString() + " %";
                             oxygen.setText(oxygenStr);
 
                             oxygenValues.add(oxygenInt);
 
                             Double temperatureDouble = arduinoMessage.getTemperature();
-                            String temperatureStr = temperatureDouble.toString();
+                            temperatureDouble = temperatureDouble - temperatureOffset;
+                            String temperatureStr = String.format(Locale.ENGLISH, "%.1f", temperatureDouble);
                             tvTemperature.setText(temperatureStr);
 
                             temperature = temperatureDouble;

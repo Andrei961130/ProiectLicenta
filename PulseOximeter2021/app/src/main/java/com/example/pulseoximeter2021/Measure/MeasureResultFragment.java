@@ -34,6 +34,7 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 
 import java.util.ArrayList;
+import java.util.List;
 import java.util.Locale;
 import java.util.concurrent.ExecutionException;
 
@@ -49,9 +50,16 @@ public class MeasureResultFragment extends Fragment {
     private Typeface tfLight;
 
     private Record record;
+    private int irSize;
+    private List<Integer> irValues;
+    private int bpmSize;
+    private List<Integer> bpmValues;
+
 
     private Thread irThread;
     private Thread bpmThread;
+
+    Boolean isRunning = false;
 
     private TextView tvOxygen;
     private TextView tvTemperature;
@@ -71,6 +79,12 @@ public class MeasureResultFragment extends Fragment {
 
         Bundle bundle = getArguments();
         record = (Record) bundle.getSerializable("record");
+
+        irValues = record.getIrValues();
+        irSize = irValues.size();
+
+        bpmValues = record.getBpmValues();
+        bpmSize = bpmValues.size();
     }
 
     @Override
@@ -94,14 +108,18 @@ public class MeasureResultFragment extends Fragment {
         bpmChartSetup(bpmChart);
 
 
-        replayButtonClick(view);
+//        replayButtonClick(view);
+
+        isRunning = true;
+        feedIrGraph(irThread, record.getLenghtAsMilis());
+        feedBpmGraph(bpmThread, record.getLenghtAsMilis());
 
         btnReplay.setOnClickListener(this::replayButtonClick);
         btnDelete.setOnClickListener(this::deleteButtonClick);
         btnSave.setOnClickListener(this::saveButtonClick);
 
         tvOxygen.setText(String.format(Locale.ENGLISH, "%d %%", record.getOxygen()));
-        tvTemperature.setText(String.format(Locale.ENGLISH, "%.1f C", record.getTemperature()));
+        tvTemperature.setText(String.format(Locale.ENGLISH, "%.1f", record.getTemperature()));
 
         return view;
     }
@@ -138,7 +156,8 @@ public class MeasureResultFragment extends Fragment {
 
             @Override
             public void recordDataIsInserted() {
-                Toast.makeText(requireActivity().getApplicationContext(), "Bine Dumitru", Toast.LENGTH_LONG).show();
+                Toast.makeText(requireActivity().getApplicationContext(), "Record saved", Toast.LENGTH_LONG).show();
+                isRunning = false;
                 requireActivity().finish();
             }
 
@@ -152,19 +171,25 @@ public class MeasureResultFragment extends Fragment {
 
             }
         });
-
-//        AddRecordInFireBase addRecordInFireBase = new AddRecordInFireBase();
-//        addRecordInFireBase.execute(record);
-
-//        requireActivity().finish();
     }
 
     private void deleteButtonClick(View view) {
-
+        isRunning = false;
         requireActivity().finish();
     }
 
     private void replayButtonClick(View v) {
+        if(!isRunning)
+            isRunning = true;
+        else
+            return;
+
+        if(bpmChart.getData() != null)
+            bpmChart.getData().clearValues();
+
+//        if(irChart.getData() != null)
+//            irChart.getData().clearValues();
+
         feedIrGraph(irThread, record.getLenghtAsMilis());
         feedBpmGraph(bpmThread, record.getLenghtAsMilis());
     } 
@@ -415,50 +440,44 @@ public class MeasureResultFragment extends Fragment {
     }
 
 
-    private void feedIrGraph(Thread thread, int lenght) {
+    private void feedIrGraph(Thread thread, int length) {
 
         if (thread != null)
             thread.interrupt();
 
         int totalValues = record.getIrValues().size();
-        int sleepMilis = lenght / totalValues;
-
-//        Runnable runnable = new Runnable() {
-//            int value;
-//
-//            public Runnable init(int value) {
-//                this.value = value;
-//                return this;
-//            }
-//
-//            @Override
-//            public void run() {
-//                addIrEntry(value);
-//            }
-//        };
+        int sleepMilis = length / totalValues;
 
         thread = new Thread(() -> {
             Runnable run;
             for (int index = 0; index < totalValues; index++) {
                 run = new Runnable() {
-                        int value;
+                    int value;
+                    Boolean isRunning;
 
-                        public Runnable init(int value) {
-                            this.value = value;
-                            return this;
-                        }
+                    public Runnable init(int value, Boolean isRunning) {
+                        this.value = value;
+                        this.isRunning = isRunning;
+                        return this;
+                    }
 
-                        @Override
-                        public void run() {
-                            if(isAdded())
-                                addIrEntry(value);
-                            else
-                                return;
-                        }
-                    }.init(record.getIrValues().get(index));
+                    @Override
+                    public void run() {
+                        if(isAdded() && isRunning)
+                            addIrEntry(value);
+                        else
+                            return;
+                    }
+                }.init(record.getIrValues().get(index), isRunning);
 
                 // Don't generate garbage runnables inside the loop.
-                requireActivity().runOnUiThread(run);
+                if(isRunning)
+                    requireActivity().runOnUiThread(run);
+                else
+                    return;
+
+                if(index == totalValues-1)
+                    isRunning = false;
 
                 try {
                     Thread.sleep(sleepMilis);
@@ -471,27 +490,14 @@ public class MeasureResultFragment extends Fragment {
         thread.start();
     }
 
-    private void feedBpmGraph(Thread thread, int lenght) {
+    private void feedBpmGraph(Thread thread, int length) {
 
         if (thread != null)
             thread.interrupt();
 
         int totalValues = record.getBpmValues().size();
-        int sleepMilis = lenght / totalValues;
+        int sleepMilis = length / totalValues;
 
-//        Runnable runnable = new Runnable() {
-//            int value;
-//
-//            public Runnable init(int value) {
-//                this.value = value;
-//                return this;
-//            }
-//
-//            @Override
-//            public void run() {
-//                addBpmEntry(value);
-//            }
-//        };
 
         thread = new Thread(() -> {
             Runnable run;
@@ -514,7 +520,13 @@ public class MeasureResultFragment extends Fragment {
                 }.init(record.getBpmValues().get(index));
 
                 // Don't generate garbage runnables inside the loop.
-                requireActivity().runOnUiThread(run);
+                if(isRunning)
+                    requireActivity().runOnUiThread(run);
+                else
+                    return;
+
+                if(index == totalValues-1)
+                    isRunning = false;
 
                 try {
                     Thread.sleep(sleepMilis);
@@ -525,54 +537,5 @@ public class MeasureResultFragment extends Fragment {
         });
 
         thread.start();
-    }
-
-    private class AddRecordInFireBase extends AsyncTask<Record,Void,Void>
-    {
-        @Override
-        protected Void doInBackground(Record... records) {
-            new MyFirebaseDatabase().addRecord(firebaseAuth.getUid(), records[0], new MyFirebaseDatabase.DataStatus() {
-                @Override
-                public void userDataIsLoaded(ArrayList<User> users, ArrayList<String> keys) throws ExecutionException, InterruptedException {
-                    
-                }
-
-                @Override
-                public void userDataIsInserted() {
-
-                }
-
-                @Override
-                public void userDataIsUpdated() {
-
-                }
-
-                @Override
-                public void userDataIsDeleted() {
-
-                }
-
-                @Override
-                public void recordDataIsLoaded(ArrayList<Record> records, ArrayList<String> keys) throws ExecutionException, InterruptedException {
-
-                }
-
-                @Override
-                public void recordDataIsInserted() {
-
-                }
-
-                @Override
-                public void recordDataIsUpdated() {
-
-                }
-
-                @Override
-                public void recordDataIsDeleted() {
-
-                }
-            });
-            return null;
-        }
     }
 }
