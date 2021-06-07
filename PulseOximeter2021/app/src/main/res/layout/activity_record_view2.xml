@@ -358,6 +358,7 @@
                 <com.google.android.material.textfield.TextInputEditText
                     android:id="@+id/activity_record_view_ti_message"
                     android:layout_width="match_parent"
+                    android:fontFamily="@font/montserrat_semibold"
                     android:layout_height="wrap_content"
                     android:hint="You can add a comment" />
             </com.google.android.material.textfield.TextInputLayout>
