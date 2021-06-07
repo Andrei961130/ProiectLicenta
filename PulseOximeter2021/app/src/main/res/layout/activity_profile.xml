@@ -181,6 +181,7 @@
                     android:layout_height="wrap_content"
                     android:id="@+id/activity_profile_btn_link"
                     android:text="Link"
+                    android:fontFamily="@font/montserrat_bold"
                     android:layout_gravity="center"/>
 
             </LinearLayout>

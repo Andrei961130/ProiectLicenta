@@ -57,7 +57,7 @@
                 android:fontFamily="@font/montserrat_bold"
                 android:layout_marginStart="16dp"
                 android:layout_marginTop="8dp"
-                android:paddingStart="30dp"/>
+                android:paddingStart="10dp"/>
 
             <View
                 android:layout_width="match_parent"
@@ -78,24 +78,32 @@
                 android:text="Date"
                 android:layout_marginStart="16dp"
                 android:layout_marginTop="8dp"
-                android:paddingStart="60dp"/>
+                android:paddingStart="20dp"/>
 
             <TextView
+                android:id="@+id/activity_record_view_tv_date"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:fontFamily="@font/montserrat_bold"
                 android:text="Date"
-                android:layout_marginStart="16dp"
+                android:layout_marginStart="36dp"
                 android:layout_marginTop="8dp"
-                android:paddingStart="60dp"/>
+                android:paddingStart="20dp"/>
 
-            <ImageView
-                android:layout_width="50dp"
+            <RelativeLayout
+                android:layout_width="match_parent"
                 android:layout_height="50dp"
-                android:layout_marginStart="16dp"
-                android:layout_marginTop="8dp"
-                android:paddingStart="60dp"
-                android:src="@drawable/ic_date_range"/>
+                android:gravity="end">
+
+                <ImageView
+                    android:layout_width="50dp"
+                    android:layout_height="50dp"
+                    android:layout_marginEnd="16dp"
+                    android:layout_marginTop="8dp"
+                    android:src="@drawable/ic_date_range"/>
+            </RelativeLayout>
+
+
         </LinearLayout>
 
             <LinearLayout
@@ -111,24 +119,30 @@
                     android:text="Time"
                     android:layout_marginStart="16dp"
                     android:layout_marginTop="8dp"
-                    android:paddingStart="60dp"/>
+                    android:paddingStart="20dp"/>
 
                 <TextView
+                    android:id="@+id/activity_record_view_tv_time"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:fontFamily="@font/montserrat_bold"
                     android:text="Time"
-                    android:layout_marginStart="16dp"
+                    android:layout_marginStart="36dp"
                     android:layout_marginTop="8dp"
-                    android:paddingStart="60dp"/>
+                    android:paddingStart="20dp"/>
 
-                <ImageView
-                    android:layout_width="50dp"
+                <RelativeLayout
+                    android:layout_width="match_parent"
                     android:layout_height="50dp"
-                    android:layout_marginStart="16dp"
-                    android:layout_marginTop="8dp"
-                    android:paddingStart="60dp"
-                    android:src="@drawable/ic_time"/>
+                    android:gravity="end">
+
+                    <ImageView
+                        android:layout_width="50dp"
+                        android:layout_height="50dp"
+                        android:layout_marginEnd="16dp"
+                        android:layout_marginTop="8dp"
+                        android:src="@drawable/ic_time"/>
+                </RelativeLayout>
             </LinearLayout>
 
             <LinearLayout
@@ -144,16 +158,17 @@
                     android:text="Length"
                     android:layout_marginStart="16dp"
                     android:layout_marginTop="8dp"
-                    android:paddingStart="60dp"/>
+                    android:paddingStart="20dp"/>
 
                 <TextView
+                    android:id="@+id/activity_record_view_tv_length"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:fontFamily="@font/montserrat_bold"
                     android:text="Length seconds"
                     android:layout_marginStart="16dp"
                     android:layout_marginTop="8dp"
-                    android:paddingStart="60dp"/>
+                    android:paddingStart="20dp"/>
             </LinearLayout>
 
             <TextView
@@ -167,7 +182,13 @@
                 android:fontFamily="@font/montserrat_bold"
                 android:layout_marginStart="16dp"
                 android:layout_marginTop="8dp"
-                android:paddingStart="30dp"/>
+                android:paddingStart="10dp"/>
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="2dp"
+                android:layout_marginTop="4dp"
+                android:background="@color/blue_main" />
 
             <LinearLayout
                 android:layout_width="match_parent"
@@ -182,24 +203,30 @@
                     android:text="Average"
                     android:layout_marginStart="16dp"
                     android:layout_marginTop="8dp"
-                    android:paddingStart="60dp"/>
+                    android:paddingStart="20dp"/>
 
                 <TextView
+                    android:id="@+id/activity_record_view_tv_average"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:fontFamily="@font/montserrat_bold"
                     android:text="100 BPM"
                     android:layout_marginStart="16dp"
                     android:layout_marginTop="8dp"
-                    android:paddingStart="60dp"/>
+                    android:paddingStart="20dp"/>
 
-                <ImageView
-                    android:layout_width="50dp"
+                <RelativeLayout
+                    android:layout_width="match_parent"
                     android:layout_height="50dp"
-                    android:layout_marginStart="16dp"
-                    android:layout_marginTop="8dp"
-                    android:paddingStart="60dp"
-                    android:src="@drawable/ic_heart"/>
+                    android:gravity="end">
+
+                    <ImageView
+                        android:layout_width="50dp"
+                        android:layout_height="50dp"
+                        android:layout_marginEnd="16dp"
+                        android:layout_marginTop="8dp"
+                        android:src="@drawable/ic_heart"/>
+                </RelativeLayout>
             </LinearLayout>
 
             <LinearLayout
@@ -215,24 +242,30 @@
                     android:text="Range"
                     android:layout_marginStart="16dp"
                     android:layout_marginTop="8dp"
-                    android:paddingStart="60dp"/>
+                    android:paddingStart="20dp"/>
 
                 <TextView
+                    android:id="@+id/activity_record_view_tv_range"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:fontFamily="@font/montserrat_bold"
                     android:text="78 BPM - 110 BPM"
                     android:layout_marginStart="16dp"
                     android:layout_marginTop="8dp"
-                    android:paddingStart="60dp"/>
+                    android:paddingStart="20dp"/>
 
-                <ImageView
-                    android:layout_width="50dp"
+                <RelativeLayout
+                    android:layout_width="match_parent"
                     android:layout_height="50dp"
-                    android:layout_marginStart="16dp"
-                    android:layout_marginTop="8dp"
-                    android:paddingStart="60dp"
-                    android:src="@drawable/ic_heartbeat"/>
+                    android:gravity="end">
+
+                    <ImageView
+                        android:layout_width="50dp"
+                        android:layout_height="50dp"
+                        android:layout_marginEnd="16dp"
+                        android:layout_marginTop="8dp"
+                        android:src="@drawable/ic_heartbeat"/>
+                </RelativeLayout>
             </LinearLayout>
 
             <LinearLayout
@@ -248,24 +281,30 @@
                     android:text="Oxygen"
                     android:layout_marginStart="16dp"
                     android:layout_marginTop="8dp"
-                    android:paddingStart="60dp"/>
+                    android:paddingStart="20dp"/>
 
                 <TextView
+                    android:id="@+id/activity_record_view_tv_oxygen"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:fontFamily="@font/montserrat_bold"
                     android:text="100 %"
                     android:layout_marginStart="16dp"
                     android:layout_marginTop="8dp"
-                    android:paddingStart="60dp"/>
+                    android:paddingStart="70dp"/>
 
-                <ImageView
-                    android:layout_width="50dp"
+                <RelativeLayout
+                    android:layout_width="match_parent"
                     android:layout_height="50dp"
-                    android:layout_marginStart="16dp"
-                    android:layout_marginTop="8dp"
-                    android:paddingStart="60dp"
-                    android:src="@drawable/ic_oxygen2"/>
+                    android:gravity="end">
+
+                    <ImageView
+                        android:layout_width="50dp"
+                        android:layout_height="50dp"
+                        android:layout_marginEnd="16dp"
+                        android:layout_marginTop="8dp"
+                        android:src="@drawable/ic_oxygen2"/>
+                </RelativeLayout>
             </LinearLayout>
 
             <LinearLayout
@@ -281,24 +320,30 @@
                     android:text="Temperature"
                     android:layout_marginStart="16dp"
                     android:layout_marginTop="8dp"
-                    android:paddingStart="60dp"/>
+                    android:paddingStart="20dp"/>
 
                 <TextView
+                    android:id="@+id/activity_record_view_tv_temperature"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:fontFamily="@font/montserrat_bold"
                     android:text="22"
                     android:layout_marginStart="16dp"
                     android:layout_marginTop="8dp"
-                    android:paddingStart="60dp"/>
+                    android:paddingStart="20dp"/>
 
-                <ImageView
-                    android:layout_width="50dp"
+                <RelativeLayout
+                    android:layout_width="match_parent"
                     android:layout_height="50dp"
-                    android:layout_marginStart="16dp"
-                    android:layout_marginTop="8dp"
-                    android:paddingStart="60dp"
-                    android:src="@drawable/ic_temperature"/>
+                    android:gravity="end">
+
+                    <ImageView
+                        android:layout_width="50dp"
+                        android:layout_height="50dp"
+                        android:layout_marginEnd="16dp"
+                        android:layout_marginTop="8dp"
+                        android:src="@drawable/ic_temperature"/>
+                </RelativeLayout>
             </LinearLayout>
 
             <com.google.android.material.textfield.TextInputLayout
@@ -311,7 +356,7 @@
                 app:layout_constraintTop_toBottomOf="@+id/fragment_measure_result_tv_temperature">
 
                 <com.google.android.material.textfield.TextInputEditText
-                    android:id="@+id/fragment_measure_result_text_input_edit_text"
+                    android:id="@+id/activity_record_view_ti_message"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:hint="You can add a comment" />

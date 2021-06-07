@@ -23,6 +23,7 @@
             android:layout_marginStart="48dp"
             android:layout_marginTop="16dp"
             android:text="Display Name"
+            android:fontFamily="@font/montserrat_bold"
             android:textColor="@color/light_blue_900"
             android:textStyle="bold"
             app:layout_constraintStart_toStartOf="parent"
@@ -34,6 +35,7 @@
             android:layout_height="wrap_content"
             android:layout_marginStart="48dp"
             android:layout_marginTop="8dp"
+            android:fontFamily="@font/montserrat_bold"
             android:text="Email"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/card_view_tv_display_name" />
