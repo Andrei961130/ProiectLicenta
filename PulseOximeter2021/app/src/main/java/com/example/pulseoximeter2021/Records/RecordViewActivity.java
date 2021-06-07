@@ -31,13 +31,13 @@ public class RecordViewActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_record_view);
+        setContentView(R.layout.activity_record_view2);
 
         Bundle extras = getIntent().getExtras();
         record = (Record) extras.getSerializable("record");
 
-        initialiseViews();
-        setupRecordInformation();
+//        initialiseViews();
+//        setupRecordInformation();
     }
 
     private void initialiseViews() {

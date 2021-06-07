@@ -92,6 +92,7 @@
         android:layout_marginTop="12dp"
         android:layout_weight="1"
         android:text="replay"
+        android:background="@drawable/round_corners"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/fragment_measure_result_text_input_layout" />
 
@@ -104,6 +105,7 @@
         android:layout_marginTop="12dp"
         android:layout_weight="1"
         android:text="delete"
+        android:background="@drawable/round_corners"
         app:layout_constraintStart_toEndOf="@id/fragment_measure_result_btn_replay"
         app:layout_constraintTop_toBottomOf="@+id/fragment_measure_result_text_input_layout" />
 
@@ -116,6 +118,7 @@
         android:layout_marginTop="12dp"
         android:layout_weight="1"
         android:text="save"
+        android:background="@drawable/round_corners"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/fragment_measure_result_btn_replay" />
 
