@@ -110,7 +110,7 @@ public class Record implements Serializable {
     @Exclude
     public Date getDateAndTimeAsDate() {
         try {
-            return new SimpleDateFormat("yyyy.MM.dd hh:mm:ss").parse(dateAndTime);
+            return new SimpleDateFormat("dd/MM/yyyy hh:mm").parse(dateAndTime);
         } catch (ParseException e) {
             e.printStackTrace();
             return null;

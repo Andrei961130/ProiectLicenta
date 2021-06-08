@@ -5,7 +5,6 @@ import android.graphics.Color;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
-import androidx.constraintlayout.motion.utils.Easing;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -15,6 +14,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.example.pulseoximeter2021.DataLayer.GroupBarValue;
 import com.example.pulseoximeter2021.DataLayer.Models.Firebase.Record;
 import com.example.pulseoximeter2021.DataLayer.Models.Firebase.User;
 import com.example.pulseoximeter2021.R;
@@ -29,8 +29,10 @@ import com.github.mikephil.charting.data.BarDataSet;
 import com.github.mikephil.charting.data.BarEntry;
 import com.github.mikephil.charting.formatter.IndexAxisValueFormatter;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.List;
+import java.util.Calendar;
+import java.util.HashMap;
 import java.util.concurrent.ExecutionException;
 
 public class RecordsFragment extends Fragment {
@@ -47,6 +49,13 @@ public class RecordsFragment extends Fragment {
     private ArrayList<BarEntry> greenRecords;
     private ArrayList<BarEntry> orangeRecords;
     private ArrayList<BarEntry> redRecords;
+
+    String[] labelValues = {"Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"};
+
+    private ArrayList<Calendar> labelValuesCalendarList;
+    private HashMap<Calendar, GroupBarValue> graphRecordsByDay;
+
+    private Integer maxBarValue = 0;
 
     public RecordsFragment() {
     }
@@ -72,6 +81,8 @@ public class RecordsFragment extends Fragment {
         else
             uid = FirebaseService.getInstance().getCurrentUser().getUid();
 
+        seedLabels();
+
     }
 
     @Override
@@ -80,96 +91,21 @@ public class RecordsFragment extends Fragment {
         View view = inflater.inflate(R.layout.fragment_records_list2, container, false);
 
         barChart = view.findViewById(R.id.fragment_records_list_bar_chart);
+        recyclerView = (RecyclerView) view.findViewById(R.id.fragment_records_list_recycler_view);
 
-        greenRecords = new ArrayList<>(7);
-        orangeRecords = new ArrayList<>(7);
-        redRecords = new ArrayList<>(7);
-
-
-        greenRecords.add(new BarEntry(1,2));
-        greenRecords.add(new BarEntry(2,2));
-        greenRecords.add(new BarEntry(3,2));
-        greenRecords.add(new BarEntry(4,2));
-        greenRecords.add(new BarEntry(5,2));
-        greenRecords.add(new BarEntry(6,2));
-        greenRecords.add(new BarEntry(7,2));
-
-        orangeRecords.add(new BarEntry(1,3));
-        orangeRecords.add(new BarEntry(2,3));
-        orangeRecords.add(new BarEntry(3,3));
-        orangeRecords.add(new BarEntry(4,3));
-        orangeRecords.add(new BarEntry(5,3));
-        orangeRecords.add(new BarEntry(6,3));
-        orangeRecords.add(new BarEntry(7,3));
-
-        redRecords.add(new BarEntry(1,4));
-        redRecords.add(new BarEntry(2,4));
-        redRecords.add(new BarEntry(3,4));
-        redRecords.add(new BarEntry(4,4));
-        redRecords.add(new BarEntry(5,4));
-        redRecords.add(new BarEntry(6,4));
-        redRecords.add(new BarEntry(7,4));
-
-
-        BarDataSet barDataSetGreen = new BarDataSet(greenRecords,"Green records");
-        barDataSetGreen.setColor(Color.GREEN);
-        BarDataSet barDataSetOrange = new BarDataSet(orangeRecords,"Orange records");
-        barDataSetOrange.setColor(Color.rgb(255, 174, 0));
-        BarDataSet barDataSetRed = new BarDataSet(redRecords,"Red records");
-        barDataSetRed.setColor(Color.RED);
-
-
-        BarData barData = new BarData();
-        barData.addDataSet(barDataSetGreen);
-        barData.addDataSet(barDataSetOrange);
-        barData.addDataSet(barDataSetRed);
-
-        barChart.setData(barData);
-
-        barData.setBarWidth(0.2f);
-        barData.groupBars(0f,0.4f,0);
-
-        barChart.setBackgroundColor(Color.TRANSPARENT);
-
-        barChart.getAxisLeft().setAxisMaximum(5);      //Maximum value of Y axis
-        barChart.getAxisLeft().setAxisMinimum(0);      //Y-axis minimum value
-        barChart.getAxisLeft().setLabelCount(5,false);
-//        barChart.getAxisLeft().setDrawGridLines(false);
-
-        barChart.getXAxis().setAxisMaximum(7);      //Maximum value of X axis
-        barChart.getXAxis().setAxisMinimum(0);      //X-axis minimum value
-
-        barChart.getXAxis().setLabelCount(7,false);
-
-        final String[] weekdays = {"Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"};
-        barChart.getXAxis().setValueFormatter(new IndexAxisValueFormatter(weekdays));
-
-        barChart.getXAxis().setCenterAxisLabels(true);
-        barChart.getXAxis().setDrawGridLines(false);
-        //barChart.setFitBars(true);
-        //barChart.getXAxis().setEnabled(false);
-
-        barChart.getDescription().setEnabled(false);
-        barChart.getXAxis().setPosition(XAxis.XAxisPosition.BOTTOM);      //The position of the X axis is set to down, the default is up
-        barChart.getAxisRight().setEnabled(false);
-
-
-        barChart.animateY(1400);
-
-
-
-
-
+        barChart.setVisibility(View.INVISIBLE);
 
         FirebaseService.getInstance().readUserRecords(new FirebaseService.RecordDataStatus() {
             @Override
             public void DataIsLoaded(ArrayList<Record> records, ArrayList<String> keys) throws ExecutionException, InterruptedException {
-                recyclerView = (RecyclerView) view.findViewById(R.id.fragment_records_list_recycler_view);
+
                 recyclerView.setLayoutManager(new LinearLayoutManager(view.getContext()));
                 userAdapter2 = new RegularUserAdapter2(records, view.getContext());
                 recyclerView.setAdapter(userAdapter2);
 
-                recordsList = records;
+                recordsList = (ArrayList<Record>) records.clone();
+
+                initializeAndFeedGraph();
             }
 
             @Override
@@ -206,6 +142,149 @@ public class RecordsFragment extends Fragment {
 
 
         return view;
+    }
+
+    private void initializeAndFeedGraph() {
+
+        pickRecordsForGraph();
+
+        greenRecords = new ArrayList<>(7);
+        orangeRecords = new ArrayList<>(7);
+        redRecords = new ArrayList<>(7);
+
+        for (Integer index = 0; index < labelValuesCalendarList.size(); index++)
+        {
+            Calendar currentLabelCalendar = labelValuesCalendarList.get(index);
+            GroupBarValue currentGroupBarValue = graphRecordsByDay.get(currentLabelCalendar);
+
+            Integer currentGreenValue = currentGroupBarValue.getGreen();
+            Integer currentOrangeValue = currentGroupBarValue.getOrange();
+            Integer currentRedValue = currentGroupBarValue.getRed();
+
+            greenRecords.add(new BarEntry(index + 1,currentGreenValue));
+            orangeRecords.add(new BarEntry(index + 1,currentOrangeValue));
+            redRecords.add(new BarEntry(index + 1,currentRedValue));
+
+
+            if(currentGreenValue > maxBarValue)
+                maxBarValue = currentGreenValue;
+
+            if(currentOrangeValue > maxBarValue)
+                maxBarValue = currentOrangeValue;
+
+            if(currentRedValue > maxBarValue)
+                maxBarValue = currentRedValue;
+        }
+
+
+        if(maxBarValue == 0)
+            return;
+        else
+        {
+            barChart.setVisibility(View.VISIBLE);
+        }
+
+        BarDataSet barDataSetGreen = new BarDataSet(greenRecords,"Green records");
+        barDataSetGreen.setColor(Color.GREEN);
+        BarDataSet barDataSetOrange = new BarDataSet(orangeRecords,"Orange records");
+        barDataSetOrange.setColor(Color.rgb(255, 174, 0));
+        BarDataSet barDataSetRed = new BarDataSet(redRecords,"Red records");
+        barDataSetRed.setColor(Color.RED);
+
+
+        BarData barData = new BarData();
+        barData.addDataSet(barDataSetGreen);
+        barData.addDataSet(barDataSetOrange);
+        barData.addDataSet(barDataSetRed);
+        barData.setDrawValues(false);
+
+        barChart.setData(barData);
+
+        barData.setBarWidth(0.2f);
+        barData.groupBars(0f,0.4f,0);
+
+        barChart.setBackgroundColor(Color.TRANSPARENT);
+
+        barChart.getAxisLeft().setAxisMaximum(maxBarValue + 1);      //Maximum value of Y axis
+        barChart.getAxisLeft().setAxisMinimum(0);      //Y-axis minimum value
+        barChart.getAxisLeft().setLabelCount(maxBarValue + 1,false);
+//        barChart.getAxisLeft().setDrawGridLines(false);
+
+        barChart.getXAxis().setAxisMaximum(7);      //Maximum value of X axis
+        barChart.getXAxis().setAxisMinimum(0);      //X-axis minimum value
+
+        barChart.getXAxis().setLabelCount(7,false);
+
+
+        barChart.getXAxis().setValueFormatter(new IndexAxisValueFormatter(labelValues));
+
+        barChart.getXAxis().setCenterAxisLabels(true);
+        barChart.getXAxis().setDrawGridLines(false);
+        //barChart.setFitBars(true);
+        //barChart.getXAxis().setEnabled(false);
+
+        barChart.getDescription().setEnabled(false);
+        barChart.getXAxis().setPosition(XAxis.XAxisPosition.BOTTOM);      //The position of the X axis is set to down, the default is up
+        barChart.getAxisRight().setEnabled(false);
+
+
+        barChart.animateY(1400);
+
+
+
+
+        Integer a = 0;
+        a++;
+
+    }
+
+    private void pickRecordsForGraph(){
+        for (Record record :
+                recordsList) {
+            Calendar currentRecordDate = Calendar.getInstance();
+            currentRecordDate.setTime(record.getDateAndTimeAsDate());
+
+            for (Calendar currentCalendar :
+                    labelValuesCalendarList) {
+                if (isSameDateTime(currentCalendar, currentRecordDate)) {
+                    GroupBarValue currentGroupValue = graphRecordsByDay.get(currentCalendar);
+
+                    if(record.getAverageBpmValue() <= 70)
+                        currentGroupValue.incrementGreen();
+                    else if(record.getAverageBpmValue() > 70 && record.getAverageBpmValue() <= 90)
+                        currentGroupValue.incrementOrange();
+                    else currentGroupValue.incrementRed();
+
+                    graphRecordsByDay.put(currentCalendar, currentGroupValue);
+                }
+            }
+        }
+    }
+
+    public boolean isSameDateTime(Calendar cal1, Calendar cal2) {
+        // compare if is the same YEAR, DAY, HOUR
+        return (cal1.get(Calendar.YEAR) == cal2.get(Calendar.YEAR)
+                && cal1.get(Calendar.DAY_OF_YEAR) == cal2.get(Calendar.DAY_OF_YEAR));
+    }
+
+    private void seedLabels()
+    {
+        labelValuesCalendarList = new ArrayList<>();
+        graphRecordsByDay = new HashMap<>();
+
+//        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd ");
+        SimpleDateFormat sdf = new SimpleDateFormat("dd/MM");
+        Calendar cal = Calendar.getInstance();
+        cal.add(Calendar.DAY_OF_YEAR, -7);
+
+        for(int i = 0; i< 7; i++){
+            cal.add(Calendar.DAY_OF_YEAR, 1);
+            //System.out.println(sdf.format(cal.getTime()));
+            labelValues[i] = sdf.format(cal.getTime());
+
+            labelValuesCalendarList.add((Calendar) cal.clone());
+            graphRecordsByDay.put((Calendar) cal.clone(), new GroupBarValue());
+        }
     }
 
     private void clearAllRecords() {
