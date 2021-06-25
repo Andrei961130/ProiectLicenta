@@ -13,6 +13,8 @@ import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.LinearLayout;
+import android.widget.TextView;
 
 import com.example.pulseoximeter2021.DataLayer.GroupBarValue;
 import com.example.pulseoximeter2021.DataLayer.Models.Firebase.Record;
@@ -37,6 +39,9 @@ import java.util.concurrent.ExecutionException;
 
 public class RecordsFragment extends Fragment {
 
+    LinearLayout maskLayout;
+    TextView tvMaskText;
+
     private User user = null;
     private String uid = null;
 
@@ -56,6 +61,8 @@ public class RecordsFragment extends Fragment {
     private HashMap<Calendar, GroupBarValue> graphRecordsByDay;
 
     private Integer maxBarValue = 0;
+
+    private Boolean hasRecords = false;
 
     public RecordsFragment() {
     }
@@ -92,6 +99,8 @@ public class RecordsFragment extends Fragment {
 
         barChart = view.findViewById(R.id.fragment_records_list_bar_chart);
         recyclerView = (RecyclerView) view.findViewById(R.id.fragment_records_list_recycler_view);
+        maskLayout = view.findViewById(R.id.fragment_records_list2_no_record_linear_layout);
+        tvMaskText = view.findViewById(R.id.fragment_records_list2_no_record_text);
 
         barChart.setVisibility(View.INVISIBLE);
 
@@ -102,6 +111,9 @@ public class RecordsFragment extends Fragment {
                 recyclerView.setLayoutManager(new LinearLayoutManager(view.getContext()));
                 userAdapter2 = new RegularUserAdapter2(records, view.getContext());
                 recyclerView.setAdapter(userAdapter2);
+
+                if(!records.isEmpty())
+                    hasRecords=true;
 
                 recordsList = (ArrayList<Record>) records.clone();
 
@@ -161,7 +173,7 @@ public class RecordsFragment extends Fragment {
             Integer currentOrangeValue = currentGroupBarValue.getOrange();
             Integer currentRedValue = currentGroupBarValue.getRed();
 
-            greenRecords.add(new BarEntry(index + 1,currentGreenValue));
+             greenRecords.add(new BarEntry(index + 1,currentGreenValue));
             orangeRecords.add(new BarEntry(index + 1,currentOrangeValue));
             redRecords.add(new BarEntry(index + 1,currentRedValue));
 
@@ -177,10 +189,14 @@ public class RecordsFragment extends Fragment {
         }
 
 
-        if(maxBarValue == 0)
+        if(maxBarValue == 0 && !hasRecords)
+        {
+            tvMaskText.setText("You have no records yet");
             return;
+        }
         else
         {
+            maskLayout.setVisibility(View.GONE);
             barChart.setVisibility(View.VISIBLE);
         }
 

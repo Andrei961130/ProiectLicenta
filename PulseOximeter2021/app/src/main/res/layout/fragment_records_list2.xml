@@ -10,8 +10,36 @@
     android:layout_marginRight="16dp"
     android:orientation="vertical"
     app:layoutManager="LinearLayoutManager"
-    tools:context=".Records.RecordsFragment"
-    >
+    tools:context=".Records.RecordsFragment">
+
+    <LinearLayout
+        android:id="@+id/fragment_records_list2_no_record_linear_layout"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        android:visibility="visible">
+
+        <ImageView
+            android:id="@+id/imageView_no_record"
+            android:layout_width="300dp"
+            android:layout_height="250dp"
+            android:layout_marginStart="18dp"
+            android:layout_marginTop="80dp"
+            android:background="@drawable/ic_search"/>
+
+        <TextView
+            android:id="@+id/fragment_records_list2_no_record_text"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="50dp"
+            android:layout_marginTop="30dp"
+            android:fontFamily="@font/montserrat_bold"
+            android:text="Looking for records"
+            android:textColor="#504F60"
+            android:textSize="14sp" />
+
+
+    </LinearLayout>
 
     <com.github.mikephil.charting.charts.BarChart
         android:id="@+id/fragment_records_list_bar_chart"
