@@ -75,7 +75,7 @@ public class StartingFragment extends Fragment {
         if(bluetoothHelper.isConnected())
         {
 //            Snackbar.make(view.getContext(), "Pagina: " + FirebaseService.getInstance().getDuration(), Snackbar.LENGTH_SHORT).show();
-            Toast.makeText(requireActivity().getApplicationContext(), "Pagina: " + FirebaseService.getInstance().getDuration(), Toast.LENGTH_LONG).show();
+//            Toast.makeText(requireActivity().getApplicationContext(), "Pagina: " + FirebaseService.getInstance().getDuration(), Toast.LENGTH_LONG).show();
 
 
             Intent intent = new Intent(getContext(), MeasureActivity.class);
@@ -85,7 +85,7 @@ public class StartingFragment extends Fragment {
         }
         else
         {
-            Toast.makeText(requireActivity().getApplicationContext(), "Connect with the device first", Toast.LENGTH_LONG).show();
+            Toast.makeText(requireActivity().getApplicationContext(), "Connect with the device first", Toast.LENGTH_SHORT).show();
         }
     }
 

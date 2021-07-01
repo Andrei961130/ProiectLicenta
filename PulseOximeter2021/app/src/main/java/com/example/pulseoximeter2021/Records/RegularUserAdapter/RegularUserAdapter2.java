@@ -81,7 +81,7 @@ public class RegularUserAdapter2 extends RecyclerView.Adapter<RegularUserAdapter
         holder.itemView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Toast.makeText(v.getContext(), records.get(position).getAverageBpmValue().toString(), Toast.LENGTH_SHORT).show();
+//                Toast.makeText(v.getContext(), records.get(position).getAverageBpmValue().toString(), Toast.LENGTH_SHORT).show();
 
                 Intent intent = new Intent(context, RecordViewActivity.class);
                 intent.putExtra("record", records.get(position));

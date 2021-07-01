@@ -117,11 +117,11 @@ public class RegisterEmailAndPasswordFragment extends Fragment {
                         etPassword.setText("");
                         etPassword2.setText("");
                     } catch(Exception e) {
-                        Toast.makeText(getActivity().getApplicationContext(), Objects.requireNonNull(task.getException()).getMessage(), Toast.LENGTH_LONG).show();
+//                        Toast.makeText(getActivity().getApplicationContext(), Objects.requireNonNull(task.getException()).getMessage(), Toast.LENGTH_LONG).show();
 
                     }
                 } else {
-                    Toast.makeText(getActivity().getApplicationContext(), "User created", Toast.LENGTH_LONG).show();
+//                    Toast.makeText(getActivity().getApplicationContext(), "User created", Toast.LENGTH_LONG).show();
 
                     Bundle bundle = new Bundle();
                     bundle.putString("email", emailStr);

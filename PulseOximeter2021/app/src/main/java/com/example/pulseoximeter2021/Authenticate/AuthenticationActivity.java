@@ -46,7 +46,7 @@ public class AuthenticationActivity extends AppCompatActivity
 
             Intent intent = new Intent(this, MainActivity.class);
             startActivity(intent);
-            Toast.makeText(this.getApplicationContext(), "User logged in", Toast.LENGTH_LONG).show();
+//            Toast.makeText(this.getApplicationContext(), "User logged in", Toast.LENGTH_LONG).show();
 
         }
         else

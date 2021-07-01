@@ -51,7 +51,7 @@ public class LinkedPacientsAdapter extends RecyclerView.Adapter<LinkedPacientsAd
         holder.itemView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Toast.makeText(v.getContext(), users.get(position).getFirstName(), Toast.LENGTH_SHORT).show();
+//                Toast.makeText(v.getContext(), users.get(position).getFirstName(), Toast.LENGTH_SHORT).show();
 
 //                Intent intent = new Intent(context, ProfileActivity.class);
 //                intent.putExtra("user", users.get(position));

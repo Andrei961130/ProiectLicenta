@@ -9,6 +9,7 @@ import androidx.fragment.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.example.pulseoximeter2021.Bluetooth.ArduinoMessage;
@@ -56,6 +57,9 @@ public class MeasureFragment extends Fragment {
     private List<Integer> oxygenValues;
     private List<Integer> bpmValues;
 
+    private ImageView decorator;
+    private TextView decorator2;
+
     public MeasureFragment() {
         irValues = new ArrayList<>();
         bpmValues = new ArrayList<>();
@@ -83,6 +87,9 @@ public class MeasureFragment extends Fragment {
         oxygen = (TextView) view.findViewById(R.id.oxygen);
         tvTemperature = (TextView) view.findViewById(R.id.temperature);
         chart = view.findViewById(R.id.fragment_measure_chart);
+
+        decorator = view.findViewById(R.id.fragment_measure_decorator);
+        decorator2 = view.findViewById(R.id.fragment_measure_decorator2);
 
         bluetoothHelper = BluetoothHelper.getInstance();
         tfLight = Typeface.createFromAsset(getActivity().getAssets(), "OpenSans-Light.ttf");
@@ -163,6 +170,17 @@ public class MeasureFragment extends Fragment {
                             Integer avgBpmInt = arduinoMessage.getAvgBpm();
                             String avgBpmStr = "Avg Bpm: " + avgBpmInt.toString();
                             avgBpm.setText(avgBpmInt.toString());
+
+                            if(avgBpmInt > 99)
+                            {
+                                decorator.setVisibility(View.INVISIBLE);
+                                decorator2.setVisibility(View.INVISIBLE);
+                            }
+                            else if(decorator.getVisibility() == View.INVISIBLE)
+                            {
+                                decorator.setVisibility(View.VISIBLE);
+                                decorator2.setVisibility(View.VISIBLE);
+                            }
 
                             bpmValues.add(avgBpmInt);
 

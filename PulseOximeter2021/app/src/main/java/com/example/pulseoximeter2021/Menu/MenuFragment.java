@@ -103,7 +103,6 @@ public class MenuFragment extends Fragment {
                 else if(id == R.id.menu_logout)
                 {
                     FirebaseAuth.getInstance().signOut();
-//                    requireActivity().finish();
                     Intent intent = new Intent(getContext(), AuthenticationActivity.class);
                     intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                     intent.putExtra("SIGN_OUT", true);

@@ -108,7 +108,7 @@ public class LoginFragment extends Fragment {
         else {
             firebaseAuth.signInWithEmailAndPassword(emailStr, passwordStr).addOnCompleteListener(getActivity(), task -> {
                 if (!task.isSuccessful()) {
-                    Toast.makeText(requireActivity().getApplicationContext(), task.getException().getMessage(), Toast.LENGTH_LONG).show();
+//                    Toast.makeText(requireActivity().getApplicationContext(), task.getException().getMessage(), Toast.LENGTH_LONG).show();
                     btnSignIn.stopAnimation(TransitionButton.StopAnimationStyle.SHAKE, null);
 
                     try {
@@ -118,7 +118,7 @@ public class LoginFragment extends Fragment {
                         etEmail.requestFocus();
                         etPassword.setText("");
                     } catch(Exception e) {
-                        Toast.makeText(requireActivity().getApplicationContext(), Objects.requireNonNull(task.getException()).getMessage(), Toast.LENGTH_LONG).show();
+//                        Toast.makeText(requireActivity().getApplicationContext(), Objects.requireNonNull(task.getException()).getMessage(), Toast.LENGTH_LONG).show();
                     }
                 } else {
                     FirebaseService.getNewInstance();
@@ -130,7 +130,7 @@ public class LoginFragment extends Fragment {
                             Intent intent = new Intent(getActivity(), MainActivity.class);
                             intent.addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION);
                             startActivity(intent);
-                            Toast.makeText(requireActivity().getApplicationContext(), "User logged in", Toast.LENGTH_LONG).show();
+//                            Toast.makeText(requireActivity().getApplicationContext(), "User logged in", Toast.LENGTH_LONG).show();
                         }
                     });
 

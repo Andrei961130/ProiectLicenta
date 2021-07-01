@@ -156,7 +156,7 @@ public class MeasureResultFragment extends Fragment {
 
             @Override
             public void recordDataIsInserted() {
-                Toast.makeText(requireActivity().getApplicationContext(), "Record saved", Toast.LENGTH_LONG).show();
+//                Toast.makeText(requireActivity().getApplicationContext(), "Record saved", Toast.LENGTH_LONG).show();
                 isRunning = false;
                 requireActivity().finish();
             }

@@ -144,7 +144,7 @@ public class RegisterAllOtherFragment extends Fragment {
                             );
 //                            requireActivity().finish();
 
-                            Toast.makeText(getActivity(),"User created",Toast.LENGTH_LONG).show();
+//                            Toast.makeText(getActivity(),"User created",Toast.LENGTH_LONG).show();
 
                             new java.util.Timer().schedule(
                                     new java.util.TimerTask() {
