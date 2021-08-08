@@ -1,5 +1,9 @@
 package com.example.pulseoximeter2021.Authenticate;
 
+import android.content.res.Resources;
+import android.graphics.Color;
+import android.graphics.drawable.Drawable;
+import android.graphics.drawable.GradientDrawable;
 import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
@@ -42,6 +46,15 @@ public class RegisterEmailAndPasswordFragment extends Fragment {
         etPassword = view.findViewById(R.id.fragment_register_et_password);
         etPassword2 = view.findViewById(R.id.fragment_register_et_password2);
         btnContinue = view.findViewById(R.id.fragment_register_email_and_password_btn_continue);
+
+//        GradientDrawable drawable = new GradientDrawable();
+//        drawable.setColor(Color.BLACK);
+//        drawable.setShape(GradientDrawable.RECTANGLE);
+//        drawable.setStroke(3, Color.YELLOW);
+//        drawable.setCornerRadius(8);
+//        btnContinue.setBackgroundDrawable(drawable);
+//        btnContinue.setBackgroundResource(Drawable);
+
 
         btnContinue.setOnClickListener(this::checkFieldsAndContinue);
 
@@ -104,11 +117,11 @@ public class RegisterEmailAndPasswordFragment extends Fragment {
                         etPassword.setText("");
                         etPassword2.setText("");
                     } catch(Exception e) {
-                        Toast.makeText(getActivity().getApplicationContext(), Objects.requireNonNull(task.getException()).getMessage(), Toast.LENGTH_LONG).show();
+//                        Toast.makeText(getActivity().getApplicationContext(), Objects.requireNonNull(task.getException()).getMessage(), Toast.LENGTH_LONG).show();
 
                     }
                 } else {
-                    Toast.makeText(getActivity().getApplicationContext(), "User created", Toast.LENGTH_LONG).show();
+//                    Toast.makeText(getActivity().getApplicationContext(), "User created", Toast.LENGTH_LONG).show();
 
                     Bundle bundle = new Bundle();
                     bundle.putString("email", emailStr);

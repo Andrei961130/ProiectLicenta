@@ -15,7 +15,8 @@
 
     <androidx.coordinatorlayout.widget.CoordinatorLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="match_parent"
+        android:id="@+id/activity_main_coordinator_layout">
 
         <com.google.android.material.appbar.AppBarLayout
             android:layout_width="match_parent"
@@ -63,7 +64,29 @@
         <FrameLayout
             android:id="@+id/activity_main_fragment_container"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"></FrameLayout>
+            android:layout_height="match_parent" >
+
+        </FrameLayout>
+
+        <androidx.viewpager2.widget.ViewPager2
+            android:layout_width="match_parent"
+            android:layout_height="124dp"
+            android:layout_marginTop="390dp"
+            android:id="@+id/activity_main_view_pager"
+            app:layout_anchor="@+id/activity_main_fragment_container"
+             />
+
+        <com.google.android.material.tabs.TabLayout
+            android:id="@+id/activity_main_tab_layout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="520dp"
+            android:layout_marginBottom="40dp"
+            app:tabMode="fixed"
+            app:tabGravity="center"
+            app:tabIndicatorHeight="0dp"
+            app:tabBackground="@drawable/tab_selector"/>
+
     </androidx.coordinatorlayout.widget.CoordinatorLayout>
     
     <com.mxn.soul.flowingdrawer_core.FlowingMenuLayout
